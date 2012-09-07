@@ -5,7 +5,7 @@ import javax.swing.UIManager;
 import pl.edu.agh.codecomp.gui.CodeCompGUI;
 
 /**
- * @author Jarosław Szczęśniak
+ * @author Jaroslaw Szczesniak (null@student.agh.edu.pl)
  * 
  */
 public class CodeComp {

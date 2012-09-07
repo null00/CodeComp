@@ -1,8 +1,11 @@
 package pl.edu.agh.codecomp;
 
+import java.util.List;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import pl.edu.agh.codecomp.algorithm.BoyerMoore;
 
 /**
  * Unit test for simple App.
@@ -33,6 +36,10 @@ public class AppTest
      */
     public void testApp()
     {
-        assertTrue( true );
+        BoyerMoore bm = new BoyerMoore("abcabcabcabcabc", "cabc");
+        List<Integer> result = bm.match();
+//        for(int i = 0; i < result.size(); i++)
+//        	System.out.println(result.get(i));
+        assertEquals(true, !result.isEmpty());
     }
 }
