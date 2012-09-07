@@ -5,7 +5,7 @@ import java.util.List;
 
 public class BoyerMoore {
 
-	public static final int ALPHABET_SIZE = 256;
+	public static final int ALPHABET_SIZE = 512;
 
 	private String text;
 	private String pattern;

@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.io.BufferedReader;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
@@ -12,11 +14,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoundedRangeModel;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
@@ -26,7 +30,10 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import pl.edu.agh.codecomp.algorithm.BoyerMoore;
+import pl.edu.agh.codecomp.file.CCFileReader;
 import pl.edu.agh.codecomp.file.actions.AddFileAction;
+import pl.edu.agh.codecomp.file.actions.ChangeTextListener;
+import pl.edu.agh.codecomp.file.actions.CompareAction;
 
 public class CodeCompGUI extends JFrame {
 
@@ -48,6 +55,14 @@ public class CodeCompGUI extends JFrame {
 			initGUI();
 			initMenu();
 			initMainPanel();
+
+			try {
+				leftText.read(CCFileReader.read(new File("/home/null/Dokumenty/dieta").getAbsolutePath()), null);
+				rightText.read(CCFileReader.read(new File("/home/null/Dokumenty/dieta2").getAbsolutePath()), null);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -69,9 +84,19 @@ public class CodeCompGUI extends JFrame {
 		JMenu file = new JMenu("File");
 		mainMenu.add(file);
 
-		JMenuItem addItem = new JMenuItem("Add");
-		addItem.addActionListener(new AddFileAction());
-		file.add(addItem);
+		JMenuItem addLeftItem = new JMenuItem("Add left");
+		addLeftItem.addActionListener(new AddFileAction());
+		addLeftItem.setActionCommand("leftText");
+		file.add(addLeftItem);
+
+		JMenuItem addRightItem = new JMenuItem("Add right");
+		addRightItem.addActionListener(new AddFileAction());
+		addRightItem.setActionCommand("rightText");
+		file.add(addRightItem);
+
+		JMenu compare = new JMenu("Compare");
+		compare.addActionListener(new CompareAction());
+		mainMenu.add(compare);
 
 		getMainWin().setJMenuBar(mainMenu);
 	}
@@ -90,8 +115,10 @@ public class CodeCompGUI extends JFrame {
 		leftText.setBorder(BorderFactory.createLineBorder(Color.blue));
 		leftText.setEditable(false);
 		leftText.setCurrentLineHighlightColor(Color.white);
-		RTextScrollPane leftScrollPane = new RTextScrollPane(leftText);
+		leftText.addCaretListener(new ChangeTextListener());
+		final RTextScrollPane leftScrollPane = new RTextScrollPane(leftText);
 		leftScrollPane.setFoldIndicatorEnabled(true);
+		leftScrollPane.setAutoscrolls(false);
 		mainPanel.add(leftScrollPane);
 
 		rightText = new RSyntaxTextArea();
@@ -100,8 +127,12 @@ public class CodeCompGUI extends JFrame {
 		rightText.setAntiAliasingEnabled(true);
 		rightText.setBorder(BorderFactory.createLineBorder(Color.orange));
 		rightText.setEditable(false);
-		RTextScrollPane rightScrollPane = new RTextScrollPane(rightText);
+		rightText.addCaretListener(new ChangeTextListener());
+		
+		final RTextScrollPane rightScrollPane = new RTextScrollPane(rightText);
 		rightScrollPane.setFoldIndicatorEnabled(true);
+//		rightScrollPane.getVerticalScrollBar().setModel(leftScrollPane.getVerticalScrollBar().getModel());
+
 		mainPanel.add(rightScrollPane);
 
 		getMainWin().add(mainPanel, BorderLayout.CENTER);
@@ -113,31 +144,9 @@ public class CodeCompGUI extends JFrame {
 
 	public static void setLeftFile(Reader reader) {
 		try {
-//			leftText.read(reader, null);
-			
 			leftText.read(reader, null);
-			rightText.setText(leftText.getText(10, 30));
-			BoyerMoore bm = new BoyerMoore(leftText.getText(), rightText.getText());
-			List<Integer> list = bm.match();
-			System.out.println("match: " + list.size());
-			Highlighter h = leftText.getHighlighter();
-			Iterator<Integer> it = list.iterator();
-			while(it.hasNext()) {
-				int i = it.next();
-				h.addHighlight(i, i+rightText.getText().length(), new DefaultHighlighter.DefaultHighlightPainter(Color.red));
-			}
-			
-			// Highlighter hl = leftText.getHighlighter();
-			// hl.addHighlight(0, 10, new
-			// BackgroundHighlighter.BackgroundHighlightPainter(Color.yellow));
-			// hl.addHighlight(20, 30, new
-			// BackgroundHighlighter.BackgroundHighlightPainter(Color.blue));
-			
 		} catch (IOException e) {
 			// TODO Logger
-			e.printStackTrace();
-		} catch (BadLocationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -147,6 +156,43 @@ public class CodeCompGUI extends JFrame {
 			rightText.read(reader, null);
 		} catch (IOException e) {
 			// TODO Logger
+			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * COMPARATOR
+	 */
+
+	public static void compareTextAreas() {
+		compare(leftText, rightText);
+	}
+
+	private static void compare(RSyntaxTextArea left, RSyntaxTextArea right) {
+		try {
+			System.out.println(left.getText().isEmpty() + " / " + rightText.getText().isEmpty());
+			if (!left.getText().isEmpty() && !right.getText().isEmpty()) {
+				String text = right.getText();
+				String words[] = text.split("\n");
+				for (String word : words) {
+					if (!word.isEmpty()) {
+						BoyerMoore bm = new BoyerMoore(left.getText(), word);
+						List<Integer> list = bm.match();
+						System.out.println("word: " + word + "matches: " + list.size());
+						Highlighter leftHL = left.getHighlighter();
+						Highlighter rightHL = right.getHighlighter();
+						Iterator<Integer> it = list.iterator();
+						while (it.hasNext()) {
+							int i = it.next();
+							Color color = Color.getHSBColor((float) Math.random() * 255 + 1, (float) Math.random() * 255 + 1, (float) Math.random() * 255 + 1);
+							leftHL.addHighlight(i, i + word.length(), new DefaultHighlighter.DefaultHighlightPainter(color));
+							rightHL.addHighlight(i, i + word.length(), new DefaultHighlighter.DefaultHighlightPainter(color));
+						}
+					}
+				}
+			}
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
