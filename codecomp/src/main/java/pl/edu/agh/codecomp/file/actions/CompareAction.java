@@ -3,13 +3,25 @@ package pl.edu.agh.codecomp.file.actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+
+import pl.edu.agh.codecomp.comparator.Comparator;
 import pl.edu.agh.codecomp.gui.CodeCompGUI;
 
-public class CompareAction implements ActionListener {
+public class CompareAction implements ActionListener, CaretListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		CodeCompGUI.compareTextAreas();
+		compareAction();
 	}
 
+	@Override
+	public void caretUpdate(CaretEvent e) {
+		compareAction();
+	}
+
+	private void compareAction() {
+		new Comparator().compare(CodeCompGUI.getLeftText(), CodeCompGUI.getRightText());
+	}
 }

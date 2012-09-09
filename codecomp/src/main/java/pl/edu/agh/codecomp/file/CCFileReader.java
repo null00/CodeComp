@@ -9,15 +9,10 @@ import java.nio.file.Paths;
 
 public class CCFileReader {
 
-	public static Reader read(String path) {
+	public static Reader read(String path) throws IOException {
 		Path file = Paths.get(path);
 		Charset charset = Charset.defaultCharset();
-		Reader reader = null;
-		try {
-			reader = Files.newBufferedReader(file, charset);
-		} catch (IOException x) {
-		    System.err.format("CCFileReader - IOException: %s%n", x);
-		}
+		Reader reader = Files.newBufferedReader(file, charset);
 		return reader;
 	}
 }

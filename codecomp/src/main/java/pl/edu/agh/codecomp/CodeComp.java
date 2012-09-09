@@ -13,7 +13,7 @@ public class CodeComp {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					CodeCompGUI.createGUI();
 				} catch (Exception e) {
 					e.printStackTrace();

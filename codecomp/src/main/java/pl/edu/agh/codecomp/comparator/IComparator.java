@@ -1,8 +1,10 @@
 package pl.edu.agh.codecomp.comparator;
 
-public interface IComparator {
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
-	public String compare(String text, String pattern);
-	public void showDiff(String text, String pattern);
+public interface IComparator {
+	
+//	public void showDiff(String text, String pattern);
+	public void compare(RSyntaxTextArea left, RSyntaxTextArea right);
 	
 }
