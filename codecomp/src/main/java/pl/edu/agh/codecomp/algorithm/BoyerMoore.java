@@ -3,9 +3,9 @@ package pl.edu.agh.codecomp.algorithm;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BoyerMoore {
+public class BoyerMoore implements IAlgorithm {
 
-	public static final int ALPHABET_SIZE = 512;
+	public static final int ALPHABET_SIZE = 128;
 
 	private String text;
 	private String pattern;
@@ -31,25 +31,30 @@ public class BoyerMoore {
 		int i = text.length() - 1;
 		int j = pattern.length() - 1;
 		while (i >= 0 && i < text.length()) {
-			if (pattern.charAt(j) == text.charAt(i)) {
-				if (j == 0) {
-					matches.add(i);
+			try {
+				if (pattern.charAt(j) == text.charAt(i)) {
+					if (j == 0) {
+						matches.add(i);
+						j = pattern.length() - 1;
+						// return i;
+					}
+					j--;
+					i--;
+				} else {
+					// i += pattern.length() - j - 1 + Math.max(j -
+					// last[text.charAt(i)], match[j]);
+					i -= Math.max(match[j], last[text.charAt(i)] - text.length() + 1 + i);
 					j = pattern.length() - 1;
-					// return i;
 				}
-				j--;
-				i--;
-			} else {
-				// i += pattern.length() - j - 1 + Math.max(j -
-				// last[text.charAt(i)], match[j]);
-				i -= Math.max(match[j], last[text.charAt(i)] - text.length() + 1 + i);
-				j = pattern.length() - 1;
+			} catch (Exception ex) {
+				// ex.printStackTrace();
 			}
 		}
+
 		return matches;
 	}
 
-	private void computeLast() {
+	private void computeLast() throws StringIndexOutOfBoundsException {
 		for (int k = 0; k < last.length; k++) {
 			last[k] = -1;
 		}
@@ -60,7 +65,7 @@ public class BoyerMoore {
 		}
 	}
 
-	private void computeMatch() {
+	private void computeMatch() throws StringIndexOutOfBoundsException, ArrayIndexOutOfBoundsException {
 		for (int j = 0; j < match.length; j++) {
 			match[j] = match.length;
 		}
@@ -94,6 +99,7 @@ public class BoyerMoore {
 	}
 
 	private void computeSuffix() {
+
 		suffix[suffix.length - 1] = suffix.length;
 		int j = suffix.length - 1;
 		for (int i = suffix.length - 2; i >= 0; i--) {
