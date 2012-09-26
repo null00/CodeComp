@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
+import pl.edu.agh.codecomp.algorithm.KarpRabin;
 import pl.edu.agh.codecomp.comparator.Comparator;
 import pl.edu.agh.codecomp.gui.CodeCompGUI;
 
