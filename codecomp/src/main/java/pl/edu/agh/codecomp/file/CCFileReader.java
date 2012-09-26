@@ -11,7 +11,7 @@ public class CCFileReader {
 
 	public static Reader read(String path) throws IOException {
 		Path file = Paths.get(path);
-		Charset charset = Charset.defaultCharset();
+		Charset charset = Charset.forName("UTF8");
 		Reader reader = Files.newBufferedReader(file, charset);
 		return reader;
 	}
