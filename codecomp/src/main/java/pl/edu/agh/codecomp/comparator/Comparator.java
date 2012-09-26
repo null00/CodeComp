@@ -26,10 +26,12 @@ public class Comparator implements IComparator {
 				String text = right.getText();
 				String words[] = text.split("\n");
 				for (String word : words) {
-					if (!word.isEmpty()) {
+					if (!word.isEmpty() && !word.equals("") && !word.equals(" ") && !word.equals("\n")) {
+//						algo = new BoyerMoore(left.getText(), word);
+//						algo = new KarpRabin(left.getText(), word);
 						BoyerMoore bm = new BoyerMoore(left.getText(), word);
 						List<Integer> list = bm.match();
-						System.out.println("word: " + word + "matches: " + list.size());
+						System.out.println("word: " + word + " matches: " + list.size());
 						Highlighter leftHL = left.getHighlighter();
 						Highlighter rightHL = right.getHighlighter();
 						Iterator<Integer> it = list.iterator();
