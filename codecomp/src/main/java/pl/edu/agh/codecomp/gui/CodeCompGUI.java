@@ -45,9 +45,11 @@ public class CodeCompGUI extends JFrame {
 			initMenu();
 			initMainPanel();
 
+			String path = System.getProperty("user.dir") + "/src/main/java/";
+			
 			try {
-				leftText.read(CCFileReader.read(new File("/home/null/Dokumenty/dieta").getAbsolutePath()), null);
-				rightText.read(CCFileReader.read(new File("/home/null/Dokumenty/dieta2").getAbsolutePath()), null);
+				leftText.read(CCFileReader.read(new File(path + "source1.asm").getAbsolutePath()), null);
+//				rightText.read(CCFileReader.read(new File(path + "source2.asm").getAbsolutePath()), null);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 //				e.printStackTrace();
@@ -102,7 +104,7 @@ public class CodeCompGUI extends JFrame {
 		leftText.setCodeFoldingEnabled(true);
 		leftText.setAntiAliasingEnabled(true);
 		leftText.setBorder(BorderFactory.createLineBorder(Color.blue));
-		leftText.setEditable(false);
+//		leftText.setEditable(false);
 		leftText.setCurrentLineHighlightColor(Color.white);
 //		leftText.addCaretListener(new ChangeTextListener());
 		
@@ -116,7 +118,7 @@ public class CodeCompGUI extends JFrame {
 		rightText.setCodeFoldingEnabled(true);
 		rightText.setAntiAliasingEnabled(true);
 		rightText.setBorder(BorderFactory.createLineBorder(Color.orange));
-		rightText.setEditable(false);
+//		rightText.setEditable(false);
 //		rightText.addCaretListener(new ChangeTextListener());
 		
 		RTextScrollPane rightScrollPane = new RTextScrollPane(rightText);
