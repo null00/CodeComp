@@ -1,0 +1,263 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{chngpage}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{geometry}
+\linespread{1.5}
+\pagestyle{fancy}
+\geometry{lmargin=3.5cm, rmargin=2.5cm, bmargin=3cm, tmargin=3cm}
+
+\lhead{}
+
+\title
+{
+\Large
+Akademia Górniczo-Hutnicza im. Stanisława Staszica \\ w Krakowie \\
+
+Zaawansowane techniki integracji systemów \\
+\textbf{ Platforma wymiany dóbr pomiędzy podmiotami realizującymi proces produkcji } \\
+\vspace{15 mm}
+
+\vspace{5 mm}
+}
+
+\title
+{
+	\Large
+	Akademia Górniczo-Hutnicza im. Stanisława Staszica \\ w Krakowie \\
+	\vspace{15 mm}
+	\textbf{ System wykrywania podobieństw kodów źródłowych w projektach studenckich } \\
+	Praca magisterska
+	\vspace{15 mm}
+	\includegraphics[scale=0.8]{gfx/agh.jpg}
+	\vspace{5 mm}
+}
+\author
+{
+	Jarosław Szczęśniak \\ \\ \\
+	Promotor: dr inż. Darin Nikolow
+	\vspace{40 mm}
+}
+
+\begin{document}
+
+\maketitle
+
+\pagebreak
+
+\tableofcontents
+
+\newpage
+
+\section{Wstęp}
+
+\section{Cel i zakres prac}
+
+Celem pracy jest zbudowanie systemu, który będzie wspomagał wykrywanie podobieństw w danych kodach źródłowych. Docelowym zagadnieniem z jakim ma zmierzyć się system jest porównywanie kodów źródłowych napisanych w języku Asembler.
+
+Osiągnięcie celu głównego wymaga zrealizowania szeregu celów cząstkowych:
+\begin{itemize}
+\item zapoznanie się z dostępnymi metodami porównywania tekstu
+\item zdefiniowanie języka wewnętrznego:
+\begin{itemize}
+	\item symboli leksykalnych
+	\item gramatyki języka
+	\item akcji semantycznych
+\end{itemize}
+\item implementacja co najmniej jednej metody porównywania
+\item dostarczenie aplikacji analizującej kod źródłowy
+\item dostarczenie środowiska do porównywania kodów źródłowych
+\item dostarczenie przykładowych programów w języku wewnętrznym
+\end{itemize}
+	
+Pierwszym etapem całego mechanizmu powinien być etap preprocessingu, czyli odpowiedniego przefiltrowania plików źródłowych, celem usunięcia zbędnych białych znaków oraz komentarzy.
+
+Istnieje kilka skutecznych metod porównywania tekstu, poczynając od najprostszej i zarazem najmniej efektywnej metody brute-force, poprzez szybsze funkcje wykorzystujące zróżnicowane metody (np. funkcje hashujące), do algorytmów wykorzystujących deterministyczne automaty skończone.
+
+Etap analizy można podzielić na 3 elementarne części:
+\begin{itemize}
+\item analizę leksykalną – wczytywanie znaków i grupowanie ich w większe symbole
+\item analizę składniową – sprawdzenie poprawności z gramatyką, stworzenie drzewa składniowego
+\item analizę semantyczną – analizę kodu na podstawie drzewa składniowego, zapewnienie odpowiednich warunków (zgodność typów, wywoływanie odpowiednich funkcji, sprawdzanie zasięgów)
+\end{itemize}
+
+Założenia co do funkcjonalności języka wewnętrznego:
+\begin{itemize}
+\item obsługa mechanizmu tworzenia zmiennych
+\item obsługa pętli
+\item obsługa instrukcji warunkowych
+\item sprawdzanie wywoływanych funkcji
+\item mechanizmu obsługi wywoływanych funkcji (ilość przekazywanych parametrów, zwykłe oraz rekurencyjne wywoływanie funkcji)
+\end{itemize}
+	
+Wynikiem tego etapu będzie łatwa do porównania lista symboli w postaci <function, value>, <variable, value>.
+
+\newpage
+
+\section{Preprocessing}
+
+\section{Analiza leksykalna}
+
+\section{Analiza składniowa}
+
+\section{Analiza semantyczna}
+
+\newpage
+
+\section{Metody porównywania}
+
+Każda z opisanych metod posiada szereg cech ją charakteryzujących. Są to:
+\begin{itemize}
+\item faza preprocesingu - przygotowania danych wejściowych do analizy
+\item ilość potrzebnej pamięci dodatkowej
+\item złożoność czasowa - ilość wykonywanych operacji względem ilości danych wejściowych
+\end{itemize}
+
+\subsection{Algorytm brute-force}
+
+Metoda brute -- force, w teorii, jest najskuteczniejszą metodą, ponieważ sukcesywnie sprawdza wszystkie możliwe kombinacje w poszukiwaniu rozwiązania problemu. W praktyce jednak, algorytmy oparte na tej metodzie są niezwykle nieoptymalne, ze względu na czas wykonywania, przez co są rzadko stosowane.
+
+Algorytm polega na sprawdzeniu wszystkich pozycji w tekscie pomiędzy znakiem $0$ i $n-m$, gdzie $m$ to długość poszukiwanego wzorca, a $n$ to długość tekstu. Algorytm weryfikuje, czy wzorzec zaczyna się na danej pozycji. Jeśli tak to pozycja elementu w tekscie zapisywana jest do bufora. Następnie przesuwa wskaźnik w prawo po każdej próbie. Jeśli na kolejnych pozycjach znajdują się wszystkie kolejne elementy z wzorca to do tablicy wynikowej przepisywany jest zawartość bufora. Algorytm może być wykonywany w dowolnym kierunku, od przodu lub od tyłu.
+
+Metoda nie wymaga żadnej fazy przed rozpoczęciem wykonywania algorytmu. Ze względu na charakter metody wymaga dodatkowego miejsca w pamięci. Złożoność czasowa wynosi $O(m*n)$, a ilość operacji potrzebna do wykonania algorytmu wynosi $2n$.
+
+Przykładowy kod źródłowy algorytmu brute -- force, wyszukującego określony wzorzec w podanym tekście:
+\begin{lstlisting}
+void BF(char *x, int m, char *y, int n) {
+   int i, j;
+   for (j = 0; j <= n - m; ++j) {
+      for (i = 0; i < m && x[i] == y[i + j]; ++i);
+      if (i >= m)
+         OUTPUT(j);
+   }
+}
+\end{lstlisting}
+
+\subsection{Deterministyczny automat skończony}
+
+DFA (Deterministic Finite Automaton), czyli deterministyczny automat skończony to maszyna o skończonej liczbie stanów, która czytając kolejne symbole podanego słowa zmienia swój stan na wartość funkcji opisującej dany symbol. Po przeczytaniu całego słowa automat sprawdza, czy znajduję się w jednym z określonych stanów akceptacyjnych.
+
+Algorytm zbudowany na podstawie DFA na początku wymaga stworzenia minimalnego skończonego automaty $A(x)$ rozpoznającego język $\sum_{}^*x$, w celu znalezienia słowa $x$. Minimalny automat określony wzorem $A(x)=(Q, q_0, T, E)$ rozpoznający język $\sum_{}^*x$ definiujemy następująco:
+\begin{itemize}
+\item $Q$ to zbiór wszystkich przedrostków słowa $x$: \\
+$Q = \{ \epsilon , x[0], x[0..1], .. , x[0..m-2] \} $, gdzie $ \ epsilon $ -- zbiór pusty
+\item $q_0 = \epsilon $
+\item $T = \{ x \} $
+\item dla $q$ należącego do $Q$ ($q$ to przedrostek $x$) i $a$ w $\sum_{}$ $(q, a, qa)$ należy do $\sum_{}$ wtedy i tylko wtedy, gdy $qa$ jest także przedrostkiem słowa $x$, w przeciwnym razie $(q, a, p)$ należy do $\sum_{}$, a $p$ jest najdłuższym przyrostkiem $qa$, który jest przedrostkiem słowa $x$
+\end{itemize}
+
+Po stworzeniu DFA przeszukiwanie słowa $x$ w tekście $y$ polega na przeanalizowaniu tekstu $y$ przez DFA rozpoczynając ze stanem $q_0$. Za każdym razem, gdy trafiono na terminal ($T$ - szukane słowo) raportowane jest wystąpienie szukanego słowa.
+
+Stworzenie DFA $A(x)$ ma złożoność czasową rzędu $O(m+\sigma)$ i potrzebuje $O(m\sigma)$ miejsca, natomiast sam etap przeszukiwania ma złożoność czasową $O(n)$.
+
+Przykładowa implementacja DFA:
+\begin{lstlisting}
+void preAut(char *x, int m, Graph aut) {
+   int i, state, target, oldTarget;
+   for (state = getInitial(aut), i = 0; i < m; ++i) {
+      oldTarget = getTarget(aut, state, x[i]);
+      target = newVertex(aut);
+      setTarget(aut, state, x[i], target);
+      copyVertex(aut, target, oldTarget);
+      state = target;
+   }
+   setTerminal(aut, state);
+}
+ 
+void AUT(char *x, int m, char *y, int n) {
+   int j, state;
+   Graph aut;
+   /* Preprocessing */
+   aut = newAutomaton(m + 1, (m + 1)*ASIZE);
+   preAut(x, m, aut);
+   /* Searching */
+   for (state = getInitial(aut), j = 0; j < n; ++j) {
+      state = getTarget(aut, state, y[j]);
+      if (isTerminal(aut, state))
+         OUTPUT(j - m + 1);
+   }
+}
+\end{lstlisting}
+
+\newpage
+
+\subsection{Algorytm Karp-Rabin}
+
+Algorytm Karpa-Rabina jest kolejnym algorytmem służącym do przeszukiwania określonego podciągu w tekście. Algorytm ten korzysta z funkcji hashującej, co jest prostą metodą, aby w większości przypadków uniknąć kwadratowej liczby porównań znakowych. Zamiast sprawdzania znaku na każdej pozycji tekstu, w celu odnalezienia wzorca, bardziej wydajne jest sprawdzenie, czy zawartość “okna” przypomina wzorzec. Sprawdzanie podobieństwa pomiędzy wzorcem i “oknem” odbywa się za pomocą funkcji hashującej.
+\\ \\
+Właściwości funkcji hashującej:
+\begin{itemize}
+\item Wydajność obliczeń
+\item Dyskryminuje słowa
+\item funkcja $hash(y[j+1 .. j+m])$ musi być łatwo przeliczalna z $hash(y[j .. j+m-1])$ oraz $y[j+m]$: \\
+$hash(y[j+1 .. j+m]) = rehash(y[j], y[j+m], hash(y[j .. j+m-1])$
+\end{itemize}
+
+Dla słowa $w$ o długości $m$ niech funkcja $hash$ będzie zdefiniowana następująco:
+\begin{center}
+$hash(w[0 .. m-1]) = (w[0]*2^{m-2} + ... + w[m-1]*2^0)mod(q)$, \\ gdzie $q$ jest dowolną dużą liczbą
+\end{center}
+
+Wtedy funkcja rehash przyjmuje postać:
+\begin{center}
+$rehash(a,b,h) = ((h-a*2^{m-2})*2+b)mod(q)$
+\end{center}
+
+Preprocessing - obliczenie funkcji hashującej dla szukanego wzorca - posiada złożoność czasową rzędu $O(m), gdzie m - długość wzorca.$
+
+Podczas wyszukiwania wystarczy porównać $hash(x)$ z $hash(y[j .. j+m-1])$ dla $0 <= j <= n-m$. Jeśli równość jest znaleziona to należy sprawdzić równość $x = y[j .. j+m-1]$ znak po znaku.
+\newpage
+Przykład implementacji:
+\begin{lstlisting}
+#define REHASH(a, b, h) ((((h) - (a)*d) << 1) + (b))
+
+void KR(char *x, int m, char *y, int n) {
+   int d, hx, hy, i, j;
+
+   /* Preprocessing */
+   /* computes d = 2^(m-1) with
+      the left-shift operator */
+   for (d = i = 1; i < m; ++i)
+      d = (d<<1);
+
+   for (hy = hx = i = 0; i < m; ++i) {
+      hx = ((hx<<1) + x[i]);
+      hy = ((hy<<1) + y[i]);
+   }
+
+   /* Searching */
+   j = 0;
+   while (j <= n-m) {
+      if (hx == hy && memcmp(x, y + j, m) == 0)
+         OUTPUT(j);
+      hy = REHASH(y[j], y[j + m], hy);
+      ++j;
+   }
+
+}
+\end{lstlisting}
+
+\section{Wprowadzenie do Asemblera}
+
+\section{Projekt systemu}
+
+\section{Wnioski}
+
+\newpage
+
+\section{Bibliografia}
+
+\begin{thebibliography}{1}
+
+\bibitem{temp} ldots
+
+\end{thebibliography}
+
+\end{document}
