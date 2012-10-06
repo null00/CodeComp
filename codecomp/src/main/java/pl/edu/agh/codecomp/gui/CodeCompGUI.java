@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -20,9 +21,13 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import pl.edu.agh.codecomp.algorithm.BoyerMoore;
+import pl.edu.agh.codecomp.algorithm.IAlgorithm;
+import pl.edu.agh.codecomp.algorithm.KarpRabin;
 import pl.edu.agh.codecomp.file.CCFileReader;
 import pl.edu.agh.codecomp.file.actions.AddFileAction;
 import pl.edu.agh.codecomp.file.actions.CompareAction;
+import pl.edu.agh.codecomp.gui.actions.SwitchAlgorithmAction;
 
 public class CodeCompGUI extends JFrame {
 
@@ -30,9 +35,11 @@ public class CodeCompGUI extends JFrame {
 
 	private static final String TITLE = "CodeComp - Source Code Comparator";
 	private static final Dimension MAIN_WIN_DIMENSION = new Dimension(800, 600);
-
 	private static final Logger log = Logger.getLogger("CodeCompGUI");
+	
 	private static CodeCompGUI mainWin;
+	private static String[] algoList = { BoyerMoore.NAME, KarpRabin.NAME };
+	public static IAlgorithm algo;
 
 	public CodeCompGUI() {
 		super();
@@ -44,7 +51,7 @@ public class CodeCompGUI extends JFrame {
 			initGUI();
 			initMenu();
 			initMainPanel();
-
+						
 			String path = System.getProperty("user.dir") + "/src/main/java/";
 			
 			try {
@@ -88,6 +95,10 @@ public class CodeCompGUI extends JFrame {
 		JMenuItem compare = new JMenuItem("Compare");
 		compare.addActionListener(new CompareAction());
 		mainMenu.add(compare);
+		
+		JComboBox<String> switchAlgo = new JComboBox<String>(algoList);
+		switchAlgo.addActionListener(new SwitchAlgorithmAction());
+		mainMenu.add(switchAlgo);
 
 		getMainWin().setJMenuBar(mainMenu);
 	}
@@ -106,7 +117,6 @@ public class CodeCompGUI extends JFrame {
 		leftText.setBorder(BorderFactory.createLineBorder(Color.blue));
 //		leftText.setEditable(false);
 		leftText.setCurrentLineHighlightColor(Color.white);
-//		leftText.addCaretListener(new ChangeTextListener());
 		
 		RTextScrollPane leftScrollPane = new RTextScrollPane(leftText);
 		leftScrollPane.setFoldIndicatorEnabled(true);
@@ -119,7 +129,6 @@ public class CodeCompGUI extends JFrame {
 		rightText.setAntiAliasingEnabled(true);
 		rightText.setBorder(BorderFactory.createLineBorder(Color.orange));
 //		rightText.setEditable(false);
-//		rightText.addCaretListener(new ChangeTextListener());
 		
 		RTextScrollPane rightScrollPane = new RTextScrollPane(rightText);
 		rightScrollPane.setFoldIndicatorEnabled(true);
@@ -167,7 +176,4 @@ public class CodeCompGUI extends JFrame {
 	public static RSyntaxTextArea getRightText() {
 		return rightText;
 	}
-	
-	
-
 }

@@ -5,24 +5,24 @@ import java.util.List;
 
 public class BoyerMoore implements IAlgorithm {
 
-	public static final int ALPHABET_SIZE = 128;
-
-	private String text;
+	public static final String NAME = "BoyerMoore";
+	private static final int ALPHABET_SIZE = 128;
+	
 	private String pattern;
 
 	private int[] last;
 	private int[] match;
 	private int[] suffix;
 
-	public BoyerMoore(String text, String pattern) {
-		this.text = text;
+	public BoyerMoore() {
+		
+	}
+
+	public List<Integer> match(String text, String pattern) {
 		this.pattern = pattern;
 		last = new int[ALPHABET_SIZE];
 		match = new int[pattern.length()];
 		suffix = new int[pattern.length()];
-	}
-
-	public List<Integer> match() {
 		List<Integer> matches = new LinkedList<Integer>();
 
 		computeLast();
@@ -112,5 +112,8 @@ public class BoyerMoore implements IAlgorithm {
 			suffix[i] = j + 1;
 		}
 	}
-
+	
+	public String getName() {
+		return BoyerMoore.NAME;
+	}
 }

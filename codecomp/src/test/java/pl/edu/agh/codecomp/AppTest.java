@@ -36,8 +36,8 @@ public class AppTest
      */
     public void testApp()
     {
-        BoyerMoore bm = new BoyerMoore("abcabcabcabcabc", "cabc");
-        List<Integer> result = bm.match();
+        BoyerMoore bm = new BoyerMoore();
+        List<Integer> result = bm.match("abcabcabcabcabc", "cabc");
 //        for(int i = 0; i < result.size(); i++)
 //        	System.out.println(result.get(i));
         assertEquals(true, !result.isEmpty());

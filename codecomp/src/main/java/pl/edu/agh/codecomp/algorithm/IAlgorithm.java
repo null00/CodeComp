@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface IAlgorithm {
 
-	public List<Integer> match();
+	public List<Integer> match(String text, String pattern);
+	public String getName();
 	
 }

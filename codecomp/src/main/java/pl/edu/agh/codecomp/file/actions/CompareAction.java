@@ -7,7 +7,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
 import pl.edu.agh.codecomp.algorithm.KarpRabin;
-import pl.edu.agh.codecomp.comparator.Comparator;
+import pl.edu.agh.codecomp.comparator.TextComparator;
 import pl.edu.agh.codecomp.gui.CodeCompGUI;
 
 public class CompareAction implements ActionListener, CaretListener {
@@ -23,6 +23,6 @@ public class CompareAction implements ActionListener, CaretListener {
 	}
 
 	private void compareAction() {
-		new Comparator().compare(CodeCompGUI.getLeftText(), CodeCompGUI.getRightText());
+		new TextComparator().compare(CodeCompGUI.getLeftText(), CodeCompGUI.getRightText());
 	}
 }

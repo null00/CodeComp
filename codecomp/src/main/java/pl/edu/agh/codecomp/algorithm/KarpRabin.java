@@ -4,18 +4,20 @@ import java.util.List;
 
 public class KarpRabin implements IAlgorithm {
 
+	public static final String NAME = "KarpRabin";
+	
 	private int m, n, i, j, h1, h2, rm;
 	private String tekst;
 	private String wzorzec;
 	
-	public KarpRabin(String text, String pattern) {
-		this.tekst = text;
-		this.wzorzec = pattern;
-
+	public KarpRabin() {
 	}
 	
 	@Override
-	public List<Integer> match() {
+	public List<Integer> match(String text, String pattern) {
+		this.tekst = text;
+		this.wzorzec = pattern;
+		
 		// algorytm Hornera do obliczenia funkcji haszujacej h(tekst[1..m])
 		for (i = 0; i < m; i++) {
 			h2 = ((h2 * r) + tekst.charAt(i));
@@ -55,7 +57,7 @@ public class KarpRabin implements IAlgorithm {
 	private static final int r = 256; // liczba symboli alfabetu (char 0-255)
 	private static final int q = 9551; // możliwie duża liczba pierwsza
 
-	public static int power_modulo_fast(int a, int b, int m) {
+	private static int power_modulo_fast(int a, int b, int m) {
 		int i;
 		int result = 1;
 		long x = a % m;
@@ -72,4 +74,8 @@ public class KarpRabin implements IAlgorithm {
 		return result % m;
 	}
 
+	@Override
+	public String getName() {
+		return KarpRabin.NAME;
+	}
 }
