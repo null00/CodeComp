@@ -24,6 +24,31 @@
 		</resources>
 
 		<plugins>
+		    
+		    <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.3.1</version>
+				<executions>
+					<execution>
+						<id>layouts</id>
+						<configuration>
+							<file>${basedir}/libs/layouts.jar</file>
+							<repositoryLayout>default</repositoryLayout>
+							<packaging>jar</packaging>
+							<groupId>com.jhlabs.awt</groupId>
+							<artifactId>layouts</artifactId>
+							<version>1.0</version>
+							<generatePom>true</generatePom>
+							<createChecksum>true</createChecksum>
+							<localRepositoryPath>repo</localRepositoryPath>
+						</configuration>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		
 			<plugin>
 		        <groupId>org.apache.maven.plugins</groupId>
@@ -32,23 +57,24 @@
 		        <configuration>
         			<source>1.7</source>
 			        <target>1.7</target>
-		        </configuration>
-      		</plugin>
-
-		
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<archive>
+			        <archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<mainClass>pl.edu.agh.codecomp.CodeComp</mainClass>
 						</manifest>
 					</archive>
+		        </configuration>
+      		</plugin>
+
+		
+			<!-- <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					
 				</configuration>
-			</plugin>
+			</plugin> -->
 
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -76,21 +102,37 @@
 	</build>
 
 	<dependencies>
-		<dependency>
+	    
+	    <dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.fifesoft</groupId>
 			<artifactId>rsyntaxtextarea</artifactId>
 			<version>2.0.2</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>de.jflex</groupId>
 			<artifactId>jflex</artifactId>
 			<version>1.4.3</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.jhlabs</groupId>
+			<artifactId>layouts</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
+	
+	<repositories>
+		<repository>
+			<id>libs</id>
+			<url>file://${basedir}/repo</url>
+		</repository>
+	</repositories>
 </project>
