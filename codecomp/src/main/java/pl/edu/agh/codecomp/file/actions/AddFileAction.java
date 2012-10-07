@@ -35,8 +35,7 @@ public class AddFileAction implements ActionListener {
 		try {
 			JFileChooser jc = new JFileChooser("Add file");
 			jc.setApproveButtonText("Add");
-			// jc.setFileFilter(new FileNameExtensionFilter("PDF Files",
-			// "pdf"));
+			// jc.setFileFilter(new FileNameExtensionFilter("PDF Files", "pdf"));
 			int ret = jc.showOpenDialog(CodeCompGUI.getMainWin());
 			if (ret == JFileChooser.APPROVE_OPTION) {
 				final File file = jc.getSelectedFile();
