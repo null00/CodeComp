@@ -27,6 +27,7 @@ import pl.edu.agh.codecomp.algorithm.KarpRabin;
 import pl.edu.agh.codecomp.file.CCFileReader;
 import pl.edu.agh.codecomp.file.actions.AddFileAction;
 import pl.edu.agh.codecomp.file.actions.CompareAction;
+import pl.edu.agh.codecomp.gui.actions.AddFilesAction;
 import pl.edu.agh.codecomp.gui.actions.SwitchAlgorithmAction;
 
 public class CodeCompGUI extends JFrame {
@@ -73,14 +74,19 @@ public class CodeCompGUI extends JFrame {
 		getMainWin().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getMainWin().setLayout(new BorderLayout());
 		getMainWin().setSize(MAIN_WIN_DIMENSION);
-		getMainWin().setVisible(true);
 		getMainWin().setLocationRelativeTo(null);
+		getMainWin().setVisible(true);
 	}
 
 	private static void initMenu() {
 		JMenuBar mainMenu = new JMenuBar();
 		JMenu file = new JMenu("File");
 		mainMenu.add(file);
+		
+		JMenuItem addFilesItem = new JMenuItem("Add files");
+		addFilesItem.addActionListener(new AddFilesAction());
+		addFilesItem.setActionCommand("showDialog");
+		file.add(addFilesItem);
 
 		JMenuItem addLeftItem = new JMenuItem("Add left");
 		addLeftItem.addActionListener(new AddFileAction());
