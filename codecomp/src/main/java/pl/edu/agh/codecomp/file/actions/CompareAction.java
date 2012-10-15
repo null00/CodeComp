@@ -23,6 +23,6 @@ public class CompareAction implements ActionListener, CaretListener {
 	}
 
 	private void compareAction() {
-		new TextComparator().compare(CodeCompGUI.getLeftText(), CodeCompGUI.getRightText());
+		new TextComparator(CodeCompGUI.getLeftText(), CodeCompGUI.getRightText());
 	}
 }

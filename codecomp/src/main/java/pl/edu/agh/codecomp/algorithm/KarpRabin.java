@@ -78,4 +78,9 @@ public class KarpRabin implements IAlgorithm {
 	public String getName() {
 		return KarpRabin.NAME;
 	}
+	
+	@Override
+	public String toString() {
+		return NAME;
+	}
 }

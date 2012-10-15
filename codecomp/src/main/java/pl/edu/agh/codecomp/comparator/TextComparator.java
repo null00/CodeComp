@@ -13,24 +13,39 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import pl.edu.agh.codecomp.algorithm.IAlgorithm;
 import pl.edu.agh.codecomp.gui.CodeCompGUI;
 
-public class TextComparator implements IComparator {
+public class TextComparator extends IComparator {
+
+	private RSyntaxTextArea left, right;
+	
+	public TextComparator(RSyntaxTextArea left, RSyntaxTextArea right) {
+		super();
+		this.left = left;
+		this.right = right;
+		start();
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		compare();
+	}
 
 	/*
 	 * COMPARATOR
 	 */
 
-	@Override
-	public void compare(RSyntaxTextArea left, RSyntaxTextArea right) {
+	private void compare() {
 		try {
-			IAlgorithm algo = CodeCompGUI.algo;
+			IAlgorithm algo = CodeCompGUI.getSelectedAlgo();
 			System.out.println(algo.getName() + ": " + left.getText().isEmpty() + " / " + right.getText().isEmpty());
 			if (algo != null && !left.getText().isEmpty() && !right.getText().isEmpty()) {
 				String text = right.getText();
-				String words[] = text.split("\n");
+				String words[] = text.split("\n|\t");
 				for (String word : words) {
+					System.out.print("Word: " + word);
 					if (!word.isEmpty() && !word.equals("") && !word.equals(" ") && !word.equals("\n")) {
 						List<Integer> list = algo.match(text, word.trim());
-						System.out.println("word: " + word + " matches: " + list.size());
+						System.out.println(" Matches: " + list.size());
 						Highlighter leftHL = left.getHighlighter();
 						Highlighter rightHL = right.getHighlighter();
 						Iterator<Integer> it = list.iterator();
@@ -42,11 +57,11 @@ public class TextComparator implements IComparator {
 						}
 					}
 				}
+				System.out.println("Stopped Comparing");
 			}
 		} catch (BadLocationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
 }

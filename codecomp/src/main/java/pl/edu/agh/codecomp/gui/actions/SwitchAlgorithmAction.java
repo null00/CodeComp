@@ -30,6 +30,8 @@ public class SwitchAlgorithmAction implements ActionListener {
 		}
 		}
 
-		CodeCompGUI.algo = selectedAlgo;
+		if (selectedAlgo != null) {
+//			CodeCompGUI.algo = selectedAlgo;
+		}
 	}
 }

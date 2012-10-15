@@ -16,6 +16,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -28,19 +29,18 @@ import pl.edu.agh.codecomp.file.CCFileReader;
 import pl.edu.agh.codecomp.file.actions.AddFileAction;
 import pl.edu.agh.codecomp.file.actions.CompareAction;
 import pl.edu.agh.codecomp.gui.actions.AddFilesAction;
-import pl.edu.agh.codecomp.gui.actions.SwitchAlgorithmAction;
 
 public class CodeCompGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final String TITLE = "CodeComp - Source Code Comparator";
-	private static final Dimension MAIN_WIN_DIMENSION = new Dimension(800, 600);
+	private static final Dimension MAIN_WIN_DIMENSION = new Dimension(1024, 768);
 	private static final Logger log = Logger.getLogger("CodeCompGUI");
-	
+
 	private static CodeCompGUI mainWin;
-	private static String[] algoList = { BoyerMoore.NAME, KarpRabin.NAME };
-	public static IAlgorithm algo;
+	private static IAlgorithm[] algoList = { new BoyerMoore(), new KarpRabin() };
+	private static JComboBox<IAlgorithm> switchAlgo;
 
 	public CodeCompGUI() {
 		super();
@@ -52,15 +52,15 @@ public class CodeCompGUI extends JFrame {
 			initGUI();
 			initMenu();
 			initMainPanel();
-						
+
 			String path = System.getProperty("user.dir") + "/src/main/java/";
-			
+
 			try {
 				leftText.read(CCFileReader.read(new File(path + "source1.asm").getAbsolutePath()), null);
-//				rightText.read(CCFileReader.read(new File(path + "source2.asm").getAbsolutePath()), null);
+				rightText.read(CCFileReader.read(new File(path + "source2.asm").getAbsolutePath()), null);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-//				e.printStackTrace();
+				// e.printStackTrace();
 			}
 		}
 	}
@@ -82,7 +82,7 @@ public class CodeCompGUI extends JFrame {
 		JMenuBar mainMenu = new JMenuBar();
 		JMenu file = new JMenu("File");
 		mainMenu.add(file);
-		
+
 		JMenuItem addFilesItem = new JMenuItem("Add files");
 		addFilesItem.addActionListener(new AddFilesAction());
 		addFilesItem.setActionCommand("showDialog");
@@ -101,14 +101,16 @@ public class CodeCompGUI extends JFrame {
 		JMenuItem compare = new JMenuItem("Compare");
 		compare.addActionListener(new CompareAction());
 		mainMenu.add(compare);
-		
-		JComboBox<String> switchAlgo = new JComboBox<String>(algoList);
-		switchAlgo.addActionListener(new SwitchAlgorithmAction());
+
+		switchAlgo = new JComboBox<IAlgorithm>(algoList);
+		// switchAlgo.addActionListener(new SwitchAlgorithmAction());
 		mainMenu.add(switchAlgo);
 
 		getMainWin().setJMenuBar(mainMenu);
 	}
 
+	private static RTextScrollPane rightScrollPane;
+	private static RTextScrollPane leftScrollPane;
 	private static RSyntaxTextArea leftText;
 	private static RSyntaxTextArea rightText;
 
@@ -121,10 +123,10 @@ public class CodeCompGUI extends JFrame {
 		leftText.setCodeFoldingEnabled(true);
 		leftText.setAntiAliasingEnabled(true);
 		leftText.setBorder(BorderFactory.createLineBorder(Color.blue));
-//		leftText.setEditable(false);
+		// leftText.setEditable(false);
 		leftText.setCurrentLineHighlightColor(Color.white);
-		
-		RTextScrollPane leftScrollPane = new RTextScrollPane(leftText);
+
+		leftScrollPane = new RTextScrollPane(leftText);
 		leftScrollPane.setFoldIndicatorEnabled(true);
 		leftScrollPane.setAutoscrolls(false);
 		mainPanel.add(leftScrollPane);
@@ -134,11 +136,12 @@ public class CodeCompGUI extends JFrame {
 		rightText.setCodeFoldingEnabled(true);
 		rightText.setAntiAliasingEnabled(true);
 		rightText.setBorder(BorderFactory.createLineBorder(Color.orange));
-//		rightText.setEditable(false);
-		
-		RTextScrollPane rightScrollPane = new RTextScrollPane(rightText);
+		// rightText.setEditable(false);
+
+		rightScrollPane = new RTextScrollPane(rightText);
 		rightScrollPane.setFoldIndicatorEnabled(true);
-//		rightScrollPane.getVerticalScrollBar().setModel(leftScrollPane.getVerticalScrollBar().getModel());
+		// rightScrollPane.getVerticalScrollBar().setModel(leftScrollPane.getVerticalScrollBar().getModel());
+		// rightScrollPane.getHorizontalScrollBar().setModel(leftScrollPane.getHorizontalScrollBar().getModel());
 
 		mainPanel.add(rightScrollPane);
 
@@ -155,6 +158,9 @@ public class CodeCompGUI extends JFrame {
 		} catch (IOException e) {
 			// TODO Logger
 			e.printStackTrace();
+		} finally {
+			JScrollBar bar = leftScrollPane.getVerticalScrollBar();
+			bar.setValue(0);
 		}
 	}
 
@@ -164,6 +170,9 @@ public class CodeCompGUI extends JFrame {
 		} catch (IOException e) {
 			// TODO Logger
 			e.printStackTrace();
+		} finally {
+			JScrollBar bar = rightScrollPane.getVerticalScrollBar();
+			bar.setValue(bar.getMinimum());
 		}
 	}
 
@@ -181,5 +190,9 @@ public class CodeCompGUI extends JFrame {
 
 	public static RSyntaxTextArea getRightText() {
 		return rightText;
+	}
+
+	public static IAlgorithm getSelectedAlgo() {
+		return (IAlgorithm) switchAlgo.getSelectedItem();
 	}
 }

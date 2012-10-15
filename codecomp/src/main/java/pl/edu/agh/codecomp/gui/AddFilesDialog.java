@@ -6,14 +6,18 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import pl.edu.agh.codecomp.file.CCFileReader;
 
 import com.jhlabs.awt.layouts.ParagraphLayout;
 
@@ -23,6 +27,7 @@ public class AddFilesDialog extends JDialog implements ActionListener {
 	private final String TITLE = "Add files to compare";
 	private final Dimension DIALOG_DIMENSION = new Dimension(600, 200);
 	private final Dimension BUTTON_DIMENSION = new Dimension(100, 25);
+	private final String PROJECT_PATH = System.getProperty("user.dir") + "/src/main/java/";
 
 	private JTextField leftFilePath, rightFilePath;
 	private File leftFile, rightFile;
@@ -43,7 +48,7 @@ public class AddFilesDialog extends JDialog implements ActionListener {
 
 		JPanel selectFilesPanel = new JPanel(new ParagraphLayout());
 		selectFilesPanel.setBorder(BorderFactory.createTitledBorder("Files to compare"));
-		
+
 		JLabel leftFileLabel = new JLabel("Left file path:");
 		selectFilesPanel.add(leftFileLabel, ParagraphLayout.NEW_PARAGRAPH);
 
@@ -67,23 +72,23 @@ public class AddFilesDialog extends JDialog implements ActionListener {
 		rightFileButton.addActionListener(this);
 		rightFileButton.setActionCommand("rightFile");
 		selectFilesPanel.add(rightFileButton);
-		
+
 		this.getContentPane().add(selectFilesPanel, BorderLayout.CENTER);
-		
+
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		
+
 		JButton okButton = new JButton("OK");
 		okButton.setPreferredSize(BUTTON_DIMENSION);
 		okButton.addActionListener(this);
 		okButton.setActionCommand("addFiles");
 		buttonsPanel.add(okButton);
-		
+
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.setPreferredSize(BUTTON_DIMENSION);
 		cancelButton.addActionListener(this);
 		cancelButton.setActionCommand("cancel");
 		buttonsPanel.add(cancelButton);
-		
+
 		this.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
 		this.pack();
 	}
@@ -109,6 +114,13 @@ public class AddFilesDialog extends JDialog implements ActionListener {
 			break;
 		}
 		case "addFiles": {
+			try {
+				CodeCompGUI.setLeftFile(CCFileReader.read(leftFile.getAbsolutePath()));
+				CodeCompGUI.setRightFile(CCFileReader.read(rightFile.getAbsolutePath()));
+				this.dispose();
+			} catch (Exception e1) {
+				JOptionPane.showMessageDialog(this, "Pick another file.\n" + e1.getMessage(), "IOException", JOptionPane.WARNING_MESSAGE);
+			}
 			break;
 		}
 		case "cancel": {
@@ -123,7 +135,9 @@ public class AddFilesDialog extends JDialog implements ActionListener {
 		try {
 			JFileChooser jc = new JFileChooser("Add file");
 			jc.setApproveButtonText("Add");
-			// jc.setFileFilter(new FileNameExtensionFilter("PDF Files", "pdf"));
+			jc.setCurrentDirectory(new File(PROJECT_PATH));
+			// jc.setFileFilter(new FileNameExtensionFilter("PDF Files",
+			// "pdf"));
 			int ret = jc.showOpenDialog(this);
 			if (ret == JFileChooser.APPROVE_OPTION) {
 				file = jc.getSelectedFile();
