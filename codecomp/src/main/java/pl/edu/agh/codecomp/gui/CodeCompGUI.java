@@ -103,7 +103,6 @@ public class CodeCompGUI extends JFrame {
 		mainMenu.add(compare);
 
 		switchAlgo = new JComboBox<IAlgorithm>(algoList);
-		// switchAlgo.addActionListener(new SwitchAlgorithmAction());
 		mainMenu.add(switchAlgo);
 
 		getMainWin().setJMenuBar(mainMenu);
