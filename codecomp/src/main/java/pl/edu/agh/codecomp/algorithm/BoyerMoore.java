@@ -18,6 +18,7 @@ public class BoyerMoore implements IAlgorithm {
 		super();
 	}
 
+	//FIXME: SPRAWDZIC I POPRAWIĆ ALGORYTM!
 	public List<Integer> match(String text, String pattern) {
 		this.pattern = pattern;
 		last = new int[ALPHABET_SIZE];
@@ -29,7 +30,7 @@ public class BoyerMoore implements IAlgorithm {
 		
 		computeLast();
 		computeMatch();
-
+		
 		int i = text.length() - 1;
 		int j = pattern.length() - 1;
 		while (i >= 0 && i < text.length()) {
@@ -49,7 +50,7 @@ public class BoyerMoore implements IAlgorithm {
 					j = pattern.length() - 1;
 				}
 			} catch (Exception ex) {
-				// ex.printStackTrace();
+				ex.printStackTrace();
 			}
 		}
 		System.out.println("Stop matching");

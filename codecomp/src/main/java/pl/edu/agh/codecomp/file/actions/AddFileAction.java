@@ -42,7 +42,7 @@ public class AddFileAction implements ActionListener {
 				reader = CCFileReader.read(file.getAbsolutePath());
 			}
 		} catch (Exception ex) {
-			// TODO: logger addfileaction
+			// TODO: LOGGER
 			ex.printStackTrace();
 		}
 		return reader;

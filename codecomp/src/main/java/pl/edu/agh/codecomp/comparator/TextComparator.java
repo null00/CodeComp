@@ -26,7 +26,6 @@ public class TextComparator extends IComparator {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		compare();
 	}
 
@@ -34,6 +33,7 @@ public class TextComparator extends IComparator {
 	 * COMPARATOR
 	 */
 
+	// FIXME: SPRAWDZIC I POPRAWIC MECHANIZM POROWNYWANIA
 	private void compare() {
 		try {
 			IAlgorithm algo = CodeCompGUI.getSelectedAlgo();
@@ -60,7 +60,7 @@ public class TextComparator extends IComparator {
 				System.out.println("Stopped Comparing");
 			}
 		} catch (BadLocationException e) {
-			// TODO Auto-generated catch block
+			// TODO LOGGER
 			e.printStackTrace();
 		}
 	}

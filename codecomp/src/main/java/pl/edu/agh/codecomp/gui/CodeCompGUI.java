@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -28,6 +29,7 @@ import pl.edu.agh.codecomp.algorithm.KarpRabin;
 import pl.edu.agh.codecomp.file.CCFileReader;
 import pl.edu.agh.codecomp.file.actions.AddFileAction;
 import pl.edu.agh.codecomp.file.actions.CompareAction;
+import pl.edu.agh.codecomp.filter.Filter;
 import pl.edu.agh.codecomp.gui.actions.AddFilesAction;
 
 public class CodeCompGUI extends JFrame {
@@ -57,9 +59,11 @@ public class CodeCompGUI extends JFrame {
 
 			try {
 				leftText.read(CCFileReader.read(new File(path + "source1.asm").getAbsolutePath()), null);
-				rightText.read(CCFileReader.read(new File(path + "source2.asm").getAbsolutePath()), null);
+//				rightText.read(CCFileReader.read(new File(path + "source2.asm").getAbsolutePath()), null);
+				leftText.setText(Filter.parse(leftText.getText()));
+				rightText.setText(Filter.parse(leftText.getText()));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				// TODO LOGGER
 				// e.printStackTrace();
 			}
 		}
@@ -98,9 +102,14 @@ public class CodeCompGUI extends JFrame {
 		addRightItem.setActionCommand("rightText");
 		file.add(addRightItem);
 
+		JMenu run = new JMenu("Run");
+		mainMenu.add(run);
+		
 		JMenuItem compare = new JMenuItem("Compare");
 		compare.addActionListener(new CompareAction());
-		mainMenu.add(compare);
+		run.add(compare);
+		
+		mainMenu.add(Box.createHorizontalGlue());
 
 		switchAlgo = new JComboBox<IAlgorithm>(algoList);
 		mainMenu.add(switchAlgo);
@@ -155,7 +164,7 @@ public class CodeCompGUI extends JFrame {
 		try {
 			leftText.read(reader, null);
 		} catch (IOException e) {
-			// TODO Logger
+			// TODO LOGGER
 			e.printStackTrace();
 		} finally {
 			JScrollBar bar = leftScrollPane.getVerticalScrollBar();
@@ -167,7 +176,7 @@ public class CodeCompGUI extends JFrame {
 		try {
 			rightText.read(reader, null);
 		} catch (IOException e) {
-			// TODO Logger
+			// TODO LOGGER
 			e.printStackTrace();
 		} finally {
 			JScrollBar bar = rightScrollPane.getVerticalScrollBar();

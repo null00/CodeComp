@@ -1,4 +1,4 @@
-A small program that calculates and prints terms of the Fibonacci series
+;A small program that calculates and prints terms of the Fibonacci series
 
 ; fibo.asm
 ; assemble using nasm:   
@@ -15,7 +15,7 @@ A small program that calculates and prints terms of the Fibonacci series
 ; they're of equal size, that's about 32500 bytes each, and the 150000th
 ; term of the Fibonacci sequence is 31349 digits long. 
 ; 
-	maxTerms    equ 15000	; number of terms of the series to calculate
+;	maxTerms    equ 15000	; number of terms of the series to calculate
 
 ;****************************************************************************
 ; Number digits to use.  This is based on a little bit of tricky math.
