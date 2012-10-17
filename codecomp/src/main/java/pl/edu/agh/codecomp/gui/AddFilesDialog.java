@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -16,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import pl.edu.agh.codecomp.file.CCFileReader;
 
@@ -136,8 +136,7 @@ public class AddFilesDialog extends JDialog implements ActionListener {
 			JFileChooser jc = new JFileChooser("Add file");
 			jc.setApproveButtonText("Add");
 			jc.setCurrentDirectory(new File(PROJECT_PATH));
-			// jc.setFileFilter(new FileNameExtensionFilter("PDF Files",
-			// "pdf"));
+			jc.setFileFilter(new FileNameExtensionFilter("Source Code Files", "asm, java, c, ccp, py, jy, html, css"));
 			int ret = jc.showOpenDialog(this);
 			if (ret == JFileChooser.APPROVE_OPTION) {
 				file = jc.getSelectedFile();

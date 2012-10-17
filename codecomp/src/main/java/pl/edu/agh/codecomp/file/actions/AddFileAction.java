@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.Reader;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import pl.edu.agh.codecomp.file.CCFileReader;
 import pl.edu.agh.codecomp.gui.CodeCompGUI;
@@ -35,7 +36,7 @@ public class AddFileAction implements ActionListener {
 		try {
 			JFileChooser jc = new JFileChooser("Add file");
 			jc.setApproveButtonText("Add");
-			// jc.setFileFilter(new FileNameExtensionFilter("PDF Files", "pdf"));
+			jc.setFileFilter(new FileNameExtensionFilter("Source Code Files", "asm, java, c, ccp, py, jy, html, css"));
 			int ret = jc.showOpenDialog(CodeCompGUI.getMainWin());
 			if (ret == JFileChooser.APPROVE_OPTION) {
 				final File file = jc.getSelectedFile();
