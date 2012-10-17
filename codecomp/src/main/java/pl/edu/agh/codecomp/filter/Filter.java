@@ -6,11 +6,19 @@ public class Filter {
 		String source = "";
 		String lines[] = text.split("\n");
 		for(String line : lines) {
-			if(!line.startsWith(";")) {
-				source += line + "\n";
+			String words[] = line.split(" ");
+			for(String word : words) {
+				if(word.startsWith(";")) {
+					int stop = line.indexOf(word);
+					source += line.substring(0, stop) + "\n";
+					break;
+				} else {
+					source += word + " ";
+				}
 			}
+			source += "\n";
 		}
-		return source;
+		return source.trim();
 	}
 	
 }

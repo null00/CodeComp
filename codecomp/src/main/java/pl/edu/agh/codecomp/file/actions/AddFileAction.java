@@ -36,7 +36,7 @@ public class AddFileAction implements ActionListener {
 		try {
 			JFileChooser jc = new JFileChooser("Add file");
 			jc.setApproveButtonText("Add");
-			jc.setFileFilter(new FileNameExtensionFilter("Source Code Files", "asm, java, c, ccp, py, jy, html, css"));
+			jc.setFileFilter(new FileNameExtensionFilter("Source Code Files", "asm", "java", "c", "ccp", "py", "jy", "html", "css"));
 			int ret = jc.showOpenDialog(CodeCompGUI.getMainWin());
 			if (ret == JFileChooser.APPROVE_OPTION) {
 				final File file = jc.getSelectedFile();
