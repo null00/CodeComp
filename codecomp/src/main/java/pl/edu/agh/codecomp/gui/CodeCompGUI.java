@@ -60,7 +60,7 @@ public class CodeCompGUI extends JFrame {
 			try {
 				leftText.read(CCFileReader.read(new File(path + "source1.asm").getAbsolutePath()), null);
 //				rightText.read(CCFileReader.read(new File(path + "source2.asm").getAbsolutePath()), null);
-				leftText.setText(Filter.parse(leftText.getText()));
+//				leftText.setText(Filter.parse(leftText.getText()));
 				rightText.setText(Filter.parse(leftText.getText()));
 			} catch (IOException e) {
 				// TODO LOGGER
@@ -144,6 +144,7 @@ public class CodeCompGUI extends JFrame {
 		rightText.setCodeFoldingEnabled(true);
 		rightText.setAntiAliasingEnabled(true);
 		rightText.setBorder(BorderFactory.createLineBorder(Color.orange));
+		rightText.setCurrentLineHighlightColor(Color.white);
 		// rightText.setEditable(false);
 
 		rightScrollPane = new RTextScrollPane(rightText);
