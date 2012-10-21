@@ -58,7 +58,7 @@ public class TextComparator extends IComparator {
 						while (it.hasNext()) {
 							int i = it.next();
 //							Color color = Color.getHSBColor((float) Math.random() * 255 + 1, (float) Math.random() * 255 + 1, (float) Math.random() * 255 + 1);
-							Color color = Color.BLUE;
+							Color color = Color.orange;
 							leftHL.addHighlight(i, i + word.length(), new DefaultHighlighter.DefaultHighlightPainter(color));
 							rightHL.addHighlight(i, i + word.length(), new DefaultHighlighter.DefaultHighlightPainter(color));
 						}
