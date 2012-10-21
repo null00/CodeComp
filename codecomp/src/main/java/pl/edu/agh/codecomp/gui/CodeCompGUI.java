@@ -17,7 +17,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -58,10 +57,10 @@ public class CodeCompGUI extends JFrame {
 			String path = System.getProperty("user.dir") + "/src/main/java/";
 
 			try {
-				leftText.read(CCFileReader.read(new File(path + "source1.asm").getAbsolutePath()), null);
+				setLeftFile(CCFileReader.read(new File(path + "source1.asm").getAbsolutePath()));
 //				rightText.read(CCFileReader.read(new File(path + "source2.asm").getAbsolutePath()), null);
-//				leftText.setText(Filter.parse(leftText.getText()));
-				rightText.setText(Filter.parse(leftText.getText()));
+				setLeftFile(Filter.parse(leftText.getText()));
+				setRightFile(Filter.parse(leftText.getText()));
 			} catch (IOException e) {
 				// TODO LOGGER
 				// e.printStackTrace();
@@ -133,7 +132,8 @@ public class CodeCompGUI extends JFrame {
 		leftText.setBorder(BorderFactory.createLineBorder(Color.blue));
 		// leftText.setEditable(false);
 		leftText.setCurrentLineHighlightColor(Color.white);
-
+		leftText.setDoubleBuffered(true);
+		
 		leftScrollPane = new RTextScrollPane(leftText);
 		leftScrollPane.setFoldIndicatorEnabled(true);
 		leftScrollPane.setAutoscrolls(false);
@@ -145,7 +145,6 @@ public class CodeCompGUI extends JFrame {
 		rightText.setAntiAliasingEnabled(true);
 		rightText.setBorder(BorderFactory.createLineBorder(Color.orange));
 		rightText.setCurrentLineHighlightColor(Color.white);
-		// rightText.setEditable(false);
 
 		rightScrollPane = new RTextScrollPane(rightText);
 		rightScrollPane.setFoldIndicatorEnabled(true);
@@ -168,8 +167,8 @@ public class CodeCompGUI extends JFrame {
 			// TODO LOGGER
 			e.printStackTrace();
 		} finally {
-			JScrollBar bar = leftScrollPane.getVerticalScrollBar();
-			bar.setValue(0);
+			leftText.setCaretPosition(0);
+			leftScrollPane.getVerticalScrollBar().setValue(0);
 		}
 	}
 
@@ -180,9 +179,21 @@ public class CodeCompGUI extends JFrame {
 			// TODO LOGGER
 			e.printStackTrace();
 		} finally {
-			JScrollBar bar = rightScrollPane.getVerticalScrollBar();
-			bar.setValue(bar.getMinimum());
+			rightText.setCaretPosition(0);
+			rightScrollPane.getVerticalScrollBar().setValue(0);
 		}
+	}
+	
+	public static void setLeftFile(String text) {
+		leftText.setText(text);
+		leftText.setCaretPosition(0);
+		leftScrollPane.getVerticalScrollBar().setValue(0);
+	}
+
+	public static void setRightFile(String text) {
+		rightText.setText(text);
+		rightText.setCaretPosition(0);
+		rightScrollPane.getVerticalScrollBar().setValue(0);
 	}
 
 	/*

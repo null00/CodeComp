@@ -10,27 +10,26 @@ public class Filter {
 	}
 
 	private static String replaceWhiteChars(String input) {
-		return input.replace("\t\t", " ").replace("\t", " ");
+		return input.replaceAll("[\t\r\f ]+", " ").replaceAll("\n+", "\n");
 	}
 
-	//FIXME: dodac znak nowej linii, jesli komentarz w srodku linii
 	private static String removeComments(String input) {
 		String output = "";
 		String lines[] = input.split("\n");
-		boolean comment = false;
 		for (String line : lines) {
-			if (!lines[0].equals(line) && !line.isEmpty() && !comment) {
+			line = line.trim();
+			if (!lines[0].equals(line) && !line.isEmpty() && !line.startsWith(";")) {
 				output += "\n";
 			}
-			comment = false;
+			String temp = "";
 			for (char c : line.trim().toCharArray()) {
 				if (c == ';') {
-					comment = true;
 					break;
 				} else {
-					output += c;
+					temp += c;
 				}
 			}
+			output += temp.trim();
 		}
 		return output;
 	}
