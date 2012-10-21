@@ -2,23 +2,37 @@ package pl.edu.agh.codecomp.filter;
 
 public class Filter {
 
-	public static String parse(String text) {
-		String source = "";
-		String lines[] = text.split("\n");
-		for(String line : lines) {
-			String words[] = line.split(" ");
-			for(String word : words) {
-				if(word.startsWith(";")) {
-					int stop = line.indexOf(word);
-					source += line.substring(0, stop) + "\n";
+	public static String parse(String input) {
+		String output = "";
+		output = replaceWhiteChars(input);
+		output = removeComments(output);
+		return output.trim();
+	}
+
+	private static String replaceWhiteChars(String input) {
+		return input.replace("\t\t", " ").replace("\t", " ");
+	}
+
+	//FIXME: dodac znak nowej linii, jesli komentarz w srodku linii
+	private static String removeComments(String input) {
+		String output = "";
+		String lines[] = input.split("\n");
+		boolean comment = false;
+		for (String line : lines) {
+			if (!lines[0].equals(line) && !line.isEmpty() && !comment) {
+				output += "\n";
+			}
+			comment = false;
+			for (char c : line.trim().toCharArray()) {
+				if (c == ';') {
+					comment = true;
 					break;
 				} else {
-					source += word + " ";
+					output += c;
 				}
 			}
-			source += "\n";
 		}
-		return source.trim();
+		return output;
 	}
-	
+
 }
