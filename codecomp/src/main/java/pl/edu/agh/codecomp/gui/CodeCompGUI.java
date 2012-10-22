@@ -30,6 +30,7 @@ import pl.edu.agh.codecomp.file.actions.AddFileAction;
 import pl.edu.agh.codecomp.file.actions.CompareAction;
 import pl.edu.agh.codecomp.filter.Filter;
 import pl.edu.agh.codecomp.gui.actions.AddFilesAction;
+import pl.edu.agh.codecomp.gui.actions.ClearHighlightAction;
 
 public class CodeCompGUI extends JFrame {
 
@@ -101,12 +102,16 @@ public class CodeCompGUI extends JFrame {
 		addRightItem.setActionCommand("rightText");
 		file.add(addRightItem);
 
-		JMenu run = new JMenu("Run");
-		mainMenu.add(run);
+		JMenu comparator = new JMenu("Comparator");
+		mainMenu.add(comparator);
 		
-		JMenuItem compare = new JMenuItem("Compare");
-		compare.addActionListener(new CompareAction());
-		run.add(compare);
+		JMenuItem run = new JMenuItem("Run");
+		run.addActionListener(new CompareAction());
+		comparator.add(run);
+		
+		JMenuItem clear = new JMenuItem("Clear");
+		clear.addActionListener(new ClearHighlightAction());
+		comparator.add(clear);
 		
 		mainMenu.add(Box.createHorizontalGlue());
 
@@ -194,6 +199,11 @@ public class CodeCompGUI extends JFrame {
 		rightText.setText(text);
 		rightText.setCaretPosition(0);
 		rightScrollPane.getVerticalScrollBar().setValue(0);
+	}
+	
+	public static void clearAllHightlights() {
+		leftText.getHighlighter().removeAllHighlights();
+		rightText.getHighlighter().removeAllHighlights();
 	}
 
 	/*
