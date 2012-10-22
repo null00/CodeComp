@@ -142,6 +142,7 @@ public class AddFilesDialog extends JDialog implements ActionListener {
 				file = jc.getSelectedFile();
 			}
 		} catch (Exception ex) {
+			//TODO: LOGGER
 			ex.printStackTrace();
 		}
 		return file;

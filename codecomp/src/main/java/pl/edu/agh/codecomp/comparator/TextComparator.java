@@ -36,6 +36,7 @@ public class TextComparator extends IComparator {
 	// FIXME: SPRAWDZIC I POPRAWIC/ZMIENIC MECHANIZM POROWNYWANIA
 	private void compare() {
 		try {
+			CodeCompGUI.clearAllHightlights();
 			IAlgorithm algo = CodeCompGUI.getSelectedAlgo();
 			
 			System.out.println(algo.getName() + ": " + left.getText().isEmpty() + " / " + right.getText().isEmpty());

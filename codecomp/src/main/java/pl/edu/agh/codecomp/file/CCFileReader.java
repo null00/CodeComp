@@ -7,12 +7,29 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import pl.edu.agh.codecomp.filter.Filter;
+
 public class CCFileReader {
 
-	public static Reader read(String path) throws IOException {
+	public static String read(String path) throws IOException {
 		Path file = Paths.get(path);
 		Charset charset = Charset.forName("UTF8");
 		Reader reader = Files.newBufferedReader(file, charset);
-		return reader;
+		String output = Filter.parse(readFile(reader));
+		return output;
+	}
+	
+	private static String readFile(Reader reader) {
+		StringBuilder output = new StringBuilder();
+		try {
+			int c;
+			while ((c = reader.read()) != -1) {
+				output.append((char) c);
+			}
+		} catch (Exception ex) {
+			//TODO: LOGGER
+			ex.printStackTrace();
+		}
+		return output.toString();
 	}
 }
