@@ -36,10 +36,6 @@ public class AppTest
      */
     public void testApp()
     {
-        BoyerMoore bm = new BoyerMoore();
-        List<Integer> result = bm.match("jarek to super gość\ntrelemorele ja cie pierdziele", "ele");
-        for(int i = 0; i < result.size(); i++)
-        	System.out.println(result.get(i));
-        assertEquals(true, !result.isEmpty());
+
     }
 }
