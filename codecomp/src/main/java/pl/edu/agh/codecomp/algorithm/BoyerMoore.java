@@ -7,7 +7,7 @@ public class BoyerMoore implements IAlgorithm {
 
 	public static final String NAME = "BoyerMoore";
 	private static final int ALPHABET_SIZE = 128;
-	
+
 	private String pattern;
 
 	private int[] last;
@@ -18,17 +18,17 @@ public class BoyerMoore implements IAlgorithm {
 		super();
 	}
 
-	//XXX: Seems OK - check the shifting
+	// XXX: Seems OK - check the shifting
 	public List<Integer> match(String text, String pattern) {
 		this.pattern = pattern;
 		last = new int[ALPHABET_SIZE];
 		match = new int[pattern.length()];
 		suffix = new int[pattern.length()];
 		List<Integer> matches = new LinkedList<Integer>();
-		
+
 		computeLast();
 		computeMatch();
-		
+
 		int i = text.length() - 1;
 		int j = pattern.length() - 1;
 		while (i >= 0 && i < text.length()) {
@@ -39,12 +39,14 @@ public class BoyerMoore implements IAlgorithm {
 						j = pattern.length() - 1;
 						// return i;
 					}
-					j--;
-					i--;
+					--i;
+					--j;
 				} else { // shifting
-//					i += pattern.length() - j - 1 + Math.max(j - last[text.charAt(i)], match[j]);
-//					i -= Math.max(match[j], text.length() - last[pattern.charAt(j)] -1);
-//					i -= Math.max(match[j], last[text.charAt(i)] - i - 1);
+					// i += pattern.length() - j - 1 + Math.max(j -
+					// last[text.charAt(i)], match[j]);
+					// i -= Math.max(match[j], text.length() -
+					// last[pattern.charAt(j)] -1);
+					// i -= Math.max(match[j], last[text.charAt(i)] - i - 1);
 					i -= Math.max(match[j], last[text.charAt(i)] - text.length() + 1 + i);
 					j = pattern.length() - 1;
 				}
@@ -67,7 +69,7 @@ public class BoyerMoore implements IAlgorithm {
 		}
 	}
 
-	//FIXME: Check me!
+	// XXX: Is OK
 	private void computeMatch() throws StringIndexOutOfBoundsException, ArrayIndexOutOfBoundsException {
 		for (int j = 0; j < match.length; j++) {
 			match[j] = match.length;
@@ -95,7 +97,7 @@ public class BoyerMoore implements IAlgorithm {
 				while (j < k) {
 					if (match[j] > k)
 						match[j] = k;
-					j++;
+					++j;
 				}
 			}
 		}
@@ -110,16 +112,16 @@ public class BoyerMoore implements IAlgorithm {
 				j = suffix[j + 1] - 1;
 			}
 			if (pattern.charAt(j) == pattern.charAt(i)) {
-				j--;
+				--j;
 			}
 			suffix[i] = j + 1;
 		}
 	}
-	
+
 	public String getName() {
 		return BoyerMoore.NAME;
 	}
-	
+
 	@Override
 	public String toString() {
 		return NAME;
