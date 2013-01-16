@@ -42,8 +42,8 @@ public class TextComparator extends IComparator {
 			System.out.println(algo.getName() + ": " + left.getText().isEmpty() + " / " + right.getText().isEmpty());
 			
 			if (algo != null && !left.getText().isEmpty() && !right.getText().isEmpty()) {
-				String text = right.getText();
-				String words[] = text.split("\n");
+				String text = left.getText();
+				String words[] = right.getText().split("\n");
 				
 				for (String word : words) {
 					System.out.print("Word: " + word);

@@ -18,7 +18,7 @@ public class BoyerMoore implements IAlgorithm {
 		super();
 	}
 
-	//FIXME: SPRAWDZIC I POPRAWIĆ ALGORYTM!
+	//XXX: Seems OK - check the shifting
 	public List<Integer> match(String text, String pattern) {
 		this.pattern = pattern;
 		last = new int[ALPHABET_SIZE];
@@ -41,9 +41,10 @@ public class BoyerMoore implements IAlgorithm {
 					}
 					j--;
 					i--;
-				} else {
-					// i += pattern.length() - j - 1 + Math.max(j -
-					// last[text.charAt(i)], match[j]);
+				} else { // shifting
+//					i += pattern.length() - j - 1 + Math.max(j - last[text.charAt(i)], match[j]);
+//					i -= Math.max(match[j], text.length() - last[pattern.charAt(j)] -1);
+//					i -= Math.max(match[j], last[text.charAt(i)] - i - 1);
 					i -= Math.max(match[j], last[text.charAt(i)] - text.length() + 1 + i);
 					j = pattern.length() - 1;
 				}
@@ -54,6 +55,7 @@ public class BoyerMoore implements IAlgorithm {
 		return matches;
 	}
 
+	// XXX: Is OK
 	private void computeLast() throws StringIndexOutOfBoundsException {
 		for (int k = 0; k < last.length; k++) {
 			last[k] = -1;
@@ -65,6 +67,7 @@ public class BoyerMoore implements IAlgorithm {
 		}
 	}
 
+	//FIXME: Check me!
 	private void computeMatch() throws StringIndexOutOfBoundsException, ArrayIndexOutOfBoundsException {
 		for (int j = 0; j < match.length; j++) {
 			match[j] = match.length;
@@ -98,6 +101,7 @@ public class BoyerMoore implements IAlgorithm {
 		}
 	}
 
+	// FIXME: Check me!
 	private void computeSuffix() {
 		suffix[suffix.length - 1] = suffix.length;
 		int j = suffix.length - 1;
