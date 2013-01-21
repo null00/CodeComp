@@ -60,9 +60,13 @@ public class CodeCompGUI extends JFrame {
 			try {
 				setLeftFile(CCFileReader.read(new File(path + "source1.asm").getAbsolutePath()));
 //				rightText.read(CCFileReader.read(new File(path + "source2.asm").getAbsolutePath()), null);
+				
 				setLeftFile(Filter.parse(leftText.getText()));
 				setRightFile(Filter.parse(leftText.getText()));
-			} catch (IOException e) {
+				
+//				setLeftFile("gcatcgcagagagtatacagtacg");
+//				setRightFile("gcagagag");
+			} catch (Exception e) {
 				// TODO LOGGER
 				// e.printStackTrace();
 			}

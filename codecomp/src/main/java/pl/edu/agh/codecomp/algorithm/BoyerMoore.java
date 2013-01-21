@@ -37,19 +37,17 @@ public class BoyerMoore implements IAlgorithm {
 					if (j == 0) {
 						matches.add(i);
 						j = pattern.length() - 1;
-						// return i;
+						continue;
 					}
 					--i;
 					--j;
 				} else { // shifting
-					// i += pattern.length() - j - 1 + Math.max(j -
-					// last[text.charAt(i)], match[j]);
-					// i -= Math.max(match[j], text.length() -
-					// last[pattern.charAt(j)] -1);
-					// i -= Math.max(match[j], last[text.charAt(i)] - i - 1);
-					i -= Math.max(match[j], last[text.charAt(i)] - text.length() + 1 + i);
+//					System.out.print(Math.max(match[j], last[text.charAt(i)] - text.length() + i) + " ");
+					i -= Math.max(match[j], last[text.charAt(i)] - text.length() + i);
 					j = pattern.length() - 1;
+//					System.out.println("Text pos: " + i + " | Pat pos: " + j);
 				}
+//				Thread.sleep(1000);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -59,29 +57,38 @@ public class BoyerMoore implements IAlgorithm {
 
 	// XXX: Is OK
 	private void computeLast() throws StringIndexOutOfBoundsException {
-		for (int k = 0; k < last.length; k++) {
-			last[k] = -1;
+		for (int k = 0; k < last.length; ++k) {
+			last[k] = pattern.length();
 		}
-		for (int j = pattern.length() - 1; j >= 0; j--) {
-			if (last[pattern.charAt(j)] < 0) {
-				last[pattern.charAt(j)] = j;
+		for (int j = 0; j < pattern.length() - 1; ++j) {
+			last[pattern.charAt(j)] = pattern.length() - j - 1;
+		}
+
+		/*
+		System.out.println();
+		System.out.println(pattern);
+		for (int i = 0; i < last.length; ++i) {
+			if (last[i] != pattern.length()) {
+				System.out.print(last[i] + " ");
 			}
 		}
+		System.out.println();
+		*/
 	}
 
 	// XXX: Is OK
 	private void computeMatch() throws StringIndexOutOfBoundsException, ArrayIndexOutOfBoundsException {
 		for (int j = 0; j < match.length; j++) {
-			match[j] = match.length;
+			match[j] = match.length - 1;
 		}
 
 		computeSuffix();
 
 		for (int i = 0; i < match.length - 1; i++) {
-			int j = suffix[i + 1] - 1; // suffix[i+1] <= suffix[i] + 1
-			if (suffix[i] > j) { // therefore pattern[i] != pattern[j]
+			int j = suffix[i + 1] - 1;
+			if (suffix[i] > j) {
 				match[j] = j - i;
-			} else {// j == suffix[i]
+			} else {
 				match[j] = Math.min(j - i + match[i], match[j]);
 			}
 		}
@@ -101,13 +108,17 @@ public class BoyerMoore implements IAlgorithm {
 				}
 			}
 		}
+
+//		print(suffix);
+//		print(match);
+		
 	}
 
-	// FIXME: Check me!
+	// XXX: Seems OK
 	private void computeSuffix() {
 		suffix[suffix.length - 1] = suffix.length;
 		int j = suffix.length - 1;
-		for (int i = suffix.length - 2; i >= 0; i--) {
+		for (int i = suffix.length - 2; i >= 0; --i) {
 			while (j < suffix.length - 1 && pattern.charAt(j) != pattern.charAt(i)) {
 				j = suffix[j + 1] - 1;
 			}
@@ -116,6 +127,13 @@ public class BoyerMoore implements IAlgorithm {
 			}
 			suffix[i] = j + 1;
 		}
+	}
+
+	private void print(int suf[]) {
+		for (int i = 0; i < suf.length; ++i) {
+			System.out.print(suf[i] + " ");
+		}
+		System.out.println();
 	}
 
 	public String getName() {
