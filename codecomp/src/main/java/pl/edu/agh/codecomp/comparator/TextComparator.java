@@ -15,8 +15,6 @@ import pl.edu.agh.codecomp.algorithm.IAlgorithm;
 import pl.edu.agh.codecomp.gui.CodeCompGUI;
 
 public class TextComparator extends IComparator {
-
-	private RSyntaxTextArea left, right;
 	
 	public TextComparator(RSyntaxTextArea left, RSyntaxTextArea right) {
 		super();
@@ -37,7 +35,6 @@ public class TextComparator extends IComparator {
 	// FIXME: SPRAWDZIC I POPRAWIC/ZMIENIC MECHANIZM POROWNYWANIA
 	private void compare() {
 		try {
-			CodeCompGUI.clearAllHightlights();
 			IAlgorithm algo = CodeCompGUI.getSelectedAlgo();
 			
 			System.out.println(algo.getName() + ": " + left.getText().isEmpty() + " / " + right.getText().isEmpty());

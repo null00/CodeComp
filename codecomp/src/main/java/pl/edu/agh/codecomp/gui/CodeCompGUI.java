@@ -55,14 +55,15 @@ public class CodeCompGUI extends JFrame {
 			initMenu();
 			initMainPanel();
 
-			String path = System.getProperty("user.dir") + "/src/main/java/";
+			String path = System.getProperty("user.dir") + "/src/main/java/pl/edu/agh/codecomp/resources/";
 
 			try {
-				setLeftFile(CCFileReader.read(new File(path + "source1.asm").getAbsolutePath()));
+//				setLeftFile(CCFileReader.read(new File(path + "source1.asm").getAbsolutePath()));
+				setLeftFile(CCFileReader.read(new File(path + "source3.asm").getAbsolutePath()));
 //				rightText.read(CCFileReader.read(new File(path + "source2.asm").getAbsolutePath()), null);
 				
 				setLeftFile(Filter.parse(leftText.getText()));
-				setRightFile(Filter.parse(leftText.getText()));
+//				setRightFile(Filter.parse(leftText.getText()));
 				
 //				setLeftFile("gcatcgcagagagtatacagtacg");
 //				setRightFile("gcagagag");
@@ -109,9 +110,15 @@ public class CodeCompGUI extends JFrame {
 		JMenu comparator = new JMenu("Comparator");
 		mainMenu.add(comparator);
 		
-		JMenuItem run = new JMenuItem("Run");
-		run.addActionListener(new CompareAction());
-		comparator.add(run);
+		JMenuItem compText = new JMenuItem("Compare text");
+		compText.setActionCommand("text");
+		compText.addActionListener(new CompareAction());
+		comparator.add(compText);
+		
+		JMenuItem compSource = new JMenuItem("Compare source");
+		compSource.setActionCommand("source");
+		compSource.addActionListener(new CompareAction());
+		comparator.add(compSource);
 		
 		JMenuItem clear = new JMenuItem("Clear");
 		clear.addActionListener(new ClearHighlightAction());

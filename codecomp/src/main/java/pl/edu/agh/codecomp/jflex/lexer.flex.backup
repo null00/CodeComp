@@ -40,7 +40,6 @@ InputCharacter			= [^\r\n]
 WhiteSpace				= {LineTerminator} | [ \t\f]
 
 /* comments */
-/*
 Comment 				= {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
 CommentContent			= ( [^*] | \*+ [^/*] )*
 TraditionalComment 		= "/*" [^*] ~"*/" | "/*" "*"+ "/"
@@ -49,7 +48,6 @@ DocumentationComment	= "/**" {CommentContent} "*"+ "/"
 
 Identifier				= [:jletter:] [:jletterdigit:]*
 DecIntegerLiteral		= 0 | [1-9][0-9]*
-*/
 
 /* ASSEMBLER SPECIFICS */
 
