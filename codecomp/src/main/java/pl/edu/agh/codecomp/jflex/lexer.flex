@@ -4,7 +4,8 @@ package pl.edu.agh.codecomp.jflex;
 
 /* JFlex example */
 
-import java_cup.runtime.*;
+import java_cup.sym;
+import java_cup.runtime.Symbol;
 
 /**
 * This class is a test lexer
@@ -40,7 +41,7 @@ InputCharacter			= [^\r\n]
 WhiteSpace				= {LineTerminator} | [ \t\f]
 
 /* comments */
-/*
+
 Comment 				= {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
 CommentContent			= ( [^*] | \*+ [^/*] )*
 TraditionalComment 		= "/*" [^*] ~"*/" | "/*" "*"+ "/"
@@ -48,12 +49,17 @@ EndOfLineComment		= "//" {InputCharacter}* {LineTerminator}
 DocumentationComment	= "/**" {CommentContent} "*"+ "/"
 
 Identifier				= [:jletter:] [:jletterdigit:]*
-DecIntegerLiteral		= 0 | [1-9][0-9]*
-*/
+DecIntegerLiteral		= ('+[0-9]*'+)|([0-9]*)
+
 
 /* ASSEMBLER SPECIFICS */
 
 Register				= al|ax|cx|dx|bx|sp|bp|si|di
+Arithmetic				= [+-/\*]
+
+LBraces					= \[|\(|\{
+RBraces					= \]|\)|\}
+
 /*
 ### !!! TODO !!! ###
 
@@ -67,13 +73,11 @@ Register				= (A|C|D|B)X|(S|B)P|(S|D)I
 Transfer
 Arithmetic
 Logic
-Mist
+Misc
 Jump
 */
 
-
 %state STRING
-%state NESTED_COMMENT
 
 %%
 
@@ -89,32 +93,35 @@ Jump
 <YYINITIAL> {
 
 	/* identifiers */
-	{Register}			{ return symbol(666); }
-	/*{Identifier}		{ return symbol(sym.ID); }*/
+	{Register}			{ return symbol(sym.TERMINAL); }
+	{Identifier}		{ return symbol(sym.ID); }
 	
 	/* literals */
-	{DecIntegerLiteral}	{ return symbol(sym.INTEGER_LITERAL); }
+	{DecIntegerLiteral}	{ return symbol(sym.NONTERMINAL); }
 	\"					{ string.setLength(0); yybegin(STRING); }
 	
 	/* operators */
-	"="					{ return symbol(1); }
-	"=="				{ return symbol(2); }
-	"+"					{ return symbol(3); }
-	"."					{ return symbol(4); }
-	","					{ return symbol(5); }
-	";"					{ return symbol(6); }
-	":"					{ return symbol(7); }
+	"="					{ return symbol(sym.ACTION); }
+	"=="				{ return symbol(sym.ACTION); }
+	"."					{ return symbol(sym.DOT); }
+	","					{ return symbol(sym.COMMA); }
+	";"					{ return symbol(sym.SEMI); }
+	":"					{ return symbol(sym.COLON); }
+	"'"					{ return symbol(sym.NONTERMINAL); }
+	{LBraces}			{ return symbol(sym.LBRACK); }
+	{RBraces}			{ return symbol(sym.RBRACK); }
+	{Arithmetic}		{ return symbol(sym.ACTION); }
 	
 	/* comments */
 	{Comment}			{ /* ignore */ }
 	
 	/* whitespace */	
-	{WhiteSpace}		{ /* ignore */ }	
+	{WhiteSpace}		{ /* ignore */ }
 }
 
 <STRING> {
-	[\"\']				{ yybegin(YYINITIAL);
-						  return symbol(sym.LITERAL.STRING, string.toString()); }
+	\"					{ yybegin(YYINITIAL);
+						  return symbol(sym.CODE_STRING, string.toString()); }
 	[^\n\r\"\\]+		{ string.append(yytext()); }
 	\\t					{ string.append('\t'); }
 	\\n					{ string.append('\n'); }
@@ -124,4 +131,4 @@ Jump
 }
 
 /* error fallback */
-<YYINITIAL>.|\n					{ throw new Error("Illegal character <"+ yytext() +">"); }
+<YYINITIAL>.|\n			{ System.err.println("Illegal character <"+ yytext() +">"); }

@@ -12,7 +12,7 @@ import pl.edu.agh.codecomp.gui.CodeCompGUI;
 
 public class AddFileAction implements ActionListener {
 
-	private final String PROJECT_PATH = System.getProperty("user.dir") + "/src/main/java/";
+	private final String RESOURCES = System.getProperty("user.dir") + "/src/main/java/pl/edu/agh/codecomp/resources/";
 
 	public void actionPerformed(ActionEvent ae) {
 		String text = addFile();
@@ -37,7 +37,7 @@ public class AddFileAction implements ActionListener {
 		try {
 			JFileChooser jc = new JFileChooser("Add file");
 			jc.setApproveButtonText("Add");
-			jc.setCurrentDirectory(new File(PROJECT_PATH));
+			jc.setCurrentDirectory(new File(RESOURCES));
 			jc.setFileFilter(new FileNameExtensionFilter("Source Code Files", "asm", "java", "c", "ccp", "py", "jy", "html", "css"));
 			int ret = jc.showOpenDialog(CodeCompGUI.getMainWin());
 			if (ret == JFileChooser.APPROVE_OPTION) {
