@@ -17,6 +17,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -31,6 +33,7 @@ import pl.edu.agh.codecomp.file.actions.CompareAction;
 import pl.edu.agh.codecomp.filter.Filter;
 import pl.edu.agh.codecomp.gui.actions.AddFilesAction;
 import pl.edu.agh.codecomp.gui.actions.ClearHighlightAction;
+import pl.edu.agh.codecomp.gui.actions.OptionsDialogAction;
 
 public class CodeCompGUI extends JFrame {
 
@@ -107,6 +110,13 @@ public class CodeCompGUI extends JFrame {
 		addRightItem.setActionCommand("rightText");
 		file.add(addRightItem);
 
+		file.addSeparator();
+		
+		JMenuItem optionsItem = new JMenuItem("Preferences");
+		optionsItem.addActionListener(new OptionsDialogAction());
+		optionsItem.setActionCommand("showDialog");
+		file.add(optionsItem);
+		
 		JMenu comparator = new JMenu("Comparator");
 		mainMenu.add(comparator);
 		
@@ -119,6 +129,8 @@ public class CodeCompGUI extends JFrame {
 		compSource.setActionCommand("source");
 		compSource.addActionListener(new CompareAction());
 		comparator.add(compSource);
+		
+		comparator.addSeparator();
 		
 		JMenuItem clear = new JMenuItem("Clear");
 		clear.addActionListener(new ClearHighlightAction());
