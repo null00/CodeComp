@@ -12,7 +12,6 @@ import javax.swing.text.Highlighter;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import pl.edu.agh.codecomp.algorithm.IAlgorithm;
-import pl.edu.agh.codecomp.gui.CodeCompGUI;
 
 public class TextComparator extends IComparator {
 	
@@ -35,7 +34,7 @@ public class TextComparator extends IComparator {
 	// FIXME: SPRAWDZIC I POPRAWIC/ZMIENIC MECHANIZM POROWNYWANIA
 	private void compare() {
 		try {
-			IAlgorithm algo = CodeCompGUI.getSelectedAlgo();
+			IAlgorithm algo = CompareToken.getTextAlgorithm();
 			
 			System.out.println(algo.getName() + ": " + left.getText().isEmpty() + " / " + right.getText().isEmpty());
 			

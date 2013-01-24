@@ -4,32 +4,27 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import pl.edu.agh.codecomp.algorithm.BoyerMoore;
-import pl.edu.agh.codecomp.algorithm.IAlgorithm;
-import pl.edu.agh.codecomp.algorithm.KarpRabin;
+import pl.edu.agh.codecomp.comparator.actions.CompareAction;
 import pl.edu.agh.codecomp.file.CCFileReader;
 import pl.edu.agh.codecomp.file.actions.AddFileAction;
-import pl.edu.agh.codecomp.file.actions.CompareAction;
 import pl.edu.agh.codecomp.filter.Filter;
 import pl.edu.agh.codecomp.gui.actions.AddFilesAction;
 import pl.edu.agh.codecomp.gui.actions.ClearHighlightAction;
@@ -41,11 +36,9 @@ public class CodeCompGUI extends JFrame {
 
 	private static final String TITLE = "CodeComp - Source Code Comparator";
 	private static final Dimension MAIN_WIN_DIMENSION = new Dimension(1024, 768);
-	private static final Logger log = Logger.getLogger("CodeCompGUI");
+//	private static final Logger log = Logger.getLogger("CodeCompGUI");
 
 	private static CodeCompGUI mainWin;
-	private static IAlgorithm[] algoList = { new BoyerMoore(), new KarpRabin() };
-	private static JComboBox<IAlgorithm> switchAlgo;
 
 	public CodeCompGUI() {
 		super();
@@ -117,6 +110,17 @@ public class CodeCompGUI extends JFrame {
 		optionsItem.setActionCommand("showDialog");
 		file.add(optionsItem);
 		
+		file.addSeparator();
+		
+		JMenuItem closeItem = new JMenuItem("Close");
+		closeItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				CodeCompGUI.getMainWin().dispose();
+			}
+		});
+		file.add(closeItem);
+		
 		JMenu comparator = new JMenu("Comparator");
 		mainMenu.add(comparator);
 		
@@ -137,9 +141,7 @@ public class CodeCompGUI extends JFrame {
 		comparator.add(clear);
 		
 		mainMenu.add(Box.createHorizontalGlue());
-
-		switchAlgo = new JComboBox<IAlgorithm>(algoList);
-		mainMenu.add(switchAlgo);
+		mainMenu.add(Box.createHorizontalGlue());
 
 		getMainWin().setJMenuBar(mainMenu);
 	}
@@ -243,9 +245,5 @@ public class CodeCompGUI extends JFrame {
 
 	public static RSyntaxTextArea getRightText() {
 		return rightText;
-	}
-
-	public static IAlgorithm getSelectedAlgo() {
-		return (IAlgorithm) switchAlgo.getSelectedItem();
 	}
 }
