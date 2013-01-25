@@ -3,7 +3,7 @@ package pl.edu.agh.codecomp.gui.actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import pl.edu.agh.codecomp.gui.AddFilesDialog;
+import pl.edu.agh.codecomp.gui.dialogs.AddFilesDialog;
 
 public class AddFilesAction implements ActionListener {
 
