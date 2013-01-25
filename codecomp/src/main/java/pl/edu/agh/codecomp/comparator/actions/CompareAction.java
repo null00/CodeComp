@@ -24,11 +24,6 @@ public class CompareAction implements ActionListener {//, CaretListener {
 		}
 	}
 
-//	@Override
-//	public void caretUpdate(CaretEvent e) {
-//		compareTextAction();
-//	}
-
 	private void compareTextAction() {
 		new TextComparator(CodeCompGUI.getLeftText(), CodeCompGUI.getRightText());
 	}

@@ -21,6 +21,10 @@ public class SourceComparator extends IComparator {
 	public void run() {
 		compare();
 	}
+	
+	/*
+	 * COMPARATOR
+	 */
 
 	private void compare() {
 		right.setText("");
