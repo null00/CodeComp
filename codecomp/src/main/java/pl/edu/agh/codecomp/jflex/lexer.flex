@@ -42,40 +42,36 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 
 /* comments */
 
-Comment 				= {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
+Comment 				= {TraditionalComment} | {EndOfLineComment} | {DocumentationComment} | {AssemblerComment}
 CommentContent			= ( [^*] | \*+ [^/*] )*
 TraditionalComment 		= "/*" [^*] ~"*/" | "/*" "*"+ "/"
 EndOfLineComment		= "//" {InputCharacter}* {LineTerminator}
 DocumentationComment	= "/**" {CommentContent} "*"+ "/"
 
-Identifier				= [:jletter:] [:jletterdigit:]*
-DecIntegerLiteral		= ('+[0-9]*'+)|([0-9]*)
+Identifier				= [:letter:]*[:digit:]*
+DecIntegerLiteral		= "'"? [:digit:]* "'"?
+/*('+[0-9]*'+)|([0-9]*)*/
 
 
 /* ASSEMBLER SPECIFICS */
 
-Register				= al|ax|cx|dx|bx|sp|bp|si|di
-Arithmetic				= [+-/\*]
+/* comments */
+AssemblerComment		= {WhiteSpace}* ";" {InputCharacter}* {LineTerminator}*
+
+Label					= ("."+ [:letter:]+[:digit:]*)|([:letter:]+[:digit:]* ":"+)
+
+/* registers */
+Register				= al|ax|cx|dx|bx|sp|bp|ip|si|di
+
+/* operations */
+Arithmetic				= [\+\-\/\*]|cmp|add|sub|sbb|div|idiv|mul|imul|inc|dec|sal|sar|rcl|rcr|rol|ror
+Transfer				= mov|push|pushf|pusha|pop|popf|popa|in|out
+Misc					= nop|lea|int
+Logic					= and|or|xor|not|neg
+Jump					= call|jmp|je|jz|jcxz|jp|jpe|ret|jne|jnz|jecxz|jnp|jpo
 
 LBraces					= \[|\(|\{
 RBraces					= \]|\)|\}
-
-/*
-### !!! TODO !!! ###
-
-/* comments */
-AssemblerComment		= ";" {InputCharacter}* {LineTerminator}
- 
-/* registers */
-Register				= (A|C|D|B)X|(S|B)P|(S|D)I
-
-/* operations */
-Transfer
-Arithmetic
-Logic
-Misc
-Jump
-*/
 
 %state STRING
 
@@ -84,39 +80,41 @@ Jump
 /* === LEXICAL RULES SECTION === */
 
 /* keywords */
-/*
-<YYINITIAL> "abstract"	{ return symbol(sym.ABSTRACT); }
-<YYINITIAL>	"boolean"	{ return symbol(sym.BOOLEAN); }
-<YYINITIAL>	"break"		{ return symbol(sym.BREAK); }
-*/
 
 <YYINITIAL> {
 
-	/* identifiers */
-	{Register}			{ return symbol(sym.TERMINAL); }
-	{Identifier}		{ return symbol(sym.ID); }
+	/* operators */
+	"="					{ return symbol(sym.ACTION, "Equals"); }
+	"=="				{ return symbol(sym.ACTION, "EQEQ"); }
+	","					{ return symbol(sym.COMMA, "COMMA"); }
+	"'"					{ return symbol(sym.NONTERMINAL, "APOSTROPHE"); }
+	"?"					{ return symbol(sym.NONTERMINAL, "QMARK"); }
+	
+	/* operations */
+	{LBraces}			{ return symbol(sym.LBRACK, "LBrace"); }
+	{RBraces}			{ return symbol(sym.RBRACK, "RBrace"); }
+	{Arithmetic}		{ return symbol(sym.ACTION, "Arithmetic"); }
+	{Transfer}			{ return symbol(sym.ACTION, "Transfer"); }
+	{Logic}				{ return symbol(sym.ACTION, "Logic"); }
+	{Misc}				{ return symbol(sym.ACTION, "Misc"); }
+	{Jump}				{ return symbol(sym.ACTION, "Jump"); }
 	
 	/* literals */
-	{DecIntegerLiteral}	{ return symbol(sym.NONTERMINAL); }
-	\"					{ string.setLength(0); yybegin(STRING); }
+	{DecIntegerLiteral}	{ return symbol(sym.NONTERMINAL, "Number"); }
 	
-	/* operators */
-	"="					{ return symbol(sym.ACTION); }
-	"=="				{ return symbol(sym.ACTION); }
-	"."					{ return symbol(sym.DOT); }
-	","					{ return symbol(sym.COMMA); }
-	";"					{ return symbol(sym.SEMI); }
-	":"					{ return symbol(sym.COLON); }
-	"'"					{ return symbol(sym.NONTERMINAL); }
-	{LBraces}			{ return symbol(sym.LBRACK); }
-	{RBraces}			{ return symbol(sym.RBRACK); }
-	{Arithmetic}		{ return symbol(sym.ACTION); }
+	/* identifiers */
+	{Register}			{ return symbol(sym.TERMINAL, "Register"); }
+	{Label}				{ return symbol(666, "Label"); }
+	{Identifier}		{ return symbol(sym.ID, "ID"); }
+	
+	\"					{ string.setLength(0); yybegin(STRING); }
 	
 	/* comments */
 	{Comment}			{ /* ignore */ }
 	
 	/* whitespace */	
 	{WhiteSpace}		{ /* ignore */ }
+	
 }
 
 <STRING> {

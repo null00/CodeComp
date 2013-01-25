@@ -34,7 +34,7 @@ public class SourceComparator extends IComparator {
 				Symbol sym = lexer.next_token();
 				if (!sym.toString().equals("#0")) {
 					String string = lexer.yytext();
-					right.append(sym + ": " + string);
+					right.append(sym.value + ": " + string);
 					right.append("\n");
 //					System.out.println(sym + ": " + string);
 				} else {
