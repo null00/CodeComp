@@ -156,7 +156,7 @@ public class CodeCompGUI extends JFrame {
 		mainPanel.setLayout(new GridLayout(0, 2));
 
 		leftText = new RSyntaxTextArea();
-		leftText.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+		leftText.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_ASSEMBLER_X86);
 		leftText.setCodeFoldingEnabled(true);
 		leftText.setAntiAliasingEnabled(true);
 		leftText.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -170,7 +170,7 @@ public class CodeCompGUI extends JFrame {
 		mainPanel.add(leftScrollPane);
 
 		rightText = new RSyntaxTextArea();
-		rightText.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+		rightText.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_ASSEMBLER_X86);
 		rightText.setCodeFoldingEnabled(true);
 		rightText.setAntiAliasingEnabled(true);
 		rightText.setBorder(BorderFactory.createLineBorder(Color.orange));
