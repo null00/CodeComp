@@ -1,4 +1,6 @@
 %{
+package pl.edu.agh.codecomp.parser;
+
 import java.lang.Math;
 import java.io.*;
 import java.util.StringTokenizer;
