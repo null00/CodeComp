@@ -42,12 +42,9 @@ public class BoyerMoore implements IAlgorithm {
 					--i;
 					--j;
 				} else { // shifting
-//					System.out.print(Math.max(match[j], last[text.charAt(i)] - text.length() + i) + " ");
 					i -= Math.max(match[j], last[text.charAt(i)] - text.length() + i);
 					j = pattern.length() - 1;
-//					System.out.println("Text pos: " + i + " | Pat pos: " + j);
 				}
-//				Thread.sleep(1000);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -55,7 +52,6 @@ public class BoyerMoore implements IAlgorithm {
 		return matches;
 	}
 
-	// XXX: Is OK
 	private void computeLast() throws StringIndexOutOfBoundsException {
 		for (int k = 0; k < last.length; ++k) {
 			last[k] = pattern.length();
@@ -63,20 +59,8 @@ public class BoyerMoore implements IAlgorithm {
 		for (int j = 0; j < pattern.length() - 1; ++j) {
 			last[pattern.charAt(j)] = pattern.length() - j - 1;
 		}
-
-		/*
-		System.out.println();
-		System.out.println(pattern);
-		for (int i = 0; i < last.length; ++i) {
-			if (last[i] != pattern.length()) {
-				System.out.print(last[i] + " ");
-			}
-		}
-		System.out.println();
-		*/
 	}
 
-	// XXX: Is OK
 	private void computeMatch() throws StringIndexOutOfBoundsException, ArrayIndexOutOfBoundsException {
 		for (int j = 0; j < match.length; j++) {
 			match[j] = match.length - 1;
@@ -109,12 +93,8 @@ public class BoyerMoore implements IAlgorithm {
 			}
 		}
 
-//		print(suffix);
-//		print(match);
-		
 	}
 
-	// XXX: Seems OK
 	private void computeSuffix() {
 		suffix[suffix.length - 1] = suffix.length;
 		int j = suffix.length - 1;
@@ -127,13 +107,6 @@ public class BoyerMoore implements IAlgorithm {
 			}
 			suffix[i] = j + 1;
 		}
-	}
-
-	private void print(int suf[]) {
-		for (int i = 0; i < suf.length; ++i) {
-			System.out.print(suf[i] + " ");
-		}
-		System.out.println();
 	}
 
 	public String getName() {
