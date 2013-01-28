@@ -6,7 +6,7 @@ import java_cup.runtime.Symbol;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
-import pl.edu.agh.codecomp.jflex.Lexer;
+import pl.edu.agh.codecomp.lexer.Scanner;
 
 public class SourceComparator extends IComparator {
 
@@ -28,12 +28,12 @@ public class SourceComparator extends IComparator {
 
 	private void compare() {
 		right.setText("");
-		Lexer lexer = new Lexer(new StringReader(left.getText()));
+		Scanner scanner= new Scanner(new StringReader(left.getText()));
 		while (true) {
 			try {
-				Symbol sym = lexer.next_token();
+				Symbol sym = scanner.next_token();
 				if (!sym.toString().equals("#0")) {
-					String string = lexer.yytext();
+					String string = scanner.yytext();
 					right.append(sym.value + ": " + string);
 					right.append("\n");
 //					System.out.println(sym + ": " + string);
