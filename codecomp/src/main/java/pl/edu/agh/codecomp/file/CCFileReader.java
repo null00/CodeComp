@@ -7,26 +7,28 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import pl.edu.agh.codecomp.comparator.CompareToken;
 import pl.edu.agh.codecomp.filter.Filter;
 
 public class CCFileReader {
-	
-	private static Boolean filter = true;
 
 	public static String read(String path) throws IOException {
 		Path file = Paths.get(path);
 		Charset charset = Charset.forName("UTF8");
 		Reader reader = Files.newBufferedReader(file, charset);
 		String output = "";
-		if(filter) {
+		if(CompareToken.getFilter()) {
 			output = Filter.parse(readFile(reader));
 		} else {
 			output = readFile(reader);
 		}
+		if(CompareToken.getToLowerCase()) {
+			output = output.toLowerCase();
+		}
 		return output;
 	}
 	
-	private static String readFile(Reader reader) {
+	private static String readFile(Reader reader) {		
 		StringBuilder output = new StringBuilder();
 		try {
 			int c;
@@ -37,14 +39,6 @@ public class CCFileReader {
 			//TODO: LOGGER
 			ex.printStackTrace();
 		}
-		return output.toString().toLowerCase(); //FIXME: is this toLowerCase desired?! 
-	}
-
-	public static Boolean getFilter() {
-		return filter;
-	}
-
-	public static void setFilter(Boolean filter) {
-		CCFileReader.filter = filter;
+		return output.toString(); 
 	}
 }
