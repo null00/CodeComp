@@ -8,14 +8,14 @@ import java_cup.sym;
 import java_cup.runtime.Symbol;
 
 /**
-* This class is a test lexer
+* This class is an assembler lexer/scanner
 */
 %%
 
 /* === OPTIONS AND DECLARATIONS SECTION === */
 
 %public
-%class Lexer
+%class Scanner
 
 %unicode
 %line
@@ -65,7 +65,7 @@ Register				= al|ax|cx|dx|bx|sp|bp|ip|si|di
 
 /* operations */
 Arithmetic				= [\+\-\/\*]|cmp|add|sub|sbb|div|idiv|mul|imul|inc|dec|sal|sar|rcl|rcr|rol|ror
-Transfer				= mov|push|pushf|pusha|pop|popf|popa|in|out
+Transfer				= mov|push|pushf|pusha|pop|popf|popa|in|out|xchg|stc|clc|cmc|std|cld|sti|cli|cbw|cwd|cwde
 Misc					= nop|lea|int
 Logic					= and|or|xor|not|neg
 Jump					= call|jmp|je|jz|jcxz|jp|jpe|ret|jne|jnz|jecxz|jnp|jpo

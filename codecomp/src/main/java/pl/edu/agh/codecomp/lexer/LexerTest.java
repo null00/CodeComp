@@ -1,4 +1,4 @@
-package pl.edu.agh.codecomp.jflex;
+package pl.edu.agh.codecomp.lexer;
 
 import java.io.StringReader;
 
@@ -11,17 +11,17 @@ public class LexerTest {
 	 */
 	public static void main(String[] args) {
 
-		Lexer lexer = new Lexer(new StringReader("private final String text = \"trele morele\" "));
+		Scanner scanner = new Scanner(new StringReader("private final String text = \"trele morele\" "));
 		while (true) {
 			try {
-				Symbol sym = lexer.next_token();
+				Symbol sym = scanner.next_token();
 				if (!sym.toString().equals("#0")) {
-					String string = lexer.yytext();
+					String string = scanner.yytext();
 					System.out.println(sym + ": " + string);
 
 					/*
-					 * parser p = new parser(new Lexer(System.in)); Object
-					 * result = p.parse().value;
+					 * parser p = new parser(new Scanner(System.in)); 
+					 * Object result = p.parse().value;
 					 * System.out.println(result.toString());
 					 */
 				} else {
