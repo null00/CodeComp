@@ -37,7 +37,7 @@ public class CCFileReader {
 			//TODO: LOGGER
 			ex.printStackTrace();
 		}
-		return output.toString();
+		return output.toString().toLowerCase(); //FIXME: is this toLowerCase desired?! 
 	}
 
 	public static Boolean getFilter() {
