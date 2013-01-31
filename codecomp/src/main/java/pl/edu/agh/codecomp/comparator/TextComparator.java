@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
@@ -43,14 +44,15 @@ public class TextComparator extends IComparator {
 				
 //				Map<Integer, String> map = wordIndexPicker(right.getText());
 				
-				String words[] = right.getText().split("\n");
+				StringTokenizer st = new StringTokenizer(right.getText(), "\n");
 				
 				int lineNo = 0;
-				for (String word : words) {
+				while(st.hasMoreTokens()) {
 //				for(Map.Entry<Integer, String> entry : map.entrySet()) {
 //					Integer index = entry.getKey();
 //					String word = entry.getValue();
 					
+					String word = st.nextToken();
 					System.out.println("\nWord: " + word);
 					if (!word.isEmpty() && !word.equals("") && !word.equals(" ") && !word.equals("\n")) {
 						List<Integer> list = algo.match(text, word.trim());
