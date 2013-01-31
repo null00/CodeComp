@@ -8,10 +8,14 @@ public class CompareToken {
 
 	private static Boolean filter = true;
 	private static Boolean lowerCase = true;
+	
 	private static IAlgorithm[] algoList = { new BoyerMoore(), new KarpRabin() };
 	private static IAlgorithm textAlgorithm;
+	private static String[] compList = { "Simple", "Full" };
+	private static String sourceComparator;
 	static {
 		textAlgorithm = algoList[0];
+		setSourceComparator(getCompList()[0]);
 	}
 
 	public static IAlgorithm getTextAlgorithm() {
@@ -44,6 +48,22 @@ public class CompareToken {
 
 	public static void setToLowerCase(Boolean lowerCase) {
 		CompareToken.lowerCase = lowerCase;
+	}
+
+	public static String[] getCompList() {
+		return compList;
+	}
+
+	public static void setCompList(String[] compList) {
+		CompareToken.compList = compList;
+	}
+
+	public static String getSourceComparator() {
+		return sourceComparator;
+	}
+
+	public static void setSourceComparator(String sourceComparator) {
+		CompareToken.sourceComparator = sourceComparator;
 	}
 	
 }

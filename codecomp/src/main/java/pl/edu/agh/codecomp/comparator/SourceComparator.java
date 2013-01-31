@@ -1,12 +1,14 @@
 package pl.edu.agh.codecomp.comparator;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
-
-import java_cup.runtime.Symbol;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
+import pl.edu.agh.codecomp.lexer.IScanner;
 import pl.edu.agh.codecomp.lexer.Scanner;
+import pl.edu.agh.codecomp.lexer.SimpleScanner;
 
 public class SourceComparator extends IComparator {
 
@@ -21,28 +23,49 @@ public class SourceComparator extends IComparator {
 	public void run() {
 		compare();
 	}
-	
-	/*
+
+	/**
 	 * COMPARATOR
 	 */
 
 	private void compare() {
+		IScanner scanner = null;
+		Reader reader = new StringReader(left.getText());
+
+		try {
+
+			switch (CompareToken.getSourceComparator().toLowerCase()) {
+			case "simple": {
+				scanner = new SimpleScanner(reader);
+				break;
+			}
+			case "full": {
+				scanner = new Scanner(reader);
+				break;
+			}
+			default: {
+				return;
+			}
+			}
+
+			runComparator(scanner);
+
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	private void runComparator(IScanner scanner) {
 		right.setText("");
-		Scanner scanner= new Scanner(new StringReader(left.getText()));
 		while (true) {
 			try {
-				Symbol sym = scanner.next_token();
-				if (!sym.toString().equals("#0")) {
-					String string = scanner.yytext();
-					right.append(sym.value + ": " + string);
-					right.append("\n");
-//					System.out.println(sym + ": " + string);
-				} else {
+				String token = scanner.yylex();
+				if (token == null)
 					break;
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				right.append(token + ": " + scanner.yytext());
+				right.append("\n");
+			} catch (IOException e) {
+				System.err.println(e.getMessage());
 			}
 		}
 	}

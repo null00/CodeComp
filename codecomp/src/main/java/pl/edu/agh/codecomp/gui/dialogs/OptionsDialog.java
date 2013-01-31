@@ -14,7 +14,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.SpringLayout;
 
 import pl.edu.agh.codecomp.algorithm.IAlgorithm;
 import pl.edu.agh.codecomp.comparator.CompareToken;
@@ -38,6 +37,7 @@ public class OptionsDialog extends JDialog implements ActionListener {
 	private JCheckBox lowerCaseFilter;
 	
 	private JComboBox<IAlgorithm> switchAlgo;
+	private JComboBox<String> switchComp;
 
 	private void initDialog() {
 		this.setTitle(TITLE);
@@ -49,25 +49,29 @@ public class OptionsDialog extends JDialog implements ActionListener {
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 
+		/* ### MAIN OPTIONS PANEL ### */
 		JPanel optionsPanel = new JPanel(new GridLayout(1, 6));
-		optionsPanel.setBorder(BorderFactory.createTitledBorder("Main options"));
+//		optionsPanel.setBorder(BorderFactory.createTitledBorder("Main options"));
 
+		/* ### FILTER OPTIONS PANEL ### */
 		JPanel filterPanel = new JPanel();
 		filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
 		filterPanel.setBorder(BorderFactory.createTitledBorder("Filter options"));
+		/* Enable filter option */
 		enableFilter = new JCheckBox("Source filtering enabled");
 		enableFilter.setSelected(CompareToken.getFilter());
 		filterPanel.add(enableFilter);
-		
+		/* Transform source code to lowercase option */
 		lowerCaseFilter = new JCheckBox("Source code to lowercase");
 		lowerCaseFilter.setSelected(CompareToken.getToLowerCase());
 		filterPanel.add(lowerCaseFilter);
 
 		optionsPanel.add(filterPanel);
 
+		/* ### TEXT COMPARATOR OPTIONS ### */
 		JPanel textCompPanel = new JPanel(new ParagraphLayout());
 		textCompPanel.setBorder(BorderFactory.createTitledBorder("Text comparator options"));
-
+		/* Text algorithms combobox */
 		switchAlgo = new JComboBox<IAlgorithm>(CompareToken.getAlgoList());
 		switchAlgo.setSelectedItem(CompareToken.getTextAlgorithm());
 //		switchAlgo.setMaximumSize(new Dimension(300, 20));
@@ -76,9 +80,14 @@ public class OptionsDialog extends JDialog implements ActionListener {
 
 		optionsPanel.add(textCompPanel);
 
+		/* ### SOURCE COMPARATOR OPTIONS ### */ 
 		JPanel sourceCompPanel = new JPanel(new ParagraphLayout());
 		sourceCompPanel.setBorder(BorderFactory.createTitledBorder("Source comparator options"));
-
+		/* Source parser combobox */
+		switchComp = new JComboBox<String>(CompareToken.getCompList());
+		switchComp.setSelectedItem(CompareToken.getSourceComparator());
+		sourceCompPanel.add(switchComp);
+		
 		optionsPanel.add(sourceCompPanel);
 
 		this.getContentPane().add(optionsPanel, BorderLayout.CENTER);
@@ -109,6 +118,7 @@ public class OptionsDialog extends JDialog implements ActionListener {
 		case "save": {
 			CompareToken.setFilter(enableFilter.isSelected());
 			CompareToken.setToLowerCase(lowerCaseFilter.isSelected());
+			CompareToken.setSourceComparator((String) switchComp.getSelectedItem());
 			CompareToken.setTextAlgorithm((IAlgorithm) switchAlgo.getSelectedItem());
 			this.dispose();
 			break;
