@@ -71,7 +71,7 @@ RBraces					= \]|\)|\}
 	{Operation}			{ return "Operation"; }
 	
 	/* literals */
-	{Number}			{ return "Number"; }
+	{Number}			{ return "NUM"; }
 	
 	/* identifiers */
 	{Register}			{ return "Register"; }

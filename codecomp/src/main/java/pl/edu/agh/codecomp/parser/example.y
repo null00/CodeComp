@@ -14,7 +14,9 @@ import java.util.StringTokenizer;
 %right '^' /* exponentiation */
 
 /* Grammar follows */
+
 %%
+
 input: /* empty string */
  | input line
  ;
@@ -32,6 +34,7 @@ exp: NUM { $$ = $1; }
  | exp '^' exp { $$ = new ParserVal(Math.pow($1.dval, $3.dval)); }
  | '(' exp ')' { $$ = $2; }
  ;
+ 
 %%
 
 String ins;

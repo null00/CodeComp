@@ -1,11 +1,10 @@
 /* === USERCODE SECTION === */
 
-package pl.edu.agh.codecomp.jflex;
+package pl.edu.agh.codecomp.lexer;
 
 /* JFlex example */
 
 import java_cup.sym;
-import java_cup.runtime.Symbol;
 
 /**
 * This class is an assembler lexer/scanner
@@ -16,22 +15,20 @@ import java_cup.runtime.Symbol;
 
 %public
 %class Scanner
+%implements IScanner
+%type String
 
 %unicode
 %line
 %column
-%cup
+%byaccj
 
 %{
 
 StringBuffer string = new StringBuffer();
 
-private Symbol symbol(int type) {
-	return new Symbol(type, yyline, yycolumn);
-}
-
-private Symbol symbol(int type, Object value) {
-	return new Symbol(type, yyline, yycolumn, value);
+private String symbol(int code, String label) {
+	return code + ": " + label;
 }
 
 %}
@@ -42,16 +39,13 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 
 /* comments */
 
-Comment 				= {TraditionalComment} | {EndOfLineComment} | {DocumentationComment} | {AssemblerComment}
+Comment 				= {TraditionalComment} | {AssemblerComment}
 CommentContent			= ( [^*] | \*+ [^/*] )*
 TraditionalComment 		= "/*" [^*] ~"*/" | "/*" "*"+ "/"
-EndOfLineComment		= "//" {InputCharacter}* {LineTerminator}
-DocumentationComment	= "/**" {CommentContent} "*"+ "/"
 
 Identifier				= [:letter:]*[:digit:]*
 DecIntegerLiteral		= "'"? [:digit:]* "'"?
-/*('+[0-9]*'+)|([0-9]*)*/
-
+HexLiteral				= (0x)?[0-9a-fA-F:]+(H|h)?
 
 /* ASSEMBLER SPECIFICS */
 
@@ -101,10 +95,11 @@ RBraces					= \]|\)|\}
 	
 	/* literals */
 	{DecIntegerLiteral}	{ return symbol(sym.NONTERMINAL, "Number"); }
+	{HexLiteral}		{ return symbol(sym.NONTERMINAL, "HexNumber"); }
 	
 	/* identifiers */
 	{Register}			{ return symbol(sym.TERMINAL, "Register"); }
-	{Label}				{ return symbol(666, "Label"); }
+	{Label}				{ return symbol(sym.NONTERMINAL, "Label"); }
 	{Identifier}		{ return symbol(sym.ID, "ID"); }
 	
 	\"					{ string.setLength(0); yybegin(STRING); }
