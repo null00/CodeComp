@@ -21,17 +21,10 @@
 package pl.edu.agh.codecomp.parser;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-
-import pl.edu.agh.codecomp.comparator.CompareToken;
 import pl.edu.agh.codecomp.lexer.IScanner;
-import pl.edu.agh.codecomp.lexer.Scanner;
-import pl.edu.agh.codecomp.lexer.SimpleScanner;
 
-//#line 32 "Parser.java"
+//#line 25 "Parser.java"
 
 
 
@@ -285,45 +278,17 @@ final static String yyrule[] = {
 "exp : NUM",
 };
 
-//#line 40 "parser.y"
+//#line 33 "parser.y"
 
 /* === PROGRAM === */
 
 	private RSyntaxTextArea left, right;
 	private IScanner scanner;
 
-	public Parser(RSyntaxTextArea left, RSyntaxTextArea right) {
+	public Parser(RSyntaxTextArea left, RSyntaxTextArea right, IScanner scanner) {
 		this.left = left;
 		this.right = right;
-		this.scanner = getComparator();
-	}
-
-	private IScanner getComparator() {
-		IScanner scanner = null;
-		Reader reader = new StringReader(left.getText());
-
-		try {
-
-			switch (CompareToken.getSourceComparator().toLowerCase()) {
-			case "simple": {
-				scanner = new SimpleScanner(reader);
-				break;
-			}
-			case "full": {
-				scanner = new Scanner(reader);
-				break;
-			}
-			default: {
-				scanner = new SimpleScanner(reader);
-				break;
-			}
-			}
-
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-
-		return scanner;
+		this.scanner = scanner;
 	}
 
 	void yyerror(String s) {
@@ -337,13 +302,14 @@ final static String yyrule[] = {
 			String s = scanner.yylex();
 			if(s == null) return 0;
 			System.out.println("tok:" + s);
+			right.append(s + ": " + scanner.yytext() + "\n");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return tok;
 	}
-//#line 275 "Parser.java"
+//#line 240 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -498,14 +464,14 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 4:
-//#line 34 "parser.y"
+//#line 27 "parser.y"
 { System.out.println(" " + val_peek(1).dval + " "); }
 break;
 case 5:
-//#line 37 "parser.y"
+//#line 30 "parser.y"
 { System.out.println(" >>> " + val_peek(0) + " <<< "); }
 break;
-//#line 432 "Parser.java"
+//#line 397 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

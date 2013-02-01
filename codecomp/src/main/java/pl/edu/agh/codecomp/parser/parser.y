@@ -5,15 +5,8 @@
 package pl.edu.agh.codecomp.parser;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-
-import pl.edu.agh.codecomp.comparator.CompareToken;
 import pl.edu.agh.codecomp.lexer.IScanner;
-import pl.edu.agh.codecomp.lexer.Scanner;
-import pl.edu.agh.codecomp.lexer.SimpleScanner;
 
 %}
 
@@ -43,38 +36,10 @@ line: '\n'
 	private RSyntaxTextArea left, right;
 	private IScanner scanner;
 
-	public Parser(RSyntaxTextArea left, RSyntaxTextArea right) {
+	public Parser(RSyntaxTextArea left, RSyntaxTextArea right, IScanner scanner) {
 		this.left = left;
 		this.right = right;
-		this.scanner = getComparator();
-	}
-
-	private IScanner getComparator() {
-		IScanner scanner = null;
-		Reader reader = new StringReader(left.getText());
-
-		try {
-
-			switch (CompareToken.getSourceComparator().toLowerCase()) {
-			case "simple": {
-				scanner = new SimpleScanner(reader);
-				break;
-			}
-			case "full": {
-				scanner = new Scanner(reader);
-				break;
-			}
-			default: {
-				scanner = new SimpleScanner(reader);
-				break;
-			}
-			}
-
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-
-		return scanner;
+		this.scanner = scanner;
 	}
 
 	void yyerror(String s) {
