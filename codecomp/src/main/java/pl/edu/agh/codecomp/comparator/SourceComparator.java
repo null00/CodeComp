@@ -6,7 +6,6 @@ import java.io.StringReader;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import pl.edu.agh.codecomp.lexer.IScanner;
-import pl.edu.agh.codecomp.lexer.Scanner;
 import pl.edu.agh.codecomp.lexer.SimpleScanner;
 import pl.edu.agh.codecomp.parser.Parser;
 
@@ -30,7 +29,7 @@ public class SourceComparator extends IComparator {
 
 	private void compare() {
 		this.scanner = getScanner();
-		Parser parser = new Parser(left, right, scanner);
+		Parser parser = new Parser(left, right, scanner/*, true*/);
 		parser.run();
 	}
 	
@@ -45,10 +44,10 @@ public class SourceComparator extends IComparator {
 				scanner = new SimpleScanner(reader);
 				break;
 			}
-			case "full": {
+			/*case "full": {
 				scanner = new Scanner(reader);
 				break;
-			}
+			}*/
 			default: {
 				scanner = new SimpleScanner(reader);
 				break;

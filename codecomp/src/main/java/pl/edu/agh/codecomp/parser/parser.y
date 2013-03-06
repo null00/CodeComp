@@ -10,10 +10,7 @@ import pl.edu.agh.codecomp.lexer.IScanner;
 
 %}
 
-%token NUM
-%right '='
-%left '-' '+'
-%left '*' '/'
+%token TEXT, NUM, OP, REG, LAB, ID, EQ, COMMA, APOSTROPHE, LBRACE, RBRACE
 
 %%
 
@@ -24,10 +21,42 @@ input: /* empty string */
  ;
 
 line: '\n'
- | exp '\n' { System.out.println(" " + $1.dval + " "); }
+ | exp { System.out.println(" < " + $1 + " "); }
+ | exp '\n' { System.out.println(" < " + $1 + " "); }
  ;
  
- exp: NUM { System.out.println(" >>> " + $1 + " <<< "); }
+exp: NUM { System.out.println(" >>> " + $1 + " <<< "); }
+ | OP { System.out.println(" > " + $1 + " < "); }
+ | LAB { System.out.println(" > " + $1 + " < "); }
+ | REG { System.out.println(" > " + $1 + " < "); }
+ | ID { System.out.println(" > " + $1 + " < "); }
+ | EQ { System.out.println(" > " + $1 + " < "); }
+ | COMMA { System.out.println(" > " + $1 + " < "); }
+ | APOSTROPHE { System.out.println(" > " + $1 + " < "); }
+ | LBRACE { System.out.println(" > " + $1 + " < "); }
+ | RBRACE { System.out.println(" > " + $1 + " < "); }
+ | TEXT { System.out.println(" > " + $1.dval + " < "); }
+ ;
+
+/*
+op_mov:
+ ;
+ 
+op_jmp:
+ ;
+ 
+op_arithmetic:
+ ;
+ 
+op_logic:
+ ;
+ 
+op_transfer:
+ ;
+
+op_misc: 
+ ;
+*/
 
 %%
 
@@ -41,21 +70,28 @@ line: '\n'
 		this.right = right;
 		this.scanner = scanner;
 	}
+	
+	public Parser(RSyntaxTextArea left, RSyntaxTextArea right, IScanner scanner, boolean debugMe) {
+        this.left = left;
+        this.right = right;
+        this.scanner = scanner;
+        this.yydebug = debugMe;
+    }
 
 	void yyerror(String s) {
-		System.err.println("par:" + s);
+		System.err.println("parser: " + s);
 	}
 
 	// TODO:
 	private int yylex() {
-		int tok = 10;
+		int tok = -1;
 		try {
-			String s = scanner.yylex();
-			if(s == null) return 0;
-			System.out.println("tok:" + s);
+			tok = scanner.yylex();
+			right.append("tok: " + yyname[tok] + ": '" + scanner.yytext() + "'\n");
+			System.out.println(right.getText());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 		return tok;
 	}

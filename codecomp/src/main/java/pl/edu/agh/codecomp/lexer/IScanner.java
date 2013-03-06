@@ -6,6 +6,6 @@ public interface IScanner {
 
 	public String yytext();
 
-	public String yylex() throws IOException;
+	public int yylex() throws IOException;
 
 }

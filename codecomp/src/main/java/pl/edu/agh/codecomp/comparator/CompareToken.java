@@ -11,7 +11,7 @@ public class CompareToken {
 	
 	private static IAlgorithm[] algoList = { new BoyerMoore(), new KarpRabin() };
 	private static IAlgorithm textAlgorithm;
-	private static String[] compList = { "Simple", "Full" };
+	private static String[] compList = { "Simple" };
 	private static String sourceComparator;
 	static {
 		textAlgorithm = algoList[0];

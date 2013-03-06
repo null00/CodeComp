@@ -162,35 +162,50 @@ final ParserVal dup_yyval(ParserVal val)
   return dup;
 }
 //#### end semantic value section ####
-public final static short NUM=257;
+public final static short TEXT=257;
+public final static short NUM=258;
+public final static short OP=259;
+public final static short REG=260;
+public final static short LAB=261;
+public final static short ID=262;
+public final static short EQ=263;
+public final static short COMMA=264;
+public final static short APOSTROPHE=265;
+public final static short LBRACE=266;
+public final static short RBRACE=267;
 public final static short YYERRCODE=256;
 final static short yylhs[] = {                           -1,
-    0,    0,    1,    1,    2,
+    0,    0,    1,    1,    1,    2,    2,    2,    2,    2,
+    2,    2,    2,    2,    2,    2,
 };
 final static short yylen[] = {                            2,
-    0,    2,    1,    2,    1,
+    0,    2,    1,    1,    2,    1,    1,    1,    1,    1,
+    1,    1,    1,    1,    1,    1,
 };
 final static short yydefred[] = {                         1,
-    0,    5,    3,    2,    0,    4,
+    0,   16,    6,    7,    9,    8,   10,   11,   12,   13,
+   14,   15,    3,    2,    0,    5,
 };
 final static short yydgoto[] = {                          1,
-    4,    5,
+   14,   15,
 };
 final static short yysindex[] = {                         0,
-  -10,    0,    0,    0,   -9,    0,
+  -10,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,   -8,    0,
 };
 final static short yyrindex[] = {                         0,
-    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    1,    0,
 };
 final static short yygindex[] = {                         0,
     0,    0,
 };
-final static int YYTABLESIZE=247;
+final static int YYTABLESIZE=268;
 static short yytable[];
 static { yytable();}
 static void yytable(){
-yytable = new short[]{                          3,
-    6,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+yytable = new short[]{                         13,
+    4,   16,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -214,14 +229,16 @@ yytable = new short[]{                          3,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    2,
+    0,    0,    0,    0,    0,    0,    2,    3,    4,    5,
+    6,    7,    8,    9,   10,   11,   12,    4,    4,    4,
+    4,    4,    4,    4,    4,    4,    4,    4,
 };
 }
 static short yycheck[];
 static { yycheck(); }
 static void yycheck() {
 yycheck = new short[] {                         10,
-   10,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+    0,   10,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
@@ -245,17 +262,16 @@ yycheck = new short[] {                         10,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,   -1,   -1,   -1,   -1,  257,
+   -1,   -1,   -1,   -1,   -1,   -1,  257,  258,  259,  260,
+  261,  262,  263,  264,  265,  266,  267,  257,  258,  259,
+  260,  261,  262,  263,  264,  265,  266,  267,
 };
 }
 final static short YYFINAL=1;
-final static short YYMAXTOKEN=257;
+final static short YYMAXTOKEN=267;
 final static String yyname[] = {
 "end-of-file",null,null,null,null,null,null,null,null,null,"'\\n'",null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
-null,null,null,null,null,null,null,null,null,null,null,null,null,"'*'","'+'",
-null,"'-'",null,"'/'",null,null,null,null,null,null,null,null,null,null,null,
-null,null,"'='",null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
@@ -267,18 +283,33 @@ null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
-null,null,null,null,null,null,null,"NUM",
+null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
+null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
+null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
+null,null,null,null,"TEXT","NUM","OP","REG","LAB","ID","EQ","COMMA",
+"APOSTROPHE","LBRACE","RBRACE",
 };
 final static String yyrule[] = {
 "$accept : input",
 "input :",
 "input : input line",
 "line : '\\n'",
+"line : exp",
 "line : exp '\\n'",
 "exp : NUM",
+"exp : OP",
+"exp : LAB",
+"exp : REG",
+"exp : ID",
+"exp : EQ",
+"exp : COMMA",
+"exp : APOSTROPHE",
+"exp : LBRACE",
+"exp : RBRACE",
+"exp : TEXT",
 };
 
-//#line 33 "parser.y"
+//#line 62 "parser.y"
 
 /* === PROGRAM === */
 
@@ -290,26 +321,32 @@ final static String yyrule[] = {
 		this.right = right;
 		this.scanner = scanner;
 	}
+	
+	public Parser(RSyntaxTextArea left, RSyntaxTextArea right, IScanner scanner, boolean debugMe) {
+        this.left = left;
+        this.right = right;
+        this.scanner = scanner;
+        this.yydebug = debugMe;
+    }
 
 	void yyerror(String s) {
-		System.err.println("par:" + s);
+		System.err.println("parser: " + s);
 	}
 
 	// TODO:
 	private int yylex() {
-		int tok = 10;
+		int tok = -1;
 		try {
-			String s = scanner.yylex();
-			if(s == null) return 0;
-			System.out.println("tok:" + s);
-			right.append(s + ": " + scanner.yytext() + "\n");
+			tok = scanner.yylex();
+			right.append("tok: " + yyname[tok] + ": '" + scanner.yytext() + "'\n");
+			System.out.println(right.getText());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 		return tok;
 	}
-//#line 240 "Parser.java"
+//#line 278 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -464,14 +501,58 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 4:
-//#line 27 "parser.y"
-{ System.out.println(" " + val_peek(1).dval + " "); }
+//#line 24 "parser.y"
+{ System.out.println(" < " + val_peek(0) + " "); }
 break;
 case 5:
-//#line 30 "parser.y"
+//#line 25 "parser.y"
+{ System.out.println(" < " + val_peek(1) + " "); }
+break;
+case 6:
+//#line 28 "parser.y"
 { System.out.println(" >>> " + val_peek(0) + " <<< "); }
 break;
-//#line 397 "Parser.java"
+case 7:
+//#line 29 "parser.y"
+{ System.out.println(" > " + val_peek(0) + " < "); }
+break;
+case 8:
+//#line 30 "parser.y"
+{ System.out.println(" > " + val_peek(0) + " < "); }
+break;
+case 9:
+//#line 31 "parser.y"
+{ System.out.println(" > " + val_peek(0) + " < "); }
+break;
+case 10:
+//#line 32 "parser.y"
+{ System.out.println(" > " + val_peek(0) + " < "); }
+break;
+case 11:
+//#line 33 "parser.y"
+{ System.out.println(" > " + val_peek(0) + " < "); }
+break;
+case 12:
+//#line 34 "parser.y"
+{ System.out.println(" > " + val_peek(0) + " < "); }
+break;
+case 13:
+//#line 35 "parser.y"
+{ System.out.println(" > " + val_peek(0) + " < "); }
+break;
+case 14:
+//#line 36 "parser.y"
+{ System.out.println(" > " + val_peek(0) + " < "); }
+break;
+case 15:
+//#line 37 "parser.y"
+{ System.out.println(" > " + val_peek(0) + " < "); }
+break;
+case 16:
+//#line 38 "parser.y"
+{ System.out.println(" > " + val_peek(0) + " < "); }
+break;
+//#line 479 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
