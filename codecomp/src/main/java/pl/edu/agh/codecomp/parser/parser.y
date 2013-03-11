@@ -10,7 +10,8 @@ import pl.edu.agh.codecomp.lexer.IScanner;
 
 %}
 
-%token TEXT, NUM, OP, REG, LAB, ID, EQ, COMMA, APOSTROPHE, LBRACE, RBRACE
+%start input 
+%token TEXT, NUM, OP_MOV, OP_AR, OP_LOG, OP_MISC, OP_JMP, REG, LAB, ID, EQ, COMMA, APOSTROPHE, LBRACE, RBRACE
 
 %%
 
@@ -21,42 +22,33 @@ input: /* empty string */
  ;
 
 line: '\n'
- | exp { System.out.println(" < " + $1 + " "); }
- | exp '\n' { System.out.println(" < " + $1 + " "); }
- ;
- 
-exp: NUM { System.out.println(" >>> " + $1 + " <<< "); }
- | OP { System.out.println(" > " + $1 + " < "); }
- | LAB { System.out.println(" > " + $1 + " < "); }
- | REG { System.out.println(" > " + $1 + " < "); }
- | ID { System.out.println(" > " + $1 + " < "); }
- | EQ { System.out.println(" > " + $1 + " < "); }
- | COMMA { System.out.println(" > " + $1 + " < "); }
- | APOSTROPHE { System.out.println(" > " + $1 + " < "); }
- | LBRACE { System.out.println(" > " + $1 + " < "); }
- | RBRACE { System.out.println(" > " + $1 + " < "); }
- | TEXT { System.out.println(" > " + $1.dval + " < "); }
+ | exp { System.out.println(" # " + $1.sval + " "); }
  ;
 
-/*
-op_mov:
+exp: NUM			 		{ $$ = $1; }
+ | OP_MOV			 		{ $$ = $1; }
+ | OP_JMP			 		{ $$ = $1; }
+ | OP_LOG			 		{ $$ = $1; }
+ | OP_MISC			 		{ $$ = $1; }
+ | OP_AR			 		{ $$ = $1; }
+ | LAB 				 		{ $$ = $1; }
+ | REG				 		{ $$ = $1; }
+ | EQ 				 		{ $$ = $1; }
+ | COMMA 			 		{ $$ = $1; }
+ | ID 				 		{ $$ = $1; }
+ | APOSTROPHE 		 		{ $$ = $1; }
+ | LBRACE 			 		{ $$ = $1; }
+ | RBRACE 			 		{ $$ = $1; }
+ | TEXT 					{ $$ = $1; }
+ | OP_MOV REG				{ $$ = new ParserVal("OP_MOV 1: " + $1.sval + " " + $2.sval); }
+ | OP_JMP LAB 				{ $$ = new ParserVal("OP_JMP 1: " + $1.sval + " " + $2.sval); }
+ | ID OP_AR ID		 		{ $$ = new ParserVal("OP_AR 1: " + $1.sval + " " + $2.sval + " " + $3.sval); }
+ | ID OP_AR NUM		 		{ $$ = new ParserVal("OP_AR 2: " + $1.sval + " " + $2.sval + " " + $3.sval); }
+ | REG OP_AR NUM		 	{ $$ = new ParserVal("OP_AR 3: " + $1.sval + " " + $2.sval + " " + $3.sval); }
+ | OP_MOV REG COMMA NUM  	{ $$ = new ParserVal("OP_MOV 1: " + $1.sval + " " + $2.sval + " " + $3.sval + " " + $4.sval); }
+ | OP_MOV REG COMMA ID 	 	{ $$ = new ParserVal("OP_MOV 2: " + $1.sval + " " + $2.sval + " " + $3.sval + " " + $4.sval); }
+ | '[' exp ']' 		 		{ $$ = $2; }
  ;
- 
-op_jmp:
- ;
- 
-op_arithmetic:
- ;
- 
-op_logic:
- ;
- 
-op_transfer:
- ;
-
-op_misc: 
- ;
-*/
 
 %%
 
@@ -87,8 +79,10 @@ op_misc:
 		int tok = -1;
 		try {
 			tok = scanner.yylex();
-			right.append("tok: " + yyname[tok] + ": '" + scanner.yytext() + "'\n");
-			System.out.println(right.getText());
+			yylval = new ParserVal(scanner.yytext());
+			String tmp = "tok: " + yyname[tok] + ": '" + scanner.yytext() + "'";
+			right.append(tmp + "\n");
+			System.out.println(tmp);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());
