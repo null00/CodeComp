@@ -12,13 +12,13 @@ public class CompareAction implements ActionListener {//, CaretListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		CodeCompGUI.getRightText().setText("");
 		switch(action) {
 		case "text": {
 			compareTextAction();
 			break;
 		}
 		case "source": {
+		    CodeCompGUI.getRightText().setText("");
 			compareSourceAction();
 			break;
 		}
