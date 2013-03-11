@@ -78,9 +78,14 @@ RBraces					= \]|\)|\}
 /*	"?"					{ return Parser.QMARK; }*/
 	
 	/* operations */
-	{LBraces}			{ return Parser.LBRACE; }
-	{RBraces}			{ return Parser.RBRACE; }
-	{Operation}			{ return Parser.OP; }
+	{LBraces}			{  }
+	{RBraces}			{  }
+	/*{Operation}		{ return Parser.OP; }*/
+	{Arithmetic}		{ return Parser.OP_AR; }
+	{Transfer}			{ return Parser.OP_MOV; }
+	{Misc}				{ return Parser.OP_MISC; }
+	{Logic}				{ return Parser.OP_LOG; }
+	{Jump}				{ return Parser.OP_MOV; }
 	
 	/* literals */
 	{Number}			{ return Parser.NUM; }
