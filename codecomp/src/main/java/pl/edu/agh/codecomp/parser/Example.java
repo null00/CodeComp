@@ -328,48 +328,43 @@ boolean newline;
       return tok;
   }
 
-void dotest()
-{
-BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-System.out.println("BYACC/J Calculator Demo");
-System.out.println("Note: Since this example uses the StringTokenizer");
-System.out.println("for simplicity, you will need to separate the items");
-System.out.println("with spaces, i.e.: '( 3 + 5 ) * 2'");
-while (true)
-{
-System.out.print("expression:");
-try
-{
-ins = in.readLine();
-}
-catch (Exception e)
-{
-}
-st = new StringTokenizer(ins);
-newline=false;
-yyparse();
-}
-}
+    void dotest() {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("BYACC/J Calculator Demo");
+        System.out.println("Note: Since this example uses the StringTokenizer");
+        System.out.println("for simplicity, you will need to separate the items");
+        System.out.println("with spaces, i.e.: '( 3 + 5 ) * 2'");
+        while (true) {
+            System.out.print("expression:");
+            try {
+                ins = in.readLine();
+            } catch (Exception e) {
+            }
+            st = new StringTokenizer(ins);
+            newline = false;
+            yyparse();
+        }
+    }
 
-public static void main(String args[])
-{
-Example par = new Example(false);
-par.dotest();
-}
-//#line 292 "Parser.java"
-//###############################################################
-//method: yylexdebug : check lexer state
-//###############################################################
-void yylexdebug(int state,int ch)
-{
-String s=null;
-if (ch < 0) ch=0;
-if (ch <= YYMAXTOKEN) //check index bounds
-   s = yyname[ch];    //now get it
-if (s==null)
-  s = "illegal-symbol";
-debug("state "+state+", reading "+ch+" ("+s+")");
-}
+    public static void main(String args[]) {
+        Example par = new Example(false);
+        par.dotest();
+    }
+
+    // #line 292 "Parser.java"
+    // ###############################################################
+    // method: yylexdebug : check lexer state
+    // ###############################################################
+    void yylexdebug(int state, int ch) {
+        String s = null;
+        if (ch < 0)
+            ch = 0;
+        if (ch <= YYMAXTOKEN) // check index bounds
+            s = yyname[ch]; // now get it
+        if (s == null)
+            s = "illegal-symbol";
+        debug("state " + state + ", reading " + ch + " (" + s + ")");
+    }
 
 
 

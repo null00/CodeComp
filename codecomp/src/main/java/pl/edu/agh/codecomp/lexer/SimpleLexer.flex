@@ -52,11 +52,13 @@ DecLiteral				= "'"? [:digit:]* "'"?
 HexLiteral				= (0x)?[0-9a-fA-F:]+(H|h)?
 
 Operation				= {Arithmetic} | {Transfer} | {Misc} | {Logic} | {Jump}
-Arithmetic				= [\+\-\/\*]|cmp|add|sub|sbb|div|idiv|mul|imul|inc|dec|sal|sar|rcl|rcr|rol|ror
+Arithmetic				= /*[\+\-\/\*]|*/cmp|add|sub|sbb|div|idiv|mul|imul|inc|dec|sal|sar|rcl|rcr|rol|ror
 Transfer				= mov|push|pushf|pusha|pop|popf|popa|in|out|xchg|stc|clc|cmc|std|cld|sti|cli|cbw|cwd|cwde
-Misc					= nop|lea|int
+Misc					= nop|lea|int|rep|repne|repe
 Logic					= and|or|xor|not|neg
 Jump					= call|jmp|je|jz|jcxz|jp|jpe|ret|jne|jnz|jecxz|jnp|jpo
+Store					= stosw|stosb|stosd
+Compare					= scas|scasb|scasw|scasd
 
 LBraces					= \[|\(|\{
 RBraces					= \]|\)|\}
@@ -85,7 +87,9 @@ RBraces					= \]|\)|\}
 	{Transfer}			{ return Parser.OP_MOV; }
 	{Misc}				{ return Parser.OP_MISC; }
 	{Logic}				{ return Parser.OP_LOG; }
-	{Jump}				{ return Parser.OP_MOV; }
+	{Jump}				{ return Parser.OP_JMP; }
+	{Store}				{ return Parser.OP_STO; }
+	{Compare}			{ return Parser.OP_COMP; }
 	
 	/* literals */
 	{Number}			{ return Parser.NUM; }
@@ -99,6 +103,16 @@ RBraces					= \]|\)|\}
 	
 	/* whitespace */	
 	{WhiteSpace}		{ /* ignore */ }
+	
+	/* operators */
+	"+" |
+	"-" |
+	"*" |
+	"/" |
+	"[" |
+	"]" |
+	{LBraces} |
+	{RBraces} { return (int) yycharat(0); }
 	
 }
 
