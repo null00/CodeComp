@@ -53,7 +53,8 @@ HexLiteral				= (0x)?[0-9a-fA-F:]+(H|h)?
 
 Operation				= {Arithmetic} | {Transfer} | {Misc} | {Logic} | {Jump}
 Arithmetic				= /*[\+\-\/\*]|*/cmp|add|sub|sbb|div|idiv|mul|imul|inc|dec|sal|sar|rcl|rcr|rol|ror
-Transfer				= mov|push|pushf|pusha|pop|popf|popa|in|out|xchg|stc|clc|cmc|std|cld|sti|cli|cbw|cwd|cwde
+SingleTransfer			= clc|cmc|cld|cli
+Transfer				= mov|push|pushf|pusha|pop|popf|popa|in|out|xchg|stc|std|sti|cbw|cwd|cwde
 Misc					= nop|lea|int|rep|repne|repe
 Logic					= and|or|xor|not|neg
 Jump					= call|jmp|je|jz|jcxz|jp|jpe|ret|jne|jnz|jecxz|jnp|jpo
@@ -85,6 +86,7 @@ RBraces					= \]|\)|\}
 	/*{Operation}		{ return Parser.OP; }*/
 	{Arithmetic}		{ return Parser.OP_AR; }
 	{Transfer}			{ return Parser.OP_MOV; }
+	{SingleTransfer}	{ return Parser.OP_SMOV; }	
 	{Misc}				{ return Parser.OP_MISC; }
 	{Logic}				{ return Parser.OP_LOG; }
 	{Jump}				{ return Parser.OP_JMP; }
