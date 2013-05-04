@@ -18,7 +18,6 @@ public class CompareAction implements ActionListener {//, CaretListener {
 			break;
 		}
 		case "source": {
-		    CodeCompGUI.getRightText().setText("");
 			compareSourceAction();
 			break;
 		}

@@ -12,7 +12,7 @@ import pl.edu.agh.codecomp.tree.Node;
 
 public class SourceComparator extends IComparator {
     
-    private Node<String, String> tree;
+    private Node<String, String> treeLeft, treeRight;
     private final String indent = "\t";
 	
 	public SourceComparator(RSyntaxTextArea left, RSyntaxTextArea right) {
@@ -32,16 +32,15 @@ public class SourceComparator extends IComparator {
 	 */
 
 	private void compare() {
-		this.scanner = getScanner();
-		Parser parser = new Parser(left, right, scanner/*, true*/);
-		parser.run();
-		tree = parser.getTree();
-		System.out.println(printTree(tree, ""));
+		treeLeft = getTree(left);
+		treeRight = getTree(right);
+		
+		System.out.println(treeLeft.equals(treeRight));
 	}
 	
-	private IScanner getScanner() {
+	private IScanner getScanner(String sourceCode) {
 		IScanner scanner = null;
-		Reader reader = new StringReader(left.getText());
+		Reader reader = new StringReader(sourceCode);
 
 		try {
 
@@ -65,6 +64,13 @@ public class SourceComparator extends IComparator {
 		}
 
 		return scanner;
+	}
+	
+	private Node<String, String> getTree(RSyntaxTextArea source) {
+	    IScanner scanner = getScanner(source.getText());
+        Parser parser = new Parser(source, scanner/*, true*/);
+        parser.run();
+        return parser.getTree();
 	}
 	
 	private String printTree(Node<String, String> node, String space) {
