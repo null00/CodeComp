@@ -620,18 +620,17 @@ final static String yyrule[] = {
 
 /* === PROGRAM === */
 
-	private RSyntaxTextArea left, right;
+	private RSyntaxTextArea source;
 	private IScanner scanner;
 	private Node<String,String> root = new Node<String, String>("TREE", "ROOT");
 
-	public Parser(RSyntaxTextArea left, RSyntaxTextArea right, IScanner scanner) {
-		this.left = left;
-		this.right = right;
+	public Parser(RSyntaxTextArea source, IScanner scanner) {
+		this.source = source;
 		this.scanner = scanner;
 	}
 	
-	public Parser(RSyntaxTextArea left, RSyntaxTextArea right, IScanner scanner, boolean debugMe) {
-        this(left, right, scanner);
+	public Parser(RSyntaxTextArea source, IScanner scanner, boolean debugMe) {
+        this(source, scanner);
         this.yydebug = debugMe;
     }
 
@@ -644,12 +643,7 @@ final static String yyrule[] = {
 		int tok = -1;
 		try {
 			tok = scanner.yylex();
-			
 			yylval = new ParserVal(new Node<String, String>(yyname[tok], scanner.yytext()));
-			
-			String tmp = "tok: " + yyname[tok] + ": '" + scanner.yytext() + "'";
-			right.append(tmp + "\n");
-			//System.out.println(yyname[tok]);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());
@@ -660,7 +654,7 @@ final static String yyrule[] = {
  	public Node<String,String> getTree() {
  		return root;
  	}
-//#line 592 "Parser.java"
+//#line 586 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -1277,7 +1271,7 @@ case 68:
 //#line 325 "parser.y"
 { yyval = val_peek(0); }
 break;
-//#line 1204 "Parser.java"
+//#line 1198 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

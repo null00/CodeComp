@@ -329,18 +329,17 @@ func:
 
 /* === PROGRAM === */
 
-	private RSyntaxTextArea left, right;
+	private RSyntaxTextArea source;
 	private IScanner scanner;
 	private Node<String,String> root = new Node<String, String>("TREE", "ROOT");
 
-	public Parser(RSyntaxTextArea left, RSyntaxTextArea right, IScanner scanner) {
-		this.left = left;
-		this.right = right;
+	public Parser(RSyntaxTextArea source, IScanner scanner) {
+		this.source = source;
 		this.scanner = scanner;
 	}
 	
-	public Parser(RSyntaxTextArea left, RSyntaxTextArea right, IScanner scanner, boolean debugMe) {
-        this(left, right, scanner);
+	public Parser(RSyntaxTextArea source, IScanner scanner, boolean debugMe) {
+        this(source, scanner);
         this.yydebug = debugMe;
     }
 
@@ -353,12 +352,7 @@ func:
 		int tok = -1;
 		try {
 			tok = scanner.yylex();
-			
 			yylval = new ParserVal(new Node<String, String>(yyname[tok], scanner.yytext()));
-			
-			String tmp = "tok: " + yyname[tok] + ": '" + scanner.yytext() + "'";
-			right.append(tmp + "\n");
-			//System.out.println(yyname[tok]);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());

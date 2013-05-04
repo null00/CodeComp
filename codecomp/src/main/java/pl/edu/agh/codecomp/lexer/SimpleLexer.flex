@@ -27,15 +27,6 @@ import pl.edu.agh.codecomp.parser.Parser;
 
 StringBuffer string = new StringBuffer();
 
-/* store a reference to the parser object */
-private Parser yyparser;
-
-/* constructor taking an additional parser object */
-public SimpleScanner(java.io.Reader r, Parser yyparser) {
-	this(r);
-	this.yyparser = yyparser;
-}
-
 %}
 
 LineTerminator			= \r|\n|\r\n
