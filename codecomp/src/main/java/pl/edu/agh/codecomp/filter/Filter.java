@@ -23,7 +23,7 @@ public class Filter {
 			}
 			String temp = "";
 			for (char c : line.trim().toCharArray()) {
-				if (c == ';') {
+				if (c == ';' || c == '?') {
 					break;
 				} else {
 					temp += c;

@@ -36,7 +36,6 @@ public class CCFileReader {
 				output.append((char) c);
 			}
 		} catch (Exception ex) {
-			//TODO: LOGGER
 			ex.printStackTrace();
 		}
 		return output.toString(); 

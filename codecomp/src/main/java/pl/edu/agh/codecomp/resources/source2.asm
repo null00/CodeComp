@@ -1,4 +1,4 @@
-A small program that calculates and prints terms of the Fibonacci series
+;A small program that calculates and prints terms of the Fibonacci series
 
 ; fibo.asm
 ; assemble using nasm:   

@@ -28,7 +28,7 @@ public class AddFilesDialog extends JDialog implements ActionListener {
 	private final String TITLE = "Add files to compare";
 	private final Dimension DIALOG_DIMENSION = new Dimension(600, 200);
 	private final Dimension BUTTON_DIMENSION = new Dimension(100, 25);
-	private final String PROJECT_PATH = System.getProperty("user.dir") + "/src/main/java/";
+	private final String PROJECT_PATH = System.getProperty("user.dir") + "/src/main/java/pl/edu/agh/codecomp/resources";
 
 	private JTextField leftFilePath, rightFilePath;
 	private File leftFile, rightFile;
@@ -116,6 +116,12 @@ public class AddFilesDialog extends JDialog implements ActionListener {
 		}
 		case "addFiles": {
 			try {
+			    if(leftFile == null) {
+			        leftFile = new File(leftFilePath.getText());
+			    }
+			    if(rightFile == null) {
+                    rightFile = new File(rightFilePath.getText());
+                }
 				CodeCompGUI.setLeftFile(CCFileReader.read(leftFile.getAbsolutePath()));
 				CodeCompGUI.setRightFile(CCFileReader.read(rightFile.getAbsolutePath()));
 				this.dispose();
