@@ -2,41 +2,57 @@ package pl.edu.agh.codecomp.tree;
 
 import java.util.LinkedList;
 
-class Node<T> {
-	private T data;
-	private Node<T> parent;
-	private LinkedList<Node<T>> children;
+public class Node<K,V> {
+	private K key;
+	private V value;
+	private Node<K,V> parent;
+	private LinkedList<Node<K,V>> children;
 
 	public Node() {
 		parent = null;
-		children = new LinkedList<Node<T>>();
+		children = new LinkedList<Node<K,V>>();
 	}
+	
+	public Node(K key, V value) {
+        this();
+        this.key = key;
+        this.value = value;
+    }
 
-	public Node(Node<T> parent) {
+	public Node(Node<K,V> parent) {
 		this();
 		this.parent = parent;
 	}
 
-	public Node(Node<T> parent, T data) {
+	public Node(Node<K,V> parent, K key, V value) {
 		this(parent);
-		this.data = data;
+        this.key = key;
+        this.value = value;
 	}
 
-	public Node<T> getParent() {
+	public Node<K,V> getParent() {
 		return parent;
 	}
 
-	public void setParent(Node<T> parent) {
+	public void setParent(Node<K,V> parent) {
 		this.parent = parent;
 	}
 
-	public T getData() {
-		return data;
+	public K getKey() {
+		return key;
 	}
 
-	public void setData(T data) {
-		this.data = data;
+	public void setKey(K key) {
+		this.key = key;
 	}
+
+    public V getValue() {
+        return value;
+    }
+
+    public void setValue(V value) {
+        this.value = value;
+    }
 
 	public int getDegree() {
 		return children.size();
@@ -46,23 +62,23 @@ class Node<T> {
 		return children.isEmpty();
 	}
 
-	public Node<T> addChild(Node<T> child) {
+	public Node<K,V> addChild(Node<K,V> child) {
 		child.setParent(this);
 		children.add(child);
 		return child;
 	}
 
-	public Node<T> addChild(T data) {
-		Node<T> child = new Node<T>(this, data);
+	public Node<K,V> addChild(K key, V value) {
+		Node<K,V> child = new Node<K,V>(this, key, value);
 		children.add(child);
 		return child;
 	}
 
-	public Node<T> getChild(int i) {
+	public Node<K,V> getChild(int i) {
 		return children.get(i);
 	}
 
-	public Node<T> removeChild(int i) {
+	public Node<K,V> removeChild(int i) {
 		return children.remove(i);
 	}
 
@@ -70,19 +86,19 @@ class Node<T> {
 		children.clear();
 	}
 
-	public LinkedList<Node<T>> getChildren() {
+	public LinkedList<Node<K,V>> getChildren() {
 		return children;
 	}
 
-	public Node<T> getLeftMostChild() {
+	public Node<K,V> getLeftMostChild() {
 		if (children.isEmpty())
 			return null;
 		return children.get(0);
 	}
 
-	public Node<T> getRightSibling() {
+	public Node<K,V> getRightSibling() {
 		if (parent != null) {
-			LinkedList<Node<T>> parentsChildren = parent.getChildren();
+			LinkedList<Node<K,V>> parentsChildren = parent.getChildren();
 			int pos = parentsChildren.indexOf(this);
 			if (pos < (parentsChildren.size() - 1))
 				return parentsChildren.get(pos + 1);
@@ -91,6 +107,6 @@ class Node<T> {
 	}
 
 	public String toString() {
-		return data.toString();
+		return key.toString() + ": " + value.toString();
 	}
 }

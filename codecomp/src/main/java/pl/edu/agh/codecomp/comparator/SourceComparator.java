@@ -8,8 +8,12 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import pl.edu.agh.codecomp.lexer.IScanner;
 import pl.edu.agh.codecomp.lexer.SimpleScanner;
 import pl.edu.agh.codecomp.parser.Parser;
+import pl.edu.agh.codecomp.tree.Node;
 
 public class SourceComparator extends IComparator {
+    
+    private Node<String, String> tree;
+    private final String indent = "\t";
 	
 	public SourceComparator(RSyntaxTextArea left, RSyntaxTextArea right) {
 		super();
@@ -31,6 +35,8 @@ public class SourceComparator extends IComparator {
 		this.scanner = getScanner();
 		Parser parser = new Parser(left, right, scanner/*, true*/);
 		parser.run();
+		tree = parser.getTree();
+		System.out.println(printTree(tree, ""));
 	}
 	
 	private IScanner getScanner() {
@@ -59,6 +65,15 @@ public class SourceComparator extends IComparator {
 		}
 
 		return scanner;
+	}
+	
+	private String printTree(Node<String, String> node, String space) {
+	    String s = "";
+	    s = space + node.toString();
+	    for (Node<String, String> child : node.getChildren()) {
+	        s += "\n" + printTree(child, space + indent);
+	    }
+	    return s;
 	}
 
 }

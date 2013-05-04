@@ -7,12 +7,14 @@ package pl.edu.agh.codecomp.parser;
 import java.io.IOException;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import pl.edu.agh.codecomp.lexer.IScanner;
-import pl.edu.agh.codecomp.tree.*;
+import pl.edu.agh.codecomp.tree.Node;
+import java.util.LinkedList;
+import java.util.List;
 
 %}
 
 %start input 
-%token TEXT, NUM, OP_MOV, OP_SMOV, OP_AR, OP_LOG, OP_MISC, OP_JMP, OP_STO, OP_COMP, REG, LAB, ID, EQ, COMMA, APOSTROPHE
+%token TEXT, NUM, OP_MOV, OP_SMOV, OP_AR, OP_SAR, OP_LOG, OP_SLOG, OP_MISC, OP_JMP, OP_STO, OP_COMP, REG, LAB, ID, EQ, COMMA, APOSTROPHE
 %left '-' '+'
 %left '*' '/'
 %left NEG /* negation--unary minus */
@@ -27,7 +29,10 @@ input: /* empty string */
  ;
 
 line: '\n'
- | func { System.out.println(" # " + $1.sval + " "); }
+ | func 					{ 
+ 								Node<String,String> node = (Node<String, String>)$1.obj;
+ 								root.addChild(node);
+ 							}
  ;
  
 desc: LAB					{ $$ = $1; }
@@ -35,7 +40,43 @@ desc: LAB					{ $$ = $1; }
  | ID 				 		{ $$ = $1; }
  ;
 
-single: OP_SMOV				{ $$ = $1; };
+single: OP_SMOV				{ 
+								$$ = $1; 
+							}
+ | OP_SAR					{ 
+								$$ = $1; 
+							}
+ | OP_JMP desc				{ 
+								Node<String, String> node = new Node<String, String>(((Node<String, String>)$1.obj).getKey(), ((Node<String, String>)$1.obj).getValue());
+								node.addChild((Node)$2.obj);
+								$$ = new ParserVal(node);
+								//$$ = new ParserVal($1.sval + " " + $2.sval);
+							}
+ | OP_MISC OP_STO			{ 
+								Node<String, String> node = new Node<String, String>(((Node<String, String>)$1.obj).getKey(), ((Node<String, String>)$1.obj).getValue());
+								node.addChild((Node)$2.obj);
+								$$ = new ParserVal(node);
+								//$$ = new ParserVal($1.sval + " " + $2.sval);
+							}
+ | OP_SMOV desc				{ 
+								Node<String, String> node = new Node<String, String>(((Node<String, String>)$1.obj).getKey(), ((Node<String, String>)$1.obj).getValue());
+								node.addChild((Node)$2.obj);
+								$$ = new ParserVal(node);
+								//$$ = new ParserVal($1.sval + " " + $2.sval);
+							}
+ | OP_SLOG desc				{ 
+								Node<String, String> node = new Node<String, String>(((Node<String, String>)$1.obj).getKey(), ((Node<String, String>)$1.obj).getValue());
+								node.addChild((Node)$2.obj);
+								$$ = new ParserVal(node);
+								//$$ = new ParserVal($1.sval + " " + $2.sval);
+							}
+ | OP_MISC OP_COMP			{ 
+								Node<String, String> node = new Node<String, String>(((Node<String, String>)$1.obj).getKey(), ((Node<String, String>)$1.obj).getValue());
+								node.addChild((Node)$2.obj);
+								$$ = new ParserVal(node);
+								//$$ = new ParserVal($1.sval + " " + $2.sval);
+							}
+ ;
 
 num: NUM					{ $$ = $1; };
 
@@ -54,58 +95,232 @@ opers: '+'					{ $$ = $1; }
  | '/'						{ $$ = $1; }
  ;
  
-ops: exp desc				{ $$ = new ParserVal($1.sval + " " + $2.sval); }
- | exp exp					{ $$ = new ParserVal($1.sval + " " + $2.sval); }
- | exp num					{ $$ = new ParserVal($1.sval + " " + $2.sval); }
- | desc num					{ $$ = new ParserVal($1.sval + " " + $2.sval); }
+ops: exp ops				{ 
+								Node<String, String> node = new Node<String, String>(((Node<String, String>)$1.obj).getKey(), ((Node<String, String>)$1.obj).getValue());
+								node.addChild((Node)$2.obj);
+								$$ = new ParserVal(node);
+								//$$ = new ParserVal($1.sval + " " + $2.sval);
+							}
+ | exp num					{ 
+								Node<String, String> node = new Node<String, String>(((Node<String, String>)$1.obj).getKey(), ((Node<String, String>)$1.obj).getValue());
+								node.addChild((Node)$2.obj);
+								$$ = new ParserVal(node);
+								//$$ = new ParserVal($1.sval + " " + $2.sval);
+							}
+ | desc num					{ 
+								Node<String, String> node = new Node<String, String>(((Node<String, String>)$1.obj).getKey(), ((Node<String, String>)$1.obj).getValue());
+								node.addChild((Node)$2.obj);
+								$$ = new ParserVal(node);
+								//$$ = new ParserVal($1.sval + " " + $2.sval);
+							}
  
- | num opers num			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | num opers exp			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | num opers ops			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | num opers desc			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
+ | num opers num 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | num opers exp 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | num opers ops 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | num opers desc 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
  
- | exp opers exp			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | exp opers num			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); } 
- | exp opers ops			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | exp opers desc			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
+ | exp opers exp			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | exp opers num 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | exp opers ops 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | exp opers desc 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
  
- | ops opers ops 			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | ops opers num			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | ops opers exp			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | ops opers desc			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
+ | ops opers ops 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | ops opers num 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | ops opers exp 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | ops opers desc 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
  
- | desc opers desc			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | desc opers num			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | desc opers exp			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | desc opers ops			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
+ | desc opers desc 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | desc opers num 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | desc opers exp 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | desc opers ops 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
   
- | num COMMA num			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | num COMMA exp			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | num COMMA ops			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | num COMMA desc			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
+ | num COMMA num 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | num COMMA exp 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | num COMMA ops 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | num COMMA desc 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
  
- | exp COMMA num			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | exp COMMA exp			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | exp COMMA ops			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | exp COMMA desc			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
+ | exp COMMA num 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | exp COMMA exp 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | exp COMMA ops 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | exp COMMA desc 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
  
- | ops COMMA num			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | ops COMMA exp			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | ops COMMA ops			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | ops COMMA desc			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
+ | ops COMMA num 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | ops COMMA exp 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | ops COMMA ops 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | ops COMMA desc 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
  
- | desc COMMA num			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | desc COMMA exp			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | desc COMMA ops			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- | desc COMMA desc			{ $$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval); }
- 
- | '[' exp ']' 		 		{ $$ = $2; }
- | '[' ops ']' 		 		{ $$ = $2; }
+ | desc COMMA num 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | desc COMMA exp 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | desc COMMA ops 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+ | desc COMMA desc 			{ 
+ 								Node<String, String> node = new Node<String, String>(((Node<String, String>)$2.obj).getKey(), ((Node<String, String>)$2.obj).getValue());
+ 								node.addChild((Node)$1.obj); node.addChild((Node)$3.obj);
+ 								$$ = new ParserVal(node);
+ 								//$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);
+ 							}
+
+ | '[' exp ']' 				{ $$ = $2; }
+ | '[' ops ']' 				{ $$ = $2; }
  ;
  
 func:
- | single					{ $$ = $1; } // { list.add($1.sval); }
- | desc						{ $$ = $1; } // { list.add($1.sval); }
+ | single					{ $$ = $1; }
+ | desc						{ $$ = $1; }
  | exp						{ $$ = $1; }
  | ops						{ $$ = $1; }
  ;
@@ -116,14 +331,12 @@ func:
 
 	private RSyntaxTextArea left, right;
 	private IScanner scanner;
-	private Node root;
-	private List<Map<String, String>> tree;
+	private Node<String,String> root = new Node<String, String>("TREE", "ROOT");
 
 	public Parser(RSyntaxTextArea left, RSyntaxTextArea right, IScanner scanner) {
 		this.left = left;
 		this.right = right;
 		this.scanner = scanner;
-		this.root = new Node();
 	}
 	
 	public Parser(RSyntaxTextArea left, RSyntaxTextArea right, IScanner scanner, boolean debugMe) {
@@ -140,7 +353,9 @@ func:
 		int tok = -1;
 		try {
 			tok = scanner.yylex();
-			yylval = new ParserVal(scanner.yytext());
+			
+			yylval = new ParserVal(new Node<String, String>(yyname[tok], scanner.yytext()));
+			
 			String tmp = "tok: " + yyname[tok] + ": '" + scanner.yytext() + "'";
 			right.append(tmp + "\n");
 			//System.out.println(yyname[tok]);
@@ -150,3 +365,7 @@ func:
 		}
 		return tok;
 	}
+ 	
+ 	public Node<String,String> getTree() {
+ 		return root;
+ 	}

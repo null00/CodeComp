@@ -39,7 +39,6 @@ public SimpleScanner(java.io.Reader r, Parser yyparser) {
 %}
 
 LineTerminator			= \r|\n|\r\n
-InputCharacter			= [^\r\n]
 WhiteSpace				= {LineTerminator} | [ \t\f]
 
 Label					= ("."+ [:letter:]+[:digit:]*)|([:letter:]+[:digit:]* ":"+)
@@ -51,12 +50,13 @@ Number					= {DecLiteral} | {HexLiteral}
 DecLiteral				= "'"? [:digit:]* "'"?
 HexLiteral				= (0x)?[0-9a-fA-F:]+(H|h)?
 
-Operation				= {Arithmetic} | {Transfer} | {Misc} | {Logic} | {Jump}
-Arithmetic				= /*[\+\-\/\*]|*/cmp|add|sub|sbb|div|idiv|mul|imul|inc|dec|sal|sar|rcl|rcr|rol|ror
-SingleTransfer			= clc|cmc|cld|cli
-Transfer				= mov|push|pushf|pusha|pop|popf|popa|in|out|xchg|stc|std|sti|cbw|cwd|cwde
+SingleArithmetic		= aaa|daa|inc|dec
+Arithmetic				= cmp|add|sub|sbb|div|idiv|mul|imul|sal|sar|rcl|rcr|rol|ror|adc
+SingleTransfer			= clc|cmc|cld|cli|push|pushf|pusha|pop|popf|popa|stc|std
+Transfer				= mov|in|out|xchg|sti|cbw|cwd|cwde
 Misc					= nop|lea|int|rep|repne|repe
-Logic					= and|or|xor|not|neg
+SingleLogic				= not
+Logic					= and|or|xor|neg
 Jump					= call|jmp|je|jz|jcxz|jp|jpe|ret|jne|jnz|jecxz|jnp|jpo
 Store					= stosw|stosb|stosd
 Compare					= scas|scasb|scasw|scasd
@@ -66,7 +66,7 @@ RBraces					= \]|\)|\}
 
 %state STRING
 
-%%
+%%a small program that calculates and prints terms of the fibonacci series
 
 /* === LEXICAL RULES SECTION === */
 
@@ -85,10 +85,12 @@ RBraces					= \]|\)|\}
 	{RBraces}			{  }
 	/*{Operation}		{ return Parser.OP; }*/
 	{Arithmetic}		{ return Parser.OP_AR; }
+	{SingleArithmetic}	{ return Parser.OP_SAR; }
 	{Transfer}			{ return Parser.OP_MOV; }
 	{SingleTransfer}	{ return Parser.OP_SMOV; }	
 	{Misc}				{ return Parser.OP_MISC; }
 	{Logic}				{ return Parser.OP_LOG; }
+	{SingleLogic}		{ return Parser.OP_SLOG; }
 	{Jump}				{ return Parser.OP_JMP; }
 	{Store}				{ return Parser.OP_STO; }
 	{Compare}			{ return Parser.OP_COMP; }
