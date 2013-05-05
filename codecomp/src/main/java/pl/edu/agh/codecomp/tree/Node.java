@@ -1,8 +1,9 @@
 package pl.edu.agh.codecomp.tree;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
-public class Node<K,V> {
+public class Node<K,V> implements Comparable<V> {
 	private K key;
 	private V value;
 	private Node<K,V> parent;
@@ -109,4 +110,53 @@ public class Node<K,V> {
 	public String toString() {
 		return key.toString() + ": " + value.toString();
 	}
+
+    @Override
+    public int compareTo(V o) {
+        int result = 0;
+        if(this.value.equals(o.toString())) {
+            result = 1;
+        }
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Node) {
+            Node op = (Node)obj;
+            
+            return (value.equals(op.value)
+                    && ((parent == null && op.parent == null)
+                        || parent.value.equals(op.parent.value))
+                    && ((children == null && op.children == null)
+                        || Arrays.equals(children.toArray(), op.children.toArray())));
+        }
+        
+        return false;
+    }
+    
+    public boolean equals2(Object obj) {
+        if(obj instanceof Node) {
+            Node op = (Node)obj;
+            
+            return (key.equals(op.key)
+                    && ((parent == null && op.parent == null)
+                        || parent.key.equals(op.parent.key))
+                    && ((children == null && op.children == null)
+                        || Arrays.equals(children.toArray(), op.children.toArray())));
+        }
+        
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        // TODO Auto-generated method stub
+        return super.hashCode();
+    }
+    
+    
 }

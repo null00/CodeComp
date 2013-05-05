@@ -9,6 +9,7 @@ import pl.edu.agh.codecomp.lexer.IScanner;
 import pl.edu.agh.codecomp.lexer.SimpleScanner;
 import pl.edu.agh.codecomp.parser.Parser;
 import pl.edu.agh.codecomp.tree.Node;
+import edu.ucla.sspace.graph.isomorphism.VF2IsomorphismTester;
 
 public class SourceComparator extends IComparator {
     
@@ -32,10 +33,27 @@ public class SourceComparator extends IComparator {
 	 */
 
 	private void compare() {
-		treeLeft = getTree(left);
+		/*treeLeft = getTree(left);
 		treeRight = getTree(right);
 		
-		System.out.println(treeLeft.equals(treeRight));
+		SparseUndirectedGraph graph = new SparseUndirectedGraph();
+        graph.add(new SimpleEdge(1,2));
+        graph.add(new SimpleEdge(4,3));
+        
+        SparseUndirectedGraph graph2 = new SparseUndirectedGraph();
+        graph2.add(new SimpleEdge(3,1));*/
+	    
+	    IScanner scannerLeft = getScanner(left.getText());
+	    IScanner scannerRight = getScanner(right.getText());
+        Parser parserLeft = new Parser(left, scannerLeft);
+        Parser parserRight = new Parser(right, scannerRight);
+        parserLeft.run();
+        parserRight.run();
+        
+        VF2IsomorphismTester test = new VF2IsomorphismTester();
+        System.out.println("Graph: " + test.areIsomorphic(parserLeft.getGraph(), parserRight.getGraph()));
+		
+		System.out.println("Tree: " + parserLeft.getTree().equals2(parserRight.getTree()));
 	}
 	
 	private IScanner getScanner(String sourceCode) {
@@ -81,5 +99,11 @@ public class SourceComparator extends IComparator {
 	    }
 	    return s;
 	}
-
+	
+	private void compareSize(Node left, Node right) {
+	    if(left.getDegree() != right.getDegree()) {
+	        System.err.println("left and right not equal");
+	        return;
+	    }
+	}
 }

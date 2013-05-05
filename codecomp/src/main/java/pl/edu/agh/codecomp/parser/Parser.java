@@ -21,13 +21,17 @@
 package pl.edu.agh.codecomp.parser;
 
 import java.io.IOException;
+import java.util.HashMap;
+
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+
 import pl.edu.agh.codecomp.lexer.IScanner;
 import pl.edu.agh.codecomp.tree.Node;
-import java.util.LinkedList;
-import java.util.List;
+import edu.ucla.sspace.graph.Graph;
+import edu.ucla.sspace.graph.SimpleEdge;
+import edu.ucla.sspace.graph.SparseUndirectedGraph;
 
-//#line 28 "Parser.java"
+//#line 32 "Parser.java"
 
 
 
@@ -616,17 +620,21 @@ final static String yyrule[] = {
 "func : ops",
 };
 
-//#line 329 "parser.y"
+//#line 252 "parser.y"
 
 /* === PROGRAM === */
 
 	private RSyntaxTextArea source;
 	private IScanner scanner;
 	private Node<String,String> root = new Node<String, String>("TREE", "ROOT");
+	private SparseUndirectedGraph graph;
+	private HashMap<Node, Integer> allNodes;
 
 	public Parser(RSyntaxTextArea source, IScanner scanner) {
 		this.source = source;
 		this.scanner = scanner;
+		this.graph = new SparseUndirectedGraph();
+		this.allNodes = new HashMap<Node, Integer>();
 	}
 	
 	public Parser(RSyntaxTextArea source, IScanner scanner, boolean debugMe) {
@@ -638,12 +646,17 @@ final static String yyrule[] = {
 		System.err.println("parser: " + s);
 	}
 
+	private int count = 0;
+
 	// TODO:
 	private int yylex() {
 		int tok = -1;
 		try {
 			tok = scanner.yylex();
-			yylval = new ParserVal(new Node<String, String>(yyname[tok], scanner.yytext()));
+			Node node = new Node(yyname[tok], scanner.yytext());
+			yylval = new ParserVal(node);
+			allNodes.put(node, count);
+			count++;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());
@@ -654,7 +667,19 @@ final static String yyrule[] = {
  	public Node<String,String> getTree() {
  		return root;
  	}
-//#line 586 "Parser.java"
+ 	
+ 	public Graph getGraph() {
+ 		return graph;
+ 	}
+ 	
+ 	private ParserVal compute(Node p, Node... c) {
+ 	    for(Node child : c) {
+ 	        p.addChild(child);
+ 	        graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(child)));
+ 	    }
+		return new ParserVal(p);
+ 	}
+//#line 610 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -809,469 +834,388 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 4:
-//#line 32 "parser.y"
+//#line 36 "parser.y"
 { 
- 								Node<String,String> node = (Node<String, String>)val_peek(0).obj;
- 								root.addChild(node);
+ 								root.addChild((Node)val_peek(0).obj);
  							}
 break;
 case 5:
-//#line 38 "parser.y"
+//#line 41 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 6:
-//#line 39 "parser.y"
+//#line 42 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 7:
-//#line 40 "parser.y"
+//#line 43 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 8:
-//#line 43 "parser.y"
-{ 
-								yyval = val_peek(0); 
-							}
-break;
-case 9:
 //#line 46 "parser.y"
 { 
 								yyval = val_peek(0); 
 							}
 break;
-case 10:
+case 9:
 //#line 49 "parser.y"
 { 
-								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
-								node.addChild((Node)val_peek(0).obj);
-								yyval = new ParserVal(node);
+								yyval = val_peek(0); 
+							}
+break;
+case 10:
+//#line 52 "parser.y"
+{ 
+								Node p = (Node)val_peek(1).obj;
+								Node c = (Node)val_peek(0).obj;
+								p.addChild(c);
+								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
+								yyval = new ParserVal(p);
 								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
 							}
 break;
 case 11:
-//#line 55 "parser.y"
+//#line 60 "parser.y"
 { 
-								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
-								node.addChild((Node)val_peek(0).obj);
-								yyval = new ParserVal(node);
+								Node p = (Node)val_peek(1).obj;
+								Node c = (Node)val_peek(0).obj;
+								p.addChild(c);
+								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
+								yyval = new ParserVal(p);
 								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
 							}
 break;
 case 12:
-//#line 61 "parser.y"
+//#line 68 "parser.y"
 { 
-								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
-								node.addChild((Node)val_peek(0).obj);
-								yyval = new ParserVal(node);
+								Node p = (Node)val_peek(1).obj;
+								Node c = (Node)val_peek(0).obj;
+								p.addChild(c);
+								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
+								yyval = new ParserVal(p);
 								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
 							}
 break;
 case 13:
-//#line 67 "parser.y"
+//#line 76 "parser.y"
 { 
-								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
-								node.addChild((Node)val_peek(0).obj);
-								yyval = new ParserVal(node);
+								Node p = (Node)val_peek(1).obj;
+								Node c = (Node)val_peek(0).obj;
+								p.addChild(c);
+								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
+								yyval = new ParserVal(p);
 								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
 							}
 break;
 case 14:
-//#line 73 "parser.y"
+//#line 84 "parser.y"
 { 
-								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
-								node.addChild((Node)val_peek(0).obj);
-								yyval = new ParserVal(node);
+								Node p = (Node)val_peek(1).obj;
+								Node c = (Node)val_peek(0).obj;
+								p.addChild(c);
+								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
+								yyval = new ParserVal(p);
 								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
 							}
 break;
 case 15:
-//#line 81 "parser.y"
-{ yyval = val_peek(0); }
-break;
-case 16:
-//#line 83 "parser.y"
-{ yyval = val_peek(0); }
-break;
-case 17:
-//#line 84 "parser.y"
-{ yyval = val_peek(0); }
-break;
-case 18:
-//#line 85 "parser.y"
-{ yyval = val_peek(0); }
-break;
-case 19:
-//#line 86 "parser.y"
-{ yyval = val_peek(0); }
-break;
-case 20:
-//#line 87 "parser.y"
-{ yyval = val_peek(0); }
-break;
-case 21:
-//#line 88 "parser.y"
-{ yyval = val_peek(0); }
-break;
-case 22:
-//#line 89 "parser.y"
-{ yyval = val_peek(0); }
-break;
-case 23:
-//#line 92 "parser.y"
-{ yyval = val_peek(0); }
-break;
-case 24:
-//#line 93 "parser.y"
-{ yyval = val_peek(0); }
-break;
-case 25:
 //#line 94 "parser.y"
 { yyval = val_peek(0); }
 break;
+case 16:
+//#line 96 "parser.y"
+{ yyval = val_peek(0); }
+break;
+case 17:
+//#line 97 "parser.y"
+{ yyval = val_peek(0); }
+break;
+case 18:
+//#line 98 "parser.y"
+{ yyval = val_peek(0); }
+break;
+case 19:
+//#line 99 "parser.y"
+{ yyval = val_peek(0); }
+break;
+case 20:
+//#line 100 "parser.y"
+{ yyval = val_peek(0); }
+break;
+case 21:
+//#line 101 "parser.y"
+{ yyval = val_peek(0); }
+break;
+case 22:
+//#line 102 "parser.y"
+{ yyval = val_peek(0); }
+break;
+case 23:
+//#line 105 "parser.y"
+{ yyval = val_peek(0); }
+break;
+case 24:
+//#line 106 "parser.y"
+{ yyval = val_peek(0); }
+break;
+case 25:
+//#line 107 "parser.y"
+{ yyval = val_peek(0); }
+break;
 case 26:
-//#line 95 "parser.y"
+//#line 108 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 27:
-//#line 98 "parser.y"
+//#line 111 "parser.y"
 { 
-								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
-								node.addChild((Node)val_peek(0).obj);
-								yyval = new ParserVal(node);
+								Node p = (Node)val_peek(1).obj;
+								Node c = (Node)val_peek(0).obj;
+								p.addChild(c);
+								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
+								yyval = new ParserVal(p);
 								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
 							}
 break;
 case 28:
-//#line 104 "parser.y"
+//#line 119 "parser.y"
 { 
-								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
-								node.addChild((Node)val_peek(0).obj);
-								yyval = new ParserVal(node);
+								Node p = (Node)val_peek(1).obj;
+								Node c = (Node)val_peek(0).obj;
+								p.addChild(c);
+								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
+								yyval = new ParserVal(p);
 								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
 							}
 break;
 case 29:
-//#line 110 "parser.y"
+//#line 127 "parser.y"
 { 
-								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
-								node.addChild((Node)val_peek(0).obj);
-								yyval = new ParserVal(node);
+								Node p = (Node)val_peek(1).obj;
+								Node c = (Node)val_peek(0).obj;
+								p.addChild(c);
+								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
+								yyval = new ParserVal(p);
 								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
 							}
 break;
 case 30:
-//#line 117 "parser.y"
+//#line 136 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 31:
-//#line 123 "parser.y"
+//#line 139 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 32:
-//#line 129 "parser.y"
-{ 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
-break;
-case 33:
-//#line 135 "parser.y"
-{ 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
-break;
-case 34:
 //#line 142 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
+break;
+case 33:
+//#line 145 "parser.y"
+{ 
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
+break;
+case 34:
+//#line 149 "parser.y"
+{ 
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 35:
-//#line 148 "parser.y"
+//#line 152 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 36:
-//#line 154 "parser.y"
+//#line 155 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 37:
-//#line 160 "parser.y"
+//#line 158 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 38:
-//#line 167 "parser.y"
+//#line 162 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 39:
-//#line 173 "parser.y"
+//#line 165 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 40:
-//#line 179 "parser.y"
+//#line 168 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 41:
-//#line 185 "parser.y"
+//#line 171 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 42:
-//#line 192 "parser.y"
+//#line 175 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 43:
-//#line 198 "parser.y"
+//#line 178 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 44:
-//#line 204 "parser.y"
+//#line 181 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 45:
-//#line 210 "parser.y"
+//#line 184 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 46:
-//#line 217 "parser.y"
+//#line 188 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 47:
-//#line 223 "parser.y"
+//#line 191 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 48:
-//#line 229 "parser.y"
+//#line 194 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 49:
-//#line 235 "parser.y"
+//#line 197 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 50:
-//#line 242 "parser.y"
+//#line 201 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 51:
-//#line 248 "parser.y"
+//#line 204 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 52:
-//#line 254 "parser.y"
+//#line 207 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 53:
-//#line 260 "parser.y"
+//#line 210 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 54:
-//#line 267 "parser.y"
+//#line 214 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 55:
-//#line 273 "parser.y"
+//#line 217 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 56:
-//#line 279 "parser.y"
+//#line 220 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 57:
-//#line 285 "parser.y"
+//#line 223 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 58:
-//#line 292 "parser.y"
+//#line 227 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 59:
-//#line 298 "parser.y"
+//#line 230 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 60:
-//#line 304 "parser.y"
+//#line 233 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 61:
-//#line 310 "parser.y"
+//#line 236 "parser.y"
 { 
- 								Node<String, String> node = new Node<String, String>(((Node<String, String>)val_peek(1).obj).getKey(), ((Node<String, String>)val_peek(1).obj).getValue());
- 								node.addChild((Node)val_peek(2).obj); node.addChild((Node)val_peek(0).obj);
- 								yyval = new ParserVal(node);
- 								/*$$ = new ParserVal($1.sval + " " + $2.sval + " " + $3.sval);*/
- 							}
+								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+							}
 break;
 case 62:
-//#line 317 "parser.y"
+//#line 240 "parser.y"
 { yyval = val_peek(1); }
 break;
 case 63:
-//#line 318 "parser.y"
+//#line 241 "parser.y"
 { yyval = val_peek(1); }
 break;
 case 65:
-//#line 322 "parser.y"
+//#line 245 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 66:
-//#line 323 "parser.y"
+//#line 246 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 67:
-//#line 324 "parser.y"
+//#line 247 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 68:
-//#line 325 "parser.y"
+//#line 248 "parser.y"
 { yyval = val_peek(0); }
 break;
-//#line 1198 "Parser.java"
+//#line 1141 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
