@@ -8,6 +8,7 @@ public class CompareToken {
 
 	private static Boolean filter = true;
 	private static Boolean lowerCase = true;
+	public static int score = 0;
 	
 	private static IAlgorithm[] algoList = { new BoyerMoore(), new KarpRabin() };
 	private static IAlgorithm textAlgorithm;

@@ -17,7 +17,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
+import org.fife.ui.rsyntaxtextarea.ActiveLineRangeEvent;
+import org.fife.ui.rsyntaxtextarea.ActiveLineRangeListener;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -55,7 +59,10 @@ public class CodeCompGUI extends JFrame {
 
 			try {
 //				setLeftFile(CCFileReader.read(new File(path + "source1.asm").getAbsolutePath()));
-				setLeftFile(CCFileReader.read(new File(path + "source3.asm").getAbsolutePath()));
+			    
+				setLeftFile(CCFileReader.read(path + "source3.asm"));
+				setRightFile(CCFileReader.read(path + "source3.asm"));
+				
 //				rightText.read(CCFileReader.read(new File(path + "source2.asm").getAbsolutePath()), null);
 				
 				setLeftFile(Filter.parse(leftText.getText()));
@@ -134,6 +141,11 @@ public class CodeCompGUI extends JFrame {
 		compSource.addActionListener(new CompareAction());
 		comparator.add(compSource);
 		
+		/*JMenuItem compDistance = new JMenuItem("Compare distance");
+        compDistance.setActionCommand("distance");
+        compDistance.addActionListener(new CompareAction());
+        comparator.add(compDistance);*/
+		
 		comparator.addSeparator();
 		
 		JMenuItem clear = new JMenuItem("Clear");
@@ -163,6 +175,12 @@ public class CodeCompGUI extends JFrame {
 		// leftText.setEditable(false);
 		leftText.setCurrentLineHighlightColor(Color.white);
 		leftText.setDoubleBuffered(true);
+		leftText.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent arg0) {
+                clearAllHightlights();
+            }
+        });
 		
 		leftScrollPane = new RTextScrollPane(leftText);
 		leftScrollPane.setFoldIndicatorEnabled(true);
@@ -175,6 +193,12 @@ public class CodeCompGUI extends JFrame {
 		rightText.setAntiAliasingEnabled(true);
 		rightText.setBorder(BorderFactory.createLineBorder(Color.orange));
 		rightText.setCurrentLineHighlightColor(Color.white);
+		rightText.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent arg0) {
+                clearAllHightlights();
+            }
+        });
 
 		rightScrollPane = new RTextScrollPane(rightText);
 		rightScrollPane.setFoldIndicatorEnabled(true);

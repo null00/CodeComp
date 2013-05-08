@@ -21,17 +21,19 @@
 package pl.edu.agh.codecomp.parser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import no.roek.nlpged.graph.Edge;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
+import pl.edu.agh.codecomp.graph.SimpleEdge;
+import pl.edu.agh.codecomp.graph.SparseUndirectedGraph;
 import pl.edu.agh.codecomp.lexer.IScanner;
 import pl.edu.agh.codecomp.tree.Node;
-import edu.ucla.sspace.graph.Graph;
-import edu.ucla.sspace.graph.SimpleEdge;
-import edu.ucla.sspace.graph.SparseUndirectedGraph;
 
-//#line 32 "Parser.java"
+//#line 33 "Parser.java"
 
 
 
@@ -620,7 +622,7 @@ final static String yyrule[] = {
 "func : ops",
 };
 
-//#line 252 "parser.y"
+//#line 214 "parser.y"
 
 /* === PROGRAM === */
 
@@ -628,6 +630,7 @@ final static String yyrule[] = {
 	private IScanner scanner;
 	private Node<String,String> root = new Node<String, String>("TREE", "ROOT");
 	private SparseUndirectedGraph graph;
+	private no.roek.nlpged.graph.Graph graph2;
 	private HashMap<Node, Integer> allNodes;
 
 	public Parser(RSyntaxTextArea source, IScanner scanner) {
@@ -635,6 +638,7 @@ final static String yyrule[] = {
 		this.scanner = scanner;
 		this.graph = new SparseUndirectedGraph();
 		this.allNodes = new HashMap<Node, Integer>();
+		this.graph2 = new no.roek.nlpged.graph.Graph();
 	}
 	
 	public Parser(RSyntaxTextArea source, IScanner scanner, boolean debugMe) {
@@ -646,17 +650,26 @@ final static String yyrule[] = {
 		System.err.println("parser: " + s);
 	}
 
-	private int count = 0;
+	private int count = 0, edge = 0;
 
 	// TODO:
 	private int yylex() {
 		int tok = -1;
 		try {
+			
 			tok = scanner.yylex();
+			
 			Node node = new Node(yyname[tok], scanner.yytext());
-			yylval = new ParserVal(node);
+			no.roek.nlpged.graph.Node node2 = new no.roek.nlpged.graph.Node(String.valueOf(count), scanner.yytext(), new String[] {yyname[tok], scanner.yytext()});
+			graph2.addNode(node2);
 			allNodes.put(node, count);
+			
+			Object[] obj = {node, node2};
+			
+			yylval = new ParserVal(obj);
+			
 			count++;
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());
@@ -668,18 +681,47 @@ final static String yyrule[] = {
  		return root;
  	}
  	
- 	public Graph getGraph() {
+ 	public SparseUndirectedGraph getGraph() {
  		return graph;
  	}
  	
- 	private ParserVal compute(Node p, Node... c) {
- 	    for(Node child : c) {
- 	        p.addChild(child);
- 	        graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(child)));
+ 	public no.roek.nlpged.graph.Graph getGraph2() {
+ 	    return graph2;
+ 	}
+ 	
+ 	private ParserVal mergedCompute(Object... objs) {
+ 		ArrayList<Object[]> listOfNodes = new ArrayList<Object[]>();
+ 		for(int i = 0; i < objs.length; i++) {
+ 		    Object[] node = (Object[])objs[i];
+ 			listOfNodes.add(node);
+		}
+ 		Object[] obj = new Object[2];
+		if(listOfNodes.size() == 2) {
+		    obj[0] = compute((Node)listOfNodes.get(0)[0], (Node)listOfNodes.get(1)[0]);
+			obj[1] = compute2((no.roek.nlpged.graph.Node)listOfNodes.get(0)[1], (no.roek.nlpged.graph.Node)listOfNodes.get(1)[1]);
+		} else if(listOfNodes.size() == 3) {
+			obj[0] = compute((Node)listOfNodes.get(1)[0], (Node)listOfNodes.get(0)[0], (Node)listOfNodes.get(2)[0]).obj;
+			obj[1] = compute2((no.roek.nlpged.graph.Node)listOfNodes.get(1)[1], (no.roek.nlpged.graph.Node)listOfNodes.get(0)[1], (no.roek.nlpged.graph.Node)listOfNodes.get(2)[1]).obj;
+		}
+		return new ParserVal(obj);
+ 	}
+ 	
+ 	private ParserVal compute(Node p, Node... child) {
+ 	    for(Node c : child) {
+ 	        p.addChild(c);
+ 	        graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
  	    }
 		return new ParserVal(p);
  	}
-//#line 610 "Parser.java"
+ 	
+ 	private ParserVal compute2(no.roek.nlpged.graph.Node p, no.roek.nlpged.graph.Node... child) {
+        for(no.roek.nlpged.graph.Node c : child) {
+            graph2.addEdge(new Edge(String.valueOf(edge), p, c, p.getLabel() + " " + c.getLabel()));
+            edge++;
+        }
+        return new ParserVal(p);
+    }
+//#line 652 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -834,388 +876,349 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 4:
-//#line 36 "parser.y"
+//#line 37 "parser.y"
 { 
- 								root.addChild((Node)val_peek(0).obj);
+ 								/*root.addChild((no.roek.nlpged.graph.Node)$1.obj);*/
+ 								/*root.addChild((Node)$1.obj);*/
  							}
 break;
 case 5:
-//#line 41 "parser.y"
-{ yyval = val_peek(0); }
-break;
-case 6:
-//#line 42 "parser.y"
-{ yyval = val_peek(0); }
-break;
-case 7:
 //#line 43 "parser.y"
 { yyval = val_peek(0); }
 break;
+case 6:
+//#line 44 "parser.y"
+{ yyval = val_peek(0); }
+break;
+case 7:
+//#line 45 "parser.y"
+{ yyval = val_peek(0); }
+break;
 case 8:
-//#line 46 "parser.y"
+//#line 48 "parser.y"
 { 
 								yyval = val_peek(0); 
 							}
 break;
 case 9:
-//#line 49 "parser.y"
+//#line 51 "parser.y"
 { 
 								yyval = val_peek(0); 
 							}
 break;
 case 10:
-//#line 52 "parser.y"
+//#line 54 "parser.y"
 { 
-								Node p = (Node)val_peek(1).obj;
-								Node c = (Node)val_peek(0).obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								yyval = new ParserVal(p);
-								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
+								yyval = mergedCompute(val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 11:
-//#line 60 "parser.y"
+//#line 57 "parser.y"
 { 
-								Node p = (Node)val_peek(1).obj;
-								Node c = (Node)val_peek(0).obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								yyval = new ParserVal(p);
-								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
+								yyval = mergedCompute(val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 12:
-//#line 68 "parser.y"
+//#line 60 "parser.y"
 { 
-								Node p = (Node)val_peek(1).obj;
-								Node c = (Node)val_peek(0).obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								yyval = new ParserVal(p);
-								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
+								yyval = mergedCompute(val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 13:
-//#line 76 "parser.y"
+//#line 63 "parser.y"
 { 
-								Node p = (Node)val_peek(1).obj;
-								Node c = (Node)val_peek(0).obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								yyval = new ParserVal(p);
-								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
+								yyval = mergedCompute(val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 14:
-//#line 84 "parser.y"
+//#line 66 "parser.y"
 { 
-								Node p = (Node)val_peek(1).obj;
-								Node c = (Node)val_peek(0).obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								yyval = new ParserVal(p);
-								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
+								yyval = mergedCompute(val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 15:
-//#line 94 "parser.y"
+//#line 71 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 16:
-//#line 96 "parser.y"
+//#line 73 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 17:
-//#line 97 "parser.y"
+//#line 74 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 18:
-//#line 98 "parser.y"
+//#line 75 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 19:
-//#line 99 "parser.y"
+//#line 76 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 20:
-//#line 100 "parser.y"
+//#line 77 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 21:
-//#line 101 "parser.y"
+//#line 78 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 22:
-//#line 102 "parser.y"
+//#line 79 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 23:
-//#line 105 "parser.y"
+//#line 82 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 24:
-//#line 106 "parser.y"
+//#line 83 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 25:
-//#line 107 "parser.y"
+//#line 84 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 26:
-//#line 108 "parser.y"
+//#line 85 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 27:
-//#line 111 "parser.y"
+//#line 88 "parser.y"
 { 
-								Node p = (Node)val_peek(1).obj;
-								Node c = (Node)val_peek(0).obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								yyval = new ParserVal(p);
-								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
+								yyval = mergedCompute(val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 28:
-//#line 119 "parser.y"
+//#line 91 "parser.y"
 { 
-								Node p = (Node)val_peek(1).obj;
-								Node c = (Node)val_peek(0).obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								yyval = new ParserVal(p);
-								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
+								yyval = mergedCompute(val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 29:
-//#line 127 "parser.y"
+//#line 94 "parser.y"
 { 
-								Node p = (Node)val_peek(1).obj;
-								Node c = (Node)val_peek(0).obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								yyval = new ParserVal(p);
-								/*$$ = new ParserVal($1.sval + " " + $2.sval);*/
+								yyval = mergedCompute(val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 30:
-//#line 136 "parser.y"
+//#line 98 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 31:
-//#line 139 "parser.y"
+//#line 101 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 32:
-//#line 142 "parser.y"
+//#line 104 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 33:
-//#line 145 "parser.y"
+//#line 107 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 34:
-//#line 149 "parser.y"
+//#line 111 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 35:
-//#line 152 "parser.y"
+//#line 114 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 36:
-//#line 155 "parser.y"
+//#line 117 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 37:
-//#line 158 "parser.y"
+//#line 120 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 38:
-//#line 162 "parser.y"
+//#line 124 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 39:
-//#line 165 "parser.y"
+//#line 127 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 40:
-//#line 168 "parser.y"
+//#line 130 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 41:
-//#line 171 "parser.y"
+//#line 133 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 42:
-//#line 175 "parser.y"
+//#line 137 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 43:
-//#line 178 "parser.y"
+//#line 140 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 44:
-//#line 181 "parser.y"
+//#line 143 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 45:
-//#line 184 "parser.y"
+//#line 146 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 46:
-//#line 188 "parser.y"
+//#line 150 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 47:
-//#line 191 "parser.y"
+//#line 153 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 48:
-//#line 194 "parser.y"
+//#line 156 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 49:
-//#line 197 "parser.y"
+//#line 159 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 50:
-//#line 201 "parser.y"
+//#line 163 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 51:
-//#line 204 "parser.y"
+//#line 166 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 52:
-//#line 207 "parser.y"
+//#line 169 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 53:
-//#line 210 "parser.y"
+//#line 172 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 54:
-//#line 214 "parser.y"
+//#line 176 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 55:
-//#line 217 "parser.y"
+//#line 179 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 56:
-//#line 220 "parser.y"
+//#line 182 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 57:
-//#line 223 "parser.y"
+//#line 185 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 58:
-//#line 227 "parser.y"
+//#line 189 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 59:
-//#line 230 "parser.y"
+//#line 192 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 60:
-//#line 233 "parser.y"
+//#line 195 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 61:
-//#line 236 "parser.y"
+//#line 198 "parser.y"
 { 
-								yyval = compute((Node)val_peek(1).obj, (Node)val_peek(2).obj, (Node)val_peek(0).obj);
+								yyval = mergedCompute(val_peek(2).obj, val_peek(1).obj, val_peek(0).obj);
 							}
 break;
 case 62:
-//#line 240 "parser.y"
+//#line 202 "parser.y"
 { yyval = val_peek(1); }
 break;
 case 63:
-//#line 241 "parser.y"
+//#line 203 "parser.y"
 { yyval = val_peek(1); }
 break;
 case 65:
-//#line 245 "parser.y"
+//#line 207 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 66:
-//#line 246 "parser.y"
+//#line 208 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 67:
-//#line 247 "parser.y"
+//#line 209 "parser.y"
 { yyval = val_peek(0); }
 break;
 case 68:
-//#line 248 "parser.y"
+//#line 210 "parser.y"
 { yyval = val_peek(0); }
 break;
-//#line 1141 "Parser.java"
+//#line 1144 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

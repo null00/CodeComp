@@ -2,19 +2,30 @@ package pl.edu.agh.codecomp.comparator;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import no.roek.nlpged.algorithm.GraphEditDistance;
+import no.roek.nlpged.application.Config;
+import no.roek.nlpged.misc.EditWeightService;
+import no.roek.nlpged.preprocessing.DependencyParser;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
+import pl.edu.agh.codecomp.graph.isomorphism.VF2IsomorphismTester;
+import pl.edu.agh.codecomp.gui.dialogs.ScoreDialog;
 import pl.edu.agh.codecomp.lexer.IScanner;
 import pl.edu.agh.codecomp.lexer.SimpleScanner;
 import pl.edu.agh.codecomp.parser.Parser;
 import pl.edu.agh.codecomp.tree.Node;
-import edu.ucla.sspace.graph.isomorphism.VF2IsomorphismTester;
 
 public class SourceComparator extends IComparator {
     
-    private Node<String, String> treeLeft, treeRight;
     private final String indent = "\t";
+    private Set<String> functions = createSet("OP_MOV","OP_SMOV","OP_AR","OP_SAR","OP_LOG","OP_SLOG","OP_MISC","OP_JMP","OP_STO","OP_COMP");
+    private Set<String> ids = createSet("LAB", "ID");
 	
 	public SourceComparator(RSyntaxTextArea left, RSyntaxTextArea right) {
 		super();
@@ -32,28 +43,29 @@ public class SourceComparator extends IComparator {
 	 * COMPARATOR
 	 */
 
-	private void compare() {
-		/*treeLeft = getTree(left);
-		treeRight = getTree(right);
-		
-		SparseUndirectedGraph graph = new SparseUndirectedGraph();
-        graph.add(new SimpleEdge(1,2));
-        graph.add(new SimpleEdge(4,3));
+	private void compare() {   
+        Parser parserLeft = analizeSource(left);
+        Parser parserRight = analizeSource(right);
         
-        SparseUndirectedGraph graph2 = new SparseUndirectedGraph();
-        graph2.add(new SimpleEdge(3,1));*/
-	    
-	    IScanner scannerLeft = getScanner(left.getText());
-	    IScanner scannerRight = getScanner(right.getText());
-        Parser parserLeft = new Parser(left, scannerLeft);
-        Parser parserRight = new Parser(right, scannerRight);
         parserLeft.run();
         parserRight.run();
         
         VF2IsomorphismTester test = new VF2IsomorphismTester();
-        System.out.println("Graph: " + test.areIsomorphic(parserLeft.getGraph(), parserRight.getGraph()));
-		
-		System.out.println("Tree: " + parserLeft.getTree().equals2(parserRight.getTree()));
+        
+        Config cs = new Config("app.properties");
+        Map<String, Double> posEditWeights = EditWeightService.getEditWeights(cs.getProperty("POS_SUB_WEIGHTS"), cs.getProperty("POS_INSDEL_WEIGHTS"));
+        Map<String, Double> deprelEditWeights = EditWeightService.getInsDelCosts(cs.getProperty("DEPREL_INSDEL_WEIGHTS"));
+        GraphEditDistance ged = new GraphEditDistance(parserLeft.getGraph2(), parserRight.getGraph2(), posEditWeights, deprelEditWeights);
+        
+        new ScoreDialog("Graph2: " + ged.getDistance() + " / " + ged.getNormalizedDistance() + "%", 
+                        "Graph: " + test.areIsomorphic(parserLeft.getGraph(), parserRight.getGraph()),
+                        "Tree: " + parserLeft.getTree().equals2(parserRight.getTree()));
+	}
+	
+	private Parser analizeSource(RSyntaxTextArea source) {
+	    IScanner scanner = getScanner(source.getText());
+	    Parser parser = new Parser(source, scanner);
+	    return parser;
 	}
 	
 	private IScanner getScanner(String sourceCode) {
@@ -84,11 +96,51 @@ public class SourceComparator extends IComparator {
 		return scanner;
 	}
 	
-	private Node<String, String> getTree(RSyntaxTextArea source) {
-	    IScanner scanner = getScanner(source.getText());
-        Parser parser = new Parser(source, scanner/*, true*/);
-        parser.run();
-        return parser.getTree();
+	private double analizeMaps(HashMap left, HashMap right) {
+	    double score = 0, max = 0, size;
+	    HashSet<Node> setLeft = new HashSet<Node>(left.keySet());
+	    HashSet<Node> setRight = new HashSet<Node>(right.keySet());
+	    if(setLeft.size() >= setRight.size()) {
+	        max = countMax(setLeft);
+	        size = setLeft.size();
+	    } else {
+	        max = countMax(setRight);
+	        size = setRight.size();
+	    }
+	    for(Node leftNode: setLeft) {
+	        for(Node rightNode : setRight) {
+	            if(leftNode.getKey().equals(rightNode.getKey())) {
+	                score += 1;
+	                if(leftNode.getValue().equals(rightNode.getValue())) {
+	                    score += 1;
+	                    if(ids.contains(leftNode.getKey())) {
+	                        score += 1;
+	                    }
+	                }
+	                break;
+	            }
+	        }
+	    }
+	    System.out.println(score + " " + size + "*2 +" + max + " *100");
+	    return (score/(max*3+(size-max)*2))*100;
+	}
+	
+	private int countMax(Set<Node> s) {
+	    int max = 0;
+	    for(Node<String, String> node : s) {
+	        if(ids.contains(node.getKey())) {
+	            max++;
+	        }
+ 	    }
+	    return max;
+	}
+	
+	private Set<String> createSet(String... elem) {
+	    HashSet<String> s = new HashSet<String>();
+	    for(String ss : elem) {
+	        s.add(ss);
+	    }
+	    return s;
 	}
 	
 	private String printTree(Node<String, String> node, String space) {
@@ -98,12 +150,5 @@ public class SourceComparator extends IComparator {
 	        s += "\n" + printTree(child, space + indent);
 	    }
 	    return s;
-	}
-	
-	private void compareSize(Node left, Node right) {
-	    if(left.getDegree() != right.getDegree()) {
-	        System.err.println("left and right not equal");
-	        return;
-	    }
 	}
 }

@@ -42,7 +42,8 @@ public class BoyerMoore implements IAlgorithm {
 					--i;
 					--j;
 				} else { // shifting
-					i -= Math.max(match[j], last[text.charAt(i)] - text.length() + i);
+//					i -= Math.max(match[j], last[text.charAt(i)] - text.length() + i);
+				    i--;
 					j = pattern.length() - 1;
 				}
 			} catch (Exception ex) {

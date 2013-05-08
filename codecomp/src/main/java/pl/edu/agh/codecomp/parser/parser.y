@@ -7,13 +7,14 @@ package pl.edu.agh.codecomp.parser;
 import java.io.IOException;
 import java.util.HashMap;
 
+import no.roek.nlpged.graph.Edge;
+
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
+import pl.edu.agh.codecomp.graph.SimpleEdge;
+import pl.edu.agh.codecomp.graph.SparseUndirectedGraph;
 import pl.edu.agh.codecomp.lexer.IScanner;
 import pl.edu.agh.codecomp.tree.Node;
-import edu.ucla.sspace.graph.Graph;
-import edu.ucla.sspace.graph.SimpleEdge;
-import edu.ucla.sspace.graph.SparseUndirectedGraph;
 
 %}
 
@@ -34,7 +35,8 @@ input: /* empty string */
 
 line: '\n'
  | func 					{ 
- 								root.addChild((Node)$1.obj);
+ 								//root.addChild((no.roek.nlpged.graph.Node)$1.obj);
+ 								//root.addChild((Node)$1.obj);
  							}
  ;
  
@@ -50,44 +52,19 @@ single: OP_SMOV				{
 								$$ = $1; 
 							}
  | OP_JMP desc				{ 
-								Node p = (Node)$1.obj;
-								Node c = (Node)$2.obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								$$ = new ParserVal(p);
-								//$$ = new ParserVal($1.sval + " " + $2.sval);
+								$$ = mergedCompute($1.obj, $2.obj);
 							}
  | OP_MISC OP_STO			{ 
-								Node p = (Node)$1.obj;
-								Node c = (Node)$2.obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								$$ = new ParserVal(p);
-								//$$ = new ParserVal($1.sval + " " + $2.sval);
+								$$ = mergedCompute($1.obj, $2.obj);
 							}
  | OP_SMOV desc				{ 
-								Node p = (Node)$1.obj;
-								Node c = (Node)$2.obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								$$ = new ParserVal(p);
-								//$$ = new ParserVal($1.sval + " " + $2.sval);
+								$$ = mergedCompute($1.obj, $2.obj);
 							}
  | OP_SLOG desc				{ 
-								Node p = (Node)$1.obj;
-								Node c = (Node)$2.obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								$$ = new ParserVal(p);
-								//$$ = new ParserVal($1.sval + " " + $2.sval);
+								$$ = mergedCompute($1.obj, $2.obj);
 							}
  | OP_MISC OP_COMP			{ 
-								Node p = (Node)$1.obj;
-								Node c = (Node)$2.obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								$$ = new ParserVal(p);
-								//$$ = new ParserVal($1.sval + " " + $2.sval);
+								$$ = mergedCompute($1.obj, $2.obj);
 							}
  ;
 
@@ -109,132 +86,117 @@ opers: '+'					{ $$ = $1; }
  ;
  
 ops: exp ops				{ 
-								Node p = (Node)$1.obj;
-								Node c = (Node)$2.obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								$$ = new ParserVal(p);
-								//$$ = new ParserVal($1.sval + " " + $2.sval);
+								$$ = mergedCompute($1.obj, $2.obj);
 							}
  | exp num					{ 
-								Node p = (Node)$1.obj;
-								Node c = (Node)$2.obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								$$ = new ParserVal(p);
-								//$$ = new ParserVal($1.sval + " " + $2.sval);
+								$$ = mergedCompute($1.obj, $2.obj);
 							}
  | desc num					{ 
-								Node p = (Node)$1.obj;
-								Node c = (Node)$2.obj;
-								p.addChild(c);
-								graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
-								$$ = new ParserVal(p);
-								//$$ = new ParserVal($1.sval + " " + $2.sval);
+								$$ = mergedCompute($1.obj, $2.obj);
 							}
  
  | num opers num 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | num opers exp 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | num opers ops 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | num opers desc 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  
  | exp opers exp			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | exp opers num 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | exp opers ops 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | exp opers desc 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  
  | ops opers ops 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | ops opers num 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | ops opers exp 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | ops opers desc 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  
  | desc opers desc 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | desc opers num 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | desc opers exp 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | desc opers ops 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
   
  | num COMMA num 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | num COMMA exp 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | num COMMA ops 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | num COMMA desc 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  
  | exp COMMA num 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | exp COMMA exp 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | exp COMMA ops 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | exp COMMA desc 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  
  | ops COMMA num 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | ops COMMA exp 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | ops COMMA ops 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | ops COMMA desc 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  
  | desc COMMA num 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | desc COMMA exp 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | desc COMMA ops 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
  | desc COMMA desc 			{ 
-								$$ = compute((Node)$2.obj, (Node)$1.obj, (Node)$3.obj);
+								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}
 
  | '[' exp ']' 				{ $$ = $2; }
@@ -256,6 +218,7 @@ func:
 	private IScanner scanner;
 	private Node<String,String> root = new Node<String, String>("TREE", "ROOT");
 	private SparseUndirectedGraph graph;
+	private no.roek.nlpged.graph.Graph graph2;
 	private HashMap<Node, Integer> allNodes;
 
 	public Parser(RSyntaxTextArea source, IScanner scanner) {
@@ -263,6 +226,7 @@ func:
 		this.scanner = scanner;
 		this.graph = new SparseUndirectedGraph();
 		this.allNodes = new HashMap<Node, Integer>();
+		this.graph2 = new no.roek.nlpged.graph.Graph();
 	}
 	
 	public Parser(RSyntaxTextArea source, IScanner scanner, boolean debugMe) {
@@ -274,17 +238,26 @@ func:
 		System.err.println("parser: " + s);
 	}
 
-	private int count = 0;
+	private int count = 0, edge = 0;
 
 	// TODO:
 	private int yylex() {
 		int tok = -1;
 		try {
+			
 			tok = scanner.yylex();
+			
 			Node node = new Node(yyname[tok], scanner.yytext());
-			yylval = new ParserVal(node);
+			no.roek.nlpged.graph.Node node2 = new no.roek.nlpged.graph.Node(String.valueOf(count), scanner.yytext(), new String[] {yyname[tok], scanner.yytext()});
+			graph2.addNode(node2);
 			allNodes.put(node, count);
+			
+			Object[] obj = {node, node2};
+			
+			yylval = new ParserVal(obj);
+			
 			count++;
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());
@@ -296,14 +269,43 @@ func:
  		return root;
  	}
  	
- 	public Graph getGraph() {
+ 	public SparseUndirectedGraph getGraph() {
  		return graph;
  	}
  	
- 	private ParserVal compute(Node p, Node... c) {
- 	    for(Node child : c) {
- 	        p.addChild(child);
- 	        graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(child)));
+ 	public no.roek.nlpged.graph.Graph getGraph2() {
+ 	    return graph2;
+ 	}
+ 	
+ 	private ParserVal mergedCompute(Object... objs) {
+ 		ArrayList<Object[]> listOfNodes = new ArrayList<Object[]>();
+ 		for(int i = 0; i < objs.length; i++) {
+ 		    Object[] node = (Object[])objs[i];
+ 			listOfNodes.add(node);
+		}
+ 		Object[] obj = new Object[2];
+		if(listOfNodes.size() == 2) {
+		    obj[0] = compute((Node)listOfNodes.get(0)[0], (Node)listOfNodes.get(1)[0]);
+			obj[1] = compute2((no.roek.nlpged.graph.Node)listOfNodes.get(0)[1], (no.roek.nlpged.graph.Node)listOfNodes.get(1)[1]);
+		} else if(listOfNodes.size() == 3) {
+			obj[0] = compute((Node)listOfNodes.get(1)[0], (Node)listOfNodes.get(0)[0], (Node)listOfNodes.get(2)[0]);
+			obj[1] = compute2((no.roek.nlpged.graph.Node)listOfNodes.get(1)[1], (no.roek.nlpged.graph.Node)listOfNodes.get(0)[1], (no.roek.nlpged.graph.Node)listOfNodes.get(2)[1]);
+		}
+		return new ParserVal(obj);
+ 	}
+ 	
+ 	private ParserVal compute(Node p, Node... child) {
+ 	    for(Node c : child) {
+ 	        p.addChild(c);
+ 	        graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
  	    }
 		return new ParserVal(p);
  	}
+ 	
+ 	private ParserVal compute2(no.roek.nlpged.graph.Node p, no.roek.nlpged.graph.Node... child) {
+        for(no.roek.nlpged.graph.Node c : child) {
+            graph2.addEdge(new Edge(String.valueOf(edge), p, c, p.getLabel() + " " + c.getLabel()));
+            edge++;
+        }
+        return new ParserVal(p);
+    }
