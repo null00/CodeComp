@@ -2,6 +2,8 @@
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{tabularx}
+\usepackage{amssymb}
 \usepackage{latexsym}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
@@ -10,6 +12,7 @@
 \usepackage{enumitem}
 \usepackage{listings}
 \usepackage{geometry}
+\usepackage{xcolor}
 \linespread{1.5}
 \pagestyle{fancy}
 \geometry{lmargin=3.5cm, rmargin=2.5cm, bmargin=3cm, tmargin=3cm}
@@ -36,6 +39,31 @@
 
 \begin{document}
 
+\definecolor{light-gray}{gray}{0.95}
+\lstdefinestyle{customjava}{
+  backgroundcolor=\color{light-gray},
+  numbers=left,
+  numbersep=10pt,
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=Java,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
+\lstset{escapechar=@,style=customjava}
+
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\circ$}
+\renewcommand{\labelitemiii}{\tiny$\blacksquare$}
+\renewcommand{\labelitemiv}{$\diamond$}
+
 \maketitle
 
 \pagebreak
@@ -57,39 +85,42 @@ Osiągnięcie celu głównego wymaga zrealizowania szeregu celów cząstkowych:
 \begin{itemize}
 	\item symboli leksykalnych
 	\item gramatyki języka
-	\item akcji semantycznych
 \end{itemize}
 \item implementacja co najmniej jednej metody porównywania
 \item dostarczenie aplikacji analizującej kod źródłowy
 \item dostarczenie środowiska do porównywania kodów źródłowych
 \item dostarczenie przykładowych programów w języku wewnętrznym
 \end{itemize}
-	
-Pierwszym etapem całego mechanizmu powinien być etap preprocessingu, czyli odpowiedniego przefiltrowania plików źródłowych, celem usunięcia zbędnych białych znaków oraz komentarzy.
-
-Następnym krokiem jest proces analizy leksykalnej, którego zadaniem jest wyłonienie odpowiednich symboli leksykalnych, które zostaną przekazane do analizatora składniowego.
-
-Kolejnym krokiem jest parsowanie, które odbywa się za pomocą analizatora składniowego. Sprawdza on, czy przekazane symbole wejściowe są zgodne z gramatyką języka oraz buduje z nich tzw. drzewo składniowe, które będzie wykorzystywane podczas porównywania dwóch kodów źródłowych.
 
 Istnieje kilka skutecznych metod porównywania tekstu, poczynając od najprostszej i zarazem najmniej efektywnej metody brute-force, poprzez szybsze funkcje wykorzystujące zróżnicowane metody (np. funkcje hashujące), do algorytmów wykorzystujących deterministyczne automaty skończone.
 
-Etap analizy można podzielić na 3 elementarne części:
+Jednak w przypadku porównywania kodów źródłowych programów komputerowych problem staje się dużo bardziej złożony i zwykłe porównywanie tekstu nie jest najbardziej efektywną metodą, na której należy polegać \cite{arwin2006}. Najbardziej popularna klasyfikacja metod służących do wykrywania plagiatów kodów źródłowych uwzględnia sześć różnych podejść, skupiających się na\cite{roycordy2007}:
 \begin{itemize}
-\item analizę leksykalną – wczytywanie znaków i grupowanie ich w większe symbole
-\item analizę składniową – sprawdzenie poprawności z gramatyką, stworzenie drzewa składniowego
-\item analizę semantyczną – analizę kodu na podstawie drzewa składniowego, zapewnienie odpowiednich warunków (zgodność typów, wywoływanie odpowiednich funkcji, sprawdzanie zasięgów)
+\item tekscie - metoda bardzo szybka, ale może być łatwo oszukana poprzez zmianę nazw identyfikatorów i funkcji,
+\item tokenach - większośc systemów opiera sie na tej metodzie, sposób działania taki sam jak podczas porównywania tekstu, jednak uniezależniony od identyfikatorów, komentarzy i białych znaków,
+\item drzewach składniowych - pozwala na porównywanie kodów na wyższym poziomie, umożliwiając porównanie całych sekwencji kodu, np. wyrażeń warunkowych, czy funkcji,
+\item Program Dependecy Graphs (PDGs) - inaczej zwane również multigrafami - grafy skierowane, które dokładnie odwzorowują logikę i przepływ programu, bardzo złożone i czasochłonne,
+\item metrykach - wykorzystanie funkcji oceny na podstawie częstości występowania pewnego fragmentu kodu (np. pętli, wywołań funkcji, ilość wykorzystanych zmiennych), niezbyt skuteczna metoda, ponieważ dwa kody wykonujące całkowicie różne rzeczy mogą mieć tą samą ocenę,
+\item hybrydzie - połączenie dowolnych dwóch powyższych metod.
 \end{itemize}
 
-Założenia co do funkcjonalności języka wewnętrznego:
-\begin{itemize}
-\item obsługa mechanizmu tworzenia zmiennych
-\item obsługa pętli
-\item obsługa instrukcji warunkowych
-\item sprawdzanie wywoływanych funkcji
-\item mechanizmu obsługi wywoływanych funkcji (ilość przekazywanych parametrów, zwykłe oraz rekurencyjne wywoływanie funkcji)
-\end{itemize}
-	
-Wynikiem tego etapu będzie łatwa do porównania lista symboli w postaci <function, value>, <variable, value>.
+W swojej pracy zdecydowałem się na podejście do problemu pod różnymi kątami i wykorzystanie kilku dostępnych metod.
+
+Oprócz sposobów wymienionych powyżej istnieje jeszcze miara odmienności napisów (także odległość edycyjna, ang. ,,edit distance'' lub ,,Levenshtein distance''), zaproponowana przez Vladimira Levenshtein'a w 1965 roku\cite{editdistance}. Jest ona skutecznie wykorzystywana w rozpoznawaniu mowy, analizie DNA, korekcie pisowni, oraz w rozpoznawaniu plagiatów.
+
+Z tego względu miara odmienności napisów wydaje się idealnym sposobem na zaimplementowanie metody wykrywającej plagiaty na podstawie porównywania tekstu i tokenów.
+
+Na tym jednak rola odległości Levenshtein'a się nie kończy. Ponieważ porównanie samego tekstu nie jest najbardziej skutecznym sposobem na wykrywanie plagiatów w kodach źródłowych, większy sens i sposób na uzyskanie największej dokładności w porównywaniu mają metody skupiające się wokół grafów i drzew (które są szczególnymi przypadkami grafu).
+
+Izomorfizm grafów (a także drzew) jest wykorzystywana do sprawdzania podobieństwa grafów. Grafy A i B nazywami izomorficznymi wtedy, gdy istnieje bijekcja zbioru wierzchołków grafu A na zbiór wierzchołków grafu B. Innymi słowy oznacza to, że grafy A i B są takie same, jednak poddane pewnej permutacji wierzchołków. Rozstrzygnięcie izomorficzności dwóch grafów jest problemem klasy NP.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{gfx/isomorphism.png}
+\caption{Grafy położone obok siebie są izomorficzne}
+\end{figure}
+
+Okazuje się, że odległość edycyjna jest z powodzeniem wykorzystywana w badaniu izomorficzności grafów i to wykorzystam ją jako kolejną metodę do wykrywania podobieństw pokrywającą porównywanie drzew składniowych (czyli grafów).
 
 \newpage
 
@@ -99,25 +130,19 @@ Kompilator to program, który tłumaczy kod źródłowy na kod wynikowy. Składa
 
 Etap analizy składa się z trzech etapów pośrednich - analizy leksykalnej, składniowej i semantycznej. Polega on na rozłożeniu kodu źródłowego na czynniki składowe oraz na budowie jego reprezentacji pośredniej.
 
-Ten właśnie etap wydaje się być odpowiednim procesem, dzięki któremu można będzie wykonać porównanie dwóch kodów źródłowych na odpowiednio niskim poziomie, aby uniezależnić się od wykorzystywanego nazewnictwa lub organizacji i kolejności instrukcji w kodach źródłowych.
-
+Ten właśnie etap wydaje się być odpowiednim procesem, dzięki któremu można będzie wykonać porównanie dwóch kodów źródłowych na odpowiednio wysokim, abstrakcyjnym poziomie, aby uniezależnić się od wykorzystywanego nazewnictwa lub organizacji i kolejności zdefiniowanych instrukcji w kodach źródłowych.
 
 Język formalny to podzbiór zbioru wszystkich wyrazów nad skończonym alfabetem. Język formalny jest podstawowym pojęciem w informatyce, logice matematycznej i językoznawstwie. Aby zdefiniować język formalny musimy najpierw zdefiniować jego alfabet, składający się z symboli. Ciągi symboli nazywamy napisami, a dowolny zbiór tych ciągów to język formalny.
 
 \subsection{Symbole}
 
-Symbole leksykalne to abstrakcyjne  ciągi znaków, które definiowane są podstawie określonych przez analizator reguł i przekazywane do dalszych etapów analizy. Reguły, według których są one definiowane, budowane są najczęściej z wyrażeń regularnych.  Z symbolami leksykalnymi skojarzona jest też wartość leksykalna.
+Symbole leksykalne to abstrakcyjne ciągi znaków, które definiowane są podstawie określonych przez analizator reguł i przekazywane do dalszych etapów analizy. Reguły, według których są one definiowane, budowane są najczęściej z wyrażeń regularnych. Z symbolami leksykalnymi skojarzona jest też wartość leksykalna.
 \\ \\
-<przyklad> \\
-sum = 3 + 2 ; \\
-symbol 			| 	wartość \\
-identyfikator		| 	sum \\
-operator przypisania	|	= \\
-liczba			|	3 \\
-operator dodawania	|	+ \\
-liczba			|	2 \\
-koniec operacji		|	; \\
-</przyklad> \\
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.8]{gfx/tokens.png}
+\caption{Przykład przedstawiający pewne wyrażenie oraz wynik działania parsera w postaci listy tokenów i ich wartości}
+\end{figure}
 
 Symbole, których używany najczęściej to litery lub cyfry. Alfabet jest to niepusty zbiór, składający się ze skończonej liczby symboli. Przykładem alfabetu, może być alfabet języka polskiego lub alfabet Morse’a.
 
@@ -128,6 +153,16 @@ Prefiksem napisu nazywamy pewną liczbę symboli rozpoczynających napis. Sufiks
 Język jest dowolnym zbiorem napisów ustalonym nad pewnym okreśłonym alfabetem. Językiem może być zbiór pusty, zbiór zawierający pusty napis lub pewien podzbiór ze zbioru wszystkich łańcuchów nad określonym alfabetem.
 
 \subsection{Wyrażenia regularne}
+
+Wyrażenia regularne to specyficzne wzorce, które umożliwiają zwięzłe i elastyczne sposoby wyszukiwania dopasowań ciągów tekstu, poszczególnych znaków lub wzorców znaków.
+
+W tej pracy wyrażenia regularne wykorzystane zostaną tylko w jednym miejscu - w analizatorze leksykalnym. Dzięki nim zdefiniowane zostaną odpowiednie wzorce, które wychwycą w podanym kodzie źródłowym białe znaki, zwykłe znaki oraz liczby, z których zbudowane są zmienne, funkcje i identyfikatory.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{gfx/regexp.png}
+\caption{Lista tokenów oraz wykorzystanych wyrażeń regularnych, które je definiują.}
+\end{figure}
 
 \subsection{Gramatyka}
 
@@ -149,8 +184,11 @@ W wielu przypadkach pierwszy znak, który nie jest znakiem białym może posłu�
 
 Skaner wczytuje kolejne znaki ze strumienia wejściowego i klasyfikuje je według reguł w symbole leksykalne, które następnie przekazywane są do analizy składniowej. Jako jednostka rozpoczynająca analizę i wczytująca tekst źródłowy może służyć również jako filtr, który pomija pewne elementy, takie jak np. komentarze, białe znaki lub znaki nowego wiersza.
 
-
 Możliwe jest i czasem konieczne napisanie własnego analizatora, aczkolwiek jest to zwykle zbyt skomplikowane, czasochłonne i nieopłacalne. Z tego względu analizatory, zwane lekserami, zwykle generowane są za pomocą specjalnych narzędzi, które przyjmują na wejściu wyrażenia regularne, które opisuję wymagane symbole leksykalne.
+
+Jednym z najbardziej popularnych generatorów analizatorów leksykalnych jest program Flex\cite{flex}, który posiada swoją implementację w Javie o nazwie JFlex\cite{jflex}.
+
+To właśnie JFlex został wykorzystany do wygenerowania skanera na podstawie gramatyki, która składa się z trzech części: kodu użytkownika, zdefiniowanych za pomocą wyrażeń regularnych tokenów oraz definicji reguł leksykalnych.
 
 \subsection{Analiza składniowa}
 
@@ -165,12 +203,202 @@ Jest to komponent, który wykonując analizę składniową, sprawdza jej poprawn
 Zadaniem parsera jest określenie czy i w jaki sposób symbole leksykalne mogą być przekształcone na symbole gramatyczne. Istnieją dwa sposoby, dzięki którym osiągniemy rządany efekt:
 \begin{itemize}
 	\item parsowanie zstępujące (top-down) -- polega na znalezieniu symboli wysuniętych najbardziej na lewo przeszukując drzewo składniowe z góry na dół.
-	\item parsowanie wstępujące (bottom-up) -- polega na sprawdzeniu począwszy od słowa wejściowego i próbie redukcji do symbolu startowego, analizę zaczynamy od liści drzewa posuwając się wkierunku korzenia.
+	\item parsowanie wstępujące (bottom-up) -- polega na sprawdzeniu począwszy od słowa wejściowego i próbie redukcji do symbolu startowego, analizę zaczynamy od liści drzewa posuwając się w kierunku korzenia.
 \end{itemize}
 
-\subsection{Opis procesu}
+Do wygenerowania parsera opierającego się na metodzie zstępującej wykorzystany został program BYACC/J\citep{byaccj}. Jest to rozszerzenie generatora BYACC stworzonego na uniwersytecie Berkeley\cite{byacc}, który na podstawie gramatyki opisanej w notacji zbliżonej do BNF (Backus Normal Form)\cite{BNF} generuje parser w języku Java.
 
-%\section{Analiza semantyczna}
+\newpage
+
+\section{Wprowadzenie do Asemblera}
+
+Historia asemblera sięga lat 50. tych XX wieku, kiedy powstał pierwszy asembler stworzony przez niemieckiego inzyniera Kondrada Zuse. Stworzył on pierwszy układ elektromechaniczny, który na podstawie wprowadzanych przez użytkownika rozkazów i adresów tworzył taśmę perforowaną zrozumiałą dla wyprodukowanego przez niego komputera Z4.
+
+Asembler jest to program, który tłumaczy kod źródłowy, napisany w języku niskopoziomowym, na kod maszynowy. Proces ten nosi nazwę asemblacji. 
+
+Język asembler (ang. \textbf{assembly language}) jest to język programowania komputerowego, należący do grupy języków niskopoziomowych. Oznacza to, że jedna instrukcja języka asembler odpowiada dokładnie jednej instrukcji kodu maszynowego, przeznaczonej do bezpośredniego wykonania przez procesor.
+
+Istnieje kilka różnych implementacji języka asembler. Składnia każdego z nich jest zależna od architektury konkretnego procesora. Najbardziej popularnym obecnie asemblerem jest Asembler x86.
+
+\subsection{Instrukcje}
+
+Każda instrukcja języka asembler jest reprezentowana przez łatwy do zapamiętania tzw. mnemonik, który w połączeniu z jednym lub wieloma argumentami tworzy kod operacji (ang. \textbf{opcode}).
+
+Specyfikacja i format operacji zależy architektury procesora (ang \textbf{ISA - Instruction Set Architecture}), która definiuje listę dostępnych rozkazów procesora, typów danych, rejestrów, obsługę wyjątków i przerwań.
+
+Argumentami operacji mogą być (w zależności od architektury): rejestry, wartości stosu, adresy w pamięci, porty I/O, itp.
+
+Lista typów operacji składa się z operacji:
+\begin{itemize}
+\item arytmetycznych
+\item logicznych
+\item transferowych
+\item skokowych
+\item różnych
+\end{itemize}
+
+Asembler x86 posiada dwie podstawowe składnie: Intel i AT\&T. Składnia Intel jest dominującą w systemach DOS i Windows, natomiast AT\&T w systemach Unixowych\cite{asm_syn}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.6]{gfx/asm_syn_diff.png}
+\caption{Główne różnice pomiędzy składniami Intel i AT\&T\cite{asm_syn}}
+\end{figure}
+
+\subsection{Typy danych}
+
+Typy danych w języku asembler są ściśle związane z pojęciem dyrektyw.
+
+Dyrektywy to instrukcje, które definiują typ danych, ich rozmiar, zasięg i alokują je w pamięci.
+
+\\
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline 
+Dyrektywa & Typ danych \\ 
+\hline 
+DB & Byte (8b) \\ 
+\hline 
+DW & Word (16b) \\ 
+\hline 
+DD & Doubleword (32b) \\ 
+\hline 
+DQ & Quadword (64b) \\ 
+\hline 
+DT & Ten bytes (80b) \\ 
+\hline 
+\end{tabular} 
+\end{center}
+\\
+
+Typy danych dzielimy na dwie kategorie: numeryczne i alfanumeryczne. W skład danych numerycznych wchodzą liczby całkowite i zmiennoprzecinkowe. Kody alfanumeryczne wykrzystywane są do przechowywania napisów.
+
+\subsection{Adresowanie}
+
+Adresowanie określa sposób, w jaki odnosimy się do adresu w pamięci, który określa położenie argumentów rozkazu.
+
+\textbf{Adresowanie natychmiastowe}
+
+Adresowanie natychmiastowe (ang. \textbf{immediate addressing}) to najprostsza metoda adresowania, w którym zamiast podawania adresu operandu jego wartość podana jest jawnie w instrukcji. Ten sposób adresowania jest możliwy tylko dla stałych.
+
+\begin{lstlisting}
+mov eax, 5
+\end{lstlisting}
+
+\textbf{Adresowanie bezpośrednie}
+
+Adresowanie bezpośrednie (ang. \textbf{direct addressing}) polega na podaniu w instrukcji adresu pamięci, w którym znajduje się operand. W ten wygodny sposób można wykorzystać używając zmiennych globalnych, których adres nie zmienia się w trakcie działania programu.
+
+\begin{lstlisting}
+mov eax, [0xFFFFFF]
+\end{lstlisting}
+
+\textbf{Adresowanie rejestrowe}
+
+Adresowanie rejestrowe (ang. \textbf{register addressing}) wykorzystuje rejestr, w którym operand jest przechowywany.
+
+\begin{lstlisting}
+mov eax, ebx
+\end{lstlisting}
+
+\textbf{Adresowanie pośrednie rejestrowe}
+
+W adresowanie pośrednie rejestrowe (ang. \textbf{indirect addressing mode}) adres operandu zapisany jest w jednym z rejestrów. Oznacza to, że rejestr staje się wskaźnikiem do wartości operandu.
+
+\begin{lstlisting}
+mov eax, [ebx]
+\end{lstlisting}
+
+\textbf{Adresowanie indeksowe}
+
+Adresowanie indeksowe (ang. \textbf{indexed addressing}) polega na dodaniu do wartości rejestru, w którym znajduje się adres operandu, tzw. offsetu, czyli przesunięcia względem początku bloku danych.
+
+\begin{lstlisting}
+mov eax, [0xFFFFFF + ebx * 1]
+\end{lstlisting}
+
+\textbf{Adresowanie indeksowe z wartością bazową}
+
+Adresowanie indeksowe z wartością bazową (ang. \textbf{based indexed addressing}) występuje tylko w niektórych rodzajach procesorów. Polega na obliczeniu adresu operandu poprzez zsumowanie wartości dwóch rejestrów i dodaniu opcjonalnego przesunięcia. Pierwszy rejestr zawiera adres podstawowy, drugi indeks. Indeks mnożony jest przez rozmiar słowa, a do całości dodawane jest przesunięcie.
+
+\begin{lstlisting}
+mov eax, [0xFFFFFF + ebx + ecx * 1]
+\end{lstlisting}
+
+\subsection{Lista instrukcji}
+
+List instrukcji to najważniejszy element wykorzystywany w parserze. Dokładne i odpowiednie zdefiniowanie listy jest kluczowe podczas rozpoznawania tokenów na podstawie kodu źródłowego i stworzenia poprawnego grafu.
+
+\begin{itemize}
+\item Operacje arytmetyczne bez lub z 1 argumentem:
+	\begin{itemize}
+	\item aaa
+	\item daa
+	\item inc $dest$
+	\item dec $dest$
+	\end{itemize}
+\item Operacje arytmetyczne z dwoma argumentami:
+	\begin{itemize}
+	\item adc $src, dest$
+	\item add $src, dest$
+	\item cmp $src_1$, $src_2$ 
+	\item {[i]}div $src, dest$
+	\item {[i]}mul $src, dest$
+	\item sbb $src, dest$
+	\item sub $src, dest$
+	\item sa[lr] $number, dest$
+	\item rc[lr] $number, dest$
+	\item ro[lr] $number, dest$ 
+	\end{itemize}
+\item Operacje logiczne bez lub z jednym argumentem:
+	\begin{itemize}
+	\item nop 
+	\item not $dest$
+	\item neg $dest$
+	\end{itemize}
+\item Operacje logiczne z dwoma argumentami:
+	\begin{itemize}
+	\item and $src, dest$
+	\item or $src, dest$
+	\item xor $src, dest$
+	\item sh[rl] $dest, src$
+	\item test $src_1$, $src_2$
+	\end{itemize}
+\item Operacje transferu bez lub z jednym argumentem:
+	\begin{itemize}
+	\item clc
+	\item cld
+	\item cli
+	\item cmc
+	\item pop[ad]
+	\item pop[f] $dest$
+	\item push[ad]
+	\item push[f] $src$
+	\item st[cdi]
+	\end{itemize}
+\item Operacje transferu z dwoma argumentami:
+	\begin{itemize}
+	\item mov $src, dest$
+	\item movzx $src, [dest]$
+	\item in $src, dest$
+	\item out $src, dest$
+	\item xchg $dest, dest$
+	\end{itemize}
+\item Operacje skoku:
+	\begin{itemize}
+	\item call $dest$
+	\item jmp $dest$
+	\item j$Warunek$ $dest$
+	\item ret[fn] $number$
+	\end{itemize}
+\item Operacje różne:
+	\begin{itemize}
+	\item bswap $reg$
+	\item int $src$
+	\item lea $dest, src$
+	\item nop
+	\end{itemize}
+\end{itemize}
 
 \newpage
 
@@ -183,13 +411,17 @@ Każda z opisanych metod posiada szereg cech ją charakteryzujących. Są to:
 \item złożoność czasowa - ilość wykonywanych operacji względem ilości danych wejściowych
 \end{itemize}
 
-\subsection{Algorytm brute-force}
+\subsection{Porównywanie tekstu}
+
+\subsubsection{Algorytm brute-force}
 
 Metoda brute -- force, w teorii, jest najskuteczniejszą metodą, ponieważ sukcesywnie sprawdza wszystkie możliwe kombinacje w poszukiwaniu rozwiązania problemu. W praktyce jednak, algorytmy oparte na tej metodzie są niezwykle nieoptymalne, ze względu na czas wykonywania, przez co są rzadko stosowane.
 
 Algorytm polega na sprawdzeniu wszystkich pozycji w tekscie pomiędzy znakiem $0$ i $n-m$, gdzie $m$ to długość poszukiwanego wzorca, a $n$ to długość tekstu. Algorytm weryfikuje, czy wzorzec zaczyna się na danej pozycji. Jeśli tak to pozycja elementu w tekscie zapisywana jest do bufora. Następnie przesuwa wskaźnik w prawo po każdej próbie. Jeśli na kolejnych pozycjach znajdują się wszystkie kolejne elementy z wzorca to do tablicy wynikowej przepisywany jest zawartość bufora. Algorytm może być wykonywany w dowolnym kierunku, od przodu lub od tyłu.
 
 Metoda nie wymaga żadnej fazy przed rozpoczęciem wykonywania algorytmu. Ze względu na charakter metody wymaga dodatkowego miejsca w pamięci. Złożoność czasowa wynosi $O(m*n)$, a ilość operacji potrzebna do wykonania algorytmu wynosi $2n$.
+
+\pagebreak
 
 Przykładowy kod źródłowy algorytmu brute -- force, wyszukującego określony wzorzec w podanym tekście:
 \begin{lstlisting}
@@ -203,111 +435,9 @@ void BF(char *x, int m, char *y, int n) {
 }
 \end{lstlisting}
 
-\subsection{Deterministyczny automat skończony}
-
-DFA (Deterministic Finite Automaton), czyli deterministyczny automat skończony to maszyna o skończonej liczbie stanów, która czytając kolejne symbole podanego słowa zmienia swój stan na wartość funkcji opisującej dany symbol. Po przeczytaniu całego słowa automat sprawdza, czy znajduję się w jednym z określonych stanów akceptacyjnych.
-
-Algorytm zbudowany na podstawie DFA na początku wymaga stworzenia minimalnego skończonego automaty $A(x)$ rozpoznającego język $\sum_{}^*x$, w celu znalezienia słowa $x$. Minimalny automat określony wzorem $A(x)=(Q, q_0, T, E)$ rozpoznający język $\sum_{}^*x$ definiujemy następująco:
-\begin{itemize}
-\item $Q$ to zbiór wszystkich przedrostków słowa $x$: \\
-$Q = \{ \epsilon , x[0], x[0..1], .. , x[0..m-2] \} $, gdzie $ \ epsilon $ -- zbiór pusty
-\item $q_0 = \epsilon $
-\item $T = \{ x \} $
-\item dla $q$ należącego do $Q$ ($q$ to przedrostek $x$) i $a$ w $\sum_{}$ $(q, a, qa)$ należy do $\sum_{}$ wtedy i tylko wtedy, gdy $qa$ jest także przedrostkiem słowa $x$, w przeciwnym razie $(q, a, p)$ należy do $\sum_{}$, a $p$ jest najdłuższym przyrostkiem $qa$, który jest przedrostkiem słowa $x$
-\end{itemize}
-
-Po stworzeniu DFA przeszukiwanie słowa $x$ w tekście $y$ polega na przeanalizowaniu tekstu $y$ przez DFA rozpoczynając ze stanem $q_0$. Za każdym razem, gdy trafiono na terminal ($T$ - szukane słowo) raportowane jest wystąpienie szukanego słowa.
-
-Stworzenie DFA $A(x)$ ma złożoność czasową rzędu $O(m+\sigma)$ i potrzebuje $O(m\sigma)$ miejsca, natomiast sam etap przeszukiwania ma złożoność czasową $O(n)$.
-
-Przykładowa implementacja DFA:
-\begin{lstlisting}
-void preAut(char *x, int m, Graph aut) {
-   int i, state, target, oldTarget;
-   for (state = getInitial(aut), i = 0; i < m; ++i) {
-      oldTarget = getTarget(aut, state, x[i]);
-      target = newVertex(aut);
-      setTarget(aut, state, x[i], target);
-      copyVertex(aut, target, oldTarget);
-      state = target;
-   }
-   setTerminal(aut, state);
-}
- 
-void AUT(char *x, int m, char *y, int n) {
-   int j, state;
-   Graph aut;
-   /* Preprocessing */
-   aut = newAutomaton(m + 1, (m + 1)*ASIZE);
-   preAut(x, m, aut);
-   /* Searching */
-   for (state = getInitial(aut), j = 0; j < n; ++j) {
-      state = getTarget(aut, state, y[j]);
-      if (isTerminal(aut, state))
-         OUTPUT(j - m + 1);
-   }
-}
-\end{lstlisting}
-
 \newpage
 
-\subsection{Algorytm Karp-Rabin}
-
-Algorytm Karpa-Rabina jest kolejnym algorytmem służącym do przeszukiwania określonego podciągu w tekście. Algorytm ten korzysta z funkcji hashującej, co jest prostą metodą, aby w większości przypadków uniknąć kwadratowej liczby porównań znakowych. Zamiast sprawdzania znaku na każdej pozycji tekstu, w celu odnalezienia wzorca, bardziej wydajne jest sprawdzenie, czy zawartość “okna” przypomina wzorzec. Sprawdzanie podobieństwa pomiędzy wzorcem i “oknem” odbywa się za pomocą funkcji hashującej.
-\\ \\
-Właściwości funkcji hashującej:
-\begin{itemize}
-\item Wydajność obliczeń
-\item Dyskryminuje słowa
-\item funkcja $hash(y[j+1 .. j+m])$ musi być łatwo przeliczalna z $hash(y[j .. j+m-1])$ oraz $y[j+m]$: \\
-$hash(y[j+1 .. j+m]) = rehash(y[j], y[j+m], hash(y[j .. j+m-1])$
-\end{itemize}
-
-Dla słowa $w$ o długości $m$ niech funkcja $hash$ będzie zdefiniowana następująco:
-\begin{center}
-$hash(w[0 .. m-1]) = (w[0]*2^{m-2} + ... + w[m-1]*2^0)mod(q)$, \\ gdzie $q$ jest dowolną dużą liczbą
-\end{center}
-
-Wtedy funkcja rehash przyjmuje postać:
-\begin{center}
-$rehash(a,b,h) = ((h-a*2^{m-2})*2+b)mod(q)$
-\end{center}
-
-Preprocessing - obliczenie funkcji hashującej dla szukanego wzorca - posiada złożoność czasową rzędu $O(m), gdzie m - długość wzorca.$
-
-Podczas wyszukiwania wystarczy porównać $hash(x)$ z $hash(y[j .. j+m-1])$ dla $0 <= j <= n-m$. Jeśli równość jest znaleziona to należy sprawdzić równość $x = y[j .. j+m-1]$ znak po znaku.
-\newpage
-Przykład implementacji:
-\begin{lstlisting}
-#define REHASH(a, b, h) ((((h) - (a)*d) << 1) + (b))
-
-void KR(char *x, int m, char *y, int n) {
-   int d, hx, hy, i, j;
-
-   /* Preprocessing */
-   /* computes d = 2^(m-1) with
-      the left-shift operator */
-   for (d = i = 1; i < m; ++i)
-      d = (d<<1);
-
-   for (hy = hx = i = 0; i < m; ++i) {
-      hx = ((hx<<1) + x[i]);
-      hy = ((hy<<1) + y[i]);
-   }
-
-   /* Searching */
-   j = 0;
-   while (j <= n-m) {
-      if (hx == hy && memcmp(x, y + j, m) == 0)
-         OUTPUT(j);
-      hy = REHASH(y[j], y[j + m], hy);
-      ++j;
-   }
-
-}
-\end{lstlisting}
-
-\subsection{Algorytm Boyer-Moore}
+\subsubsection{Algorytm Boyer-Moore}
 
 Algorytm Boyer-Moore został stworzony w 1977 roku i do tej pory uważany jest za najbardziej optymalny algorytm poszukiwania wzorca w tekscie. Dowodem na to jest fakt, że algorytm ten jest zaimplementowany w większości najbardziej popularnych aplikacji z opcją ,,Znajdź’’ lub ,,Zamień’’.
 
@@ -317,35 +447,108 @@ Procedura zaczyna się w miejscu k = n, w taki sposób, że początek wzorca P j
 
 Reguły przesuwania indeksu definiowane są za pomocą tabel tworzonych za pomocą funkcji preprocesujących.
 
-Przykład implementacji:
-\begin{lstlisting}
-public List<Integer> match() {
-	List<Integer> matches = new LinkedList<Integer>();
-	computeLast();
-	computeMatch();
+\pagebreak
 
-	int i = text.length() - 1;
-	int j = pattern.length() - 1;
-	while (i >= 0 && i < text.length()) {
-		try {
-			if (pattern.charAt(j) == text.charAt(i)) {
-				if (j == 0) {
-					matches.add(i);
-					j = pattern.length() - 1;
-					// return i;
-				}
-				j--; i--;
-			} else {
-				i -= Math.max(match[j], last[text.charAt(i)] - text.length() + 1 + i);
-				j = pattern.length() - 1;
-			}
-		} catch (Exception ex) { (...)  }
-	}
-	return matches;
+Przykład implementacji:
+\begin{lstlisting}[h!]
+public List<Integer> match() {
+ List<Integer> matches = new LinkedList<Integer>();
+ computeLast();
+ computeMatch();
+
+ int i = text.length() - 1;
+ int j = pattern.length() - 1;
+  while (i >= 0 && i < text.length()) {
+   try {
+    if (pattern.charAt(j) == text.charAt(i)) {
+	if (j == 0) {
+	 matches.add(i);
+	 j = pattern.length() - 1;
+    }
+	j--; i--;
+   } else {
+    i -= Math.max(match[j], last[text.charAt(i)] 
+       - text.length() + 1 + i);
+    j = pattern.length() - 1;
+   }
+  } catch (Exception ex) { (...)  }
+ }
+ return matches;
 }
 \end{lstlisting}
 
-\section{Wprowadzenie do Asemblera}
+\newpage
+
+\subsubsection{Odległość Levenshtein'a}
+
+Odległość Levenshtein'a - inaczej odległość edycyjna (ang. \textbf{edit distance}) - to metryka napisu, która określa różnicę pomiędzy dwiema sekwencjami znaków. Została wymyślona i zdefiniowana przez rosyjskiego naukowca Vladimira Levenshtein'a w 1965 roku.
+Jej wynikiem jest minimalna ilośc operacji na pojedynczych znakach (wstawienia, usunięcia, podmiany) potrzebnej do zamiany jednego słowa w drugie.
+
+\textbf{Definicja}
+
+Odległośc Levenshtein'a pomiędzy napisami $a$ i $b$ określona jest wzorem $lev_{a,b}(|a|,|b|)$, gdzie:
+\begin{center}
+\includegraphics[scale=0.7]{gfx/levenshtein_def.png}
+\end{center}
+
+\textbf{Przykład}
+
+Odległość edycyjna pomiędzy słowami $inżynier$ i $magister$ wynosi 6:
+\begin{enumerate}
+\item \textbf{i}nżynier $\rightarrow$ \textbf{m}nżynier
+\item m\textbf{n}żynier $\rightarrow$ m\textbf{a}żynier
+\item ma\textbf{ż}ynier $\rightarrow$ ma\textbf{g}ynier
+\item mag\textbf{y}nier $\rightarrow$ mag\textbf{i}nier
+\item magi\textbf{n}ier $\rightarrow$ magi\testbf{s}ier
+\item magis\textbf{i}er $\rightarrow$ magis\textbf{t}er
+\end{enumerate}
+
+\pagebreak
+
+\textbf{Cechy}
+
+Odległość edycyjna posiada kilka cech, które mają zastosowanie w każdym przypadku i warto je wykorzystać w trakcie implementowania algorytmu:
+\begin{itemize}
+\item odległość jest zawsze conajmniej równa różnicy długości dwóch napisów
+\item maksymalna wartość odległości jest równa długości dłuższego napisu
+\item odległość jest równa zero wtedy i tylko wtedy, gdy napisy są identyczne
+\item ogległość pomiędzy dwoma napisami jest nie większa niż suma ich odległości pomiędzy trzecim napisem
+\end{itemize}
+
+Odległość Levenshtein'a jest wykorzystana w technikach dopasowania przybliżonego, które polega na znalezieniu takich napisów, które w przybliżeniu pasują do wzorca. Techniki te znajdują zastossowanie w korektorach pisowni, systemach rozpoznawania znaków  (OCR - Optical Character Recognition) oraz w systemach do wykrywania plagiatów.
+
+Głównym elementem w systemach wykrywania plagiatów jest zawsze graf. Może on posiadać postać drzewa, grafu skierowanego i nieskierowanego lub multigrafu. Stanowi on reprezentacje kodów źródłowych, które porównujemy. Aby ocenić, w jakim stopniu dwa kodu źródłowe są do siebie podobne, musimy sprawdzić w jakim stopniu podobne są do siebie dwa grafy.
+
+Temat podobieństwa grafów jest istotnym elementem podczas badań w przestrzeni rozpoznawania wzorców. Możliwość określenia dokładnego podobieństwa pomiędzy grafami jest kluczowa, a odległość edycyjna stała się podstawą całego procesu \cite{ged}.
+
+\newpage
+
+\subsection{Izomorfizm grafów}
+
+Problem izomorficzności grafów polega na określeniu, czy dwa grafy są izomorficzne, czyli identyczne. Poza praktycznym zastosowaniem w wielu różnych dziedzinach, zagadnienie to jest ciekawe i, z punktu widzenia teorii złożoności obliczeniowej, uznawane za jedno z niewielu problemów decyzyjnych należących do klasy NP, których rozwiązania nie można zweryfikować w czasie wielomianowym oraz jednym z dwóch problemów, których złożoność pozostaje nierozstrzygnięta\cite{np}.
+
+Jednocześnie problem izomorficzności dla szczególnych rodzajów grafów może być rozwiązany w czasie wielomianowm i w optymalny sposób. Te szczególne klasy grafów to:
+\begin{itemize}
+\item drzewo\cite{iso_tree}
+\item graf planarny\cite{iso_planar}
+\item graf przedziałowy\cite{iso_interval}
+\item graf permutacji\cite{iso_perm}
+\item niepełne drzewo rzędu k\cite{iso_ktree}
+\item graf o ograniczonym stopniu\cite{iso_degree}
+\item graf o ograniczonym genus (rodzaj topologiczny)\cite{iso_genus}
+\end{itemize}
+
+% problem izomorficznosci podgrafu
+
+% pseudokod algorytmu
+
+% izomorfizm i edit distance
+
+\subsubsection{Algorytm VF2}
+
+\cite{vf2}
+
+\newpage
 
 \section{Projekt systemu CodeComp}
 
@@ -353,14 +556,15 @@ W tym rozdziale przedstawiono opis aplikacji CodeComp, jej budowę wewnętrzną 
 
 \subsection{Architektura systemu}
 
-Program składa się z czterech głownych pakietów: Comparator, Algorithm, Analyzer oraz GUI.
+Program składa się z kilku głownych pakietów: Comparator, Algorithm, Analyzer oraz GUI.
 
 \begin{figure}[!h]
 \centering
-\includegraphics[scale=0.6]{gfx/packagediagram.png}
+\includegraphics[scale=0.65]{gfx/packagediagram.png}
+\caption{Diagram przedstawiający strukturę aplikacji}
 \end{figure}
 
-Comparator jest podstawowym, statycznym obiektem, który na wejście pobiera kody źrodłowe programów wejściowych, uruchamia wybrany sposób porównywania i zwraca listę elementów podobnych oraz ich położenia w tekście.
+Comparator jest podstawowym, statycznym obiektem, który na wejściu pobiera kody źrodłowe programów porównywanych, uruchamia wybraną metodę weryfikowania podobieństwa i zwraca listę elementów podobnych oraz ich położenia w tekście.
 
 Algorithm to pakiet, w którego skład wchodzi zestaw algorytmów porównywania tekstu. Użytkownik jest w stanie wybrać sobie wybrany algorytm w zależności od potrzeb, aby móc porównać jego skuteczność oraz czas działania.
 
@@ -392,7 +596,39 @@ java -jar codecomp.jar
 
 \subsection{Korzystanie z aplikacji}
 
+\newpage
+
+\subsection{Opis procesu}
+
+\subsubsection{Preprocesing}
+
+Pierwszym etapem całego mechanizmu powinna być faza preprocessingu, czyli odpowiedniego przefiltrowania plików źródłowych, celem usunięcia zbędnych białych znaków oraz komentarzy.
+
+Za etap ten odpowiada Filtr, który posiada dwie funkcje: usuń białe znaki oraz usuń komentarze.
+
+Pierwsza funkcja usuwa wszystkie białe znaki oraz usuwa puste linie. Druga funkcja usuwa wszystkie komentarze zaczynające sie od znaku średnika (\textbf{';'}) i znaku zapytania (\textbf{'?'}).
+
+\subsubsection{Analiza}
+
+Etap analizy dzieli się na 2 elementarne części:
+\begin{itemize}
+\item analizę leksykalną – wczytywanie znaków i grupowanie ich w większe symbole
+\item analizę składniową – sprawdzenie poprawności z gramatyką, stworzenie drzewa składniowego 
+\end{itemize}
+
+Pierwszym krokiem jest proces analizy leksykalnej. Jej zadaniem jest wyłonienie odpowiednich symboli leksykalnych, które zostaną przekazane do analizatora składniowego.
+
+Kolejnym krokiem jest parsowanie, które odbywa się za pomocą analizatora składniowego. Sprawdza on, czy przekazane symbole wejściowe są zgodne z gramatyką języka oraz buduje z nich tzw. drzewo składniowe, które będzie wykorzystywane podczas porównywania dwóch kodów źródłowych.
+
+W wyniku całej analizy zbudowane zostanie drzewo składniowe, którego węzły w sposób hierarchiczny będą przedstawiały strukturę porównywanych kodów źródłowych oraz będą przechowywać informacje na temat typów tokenów i ich wartości.
+
+\subsubsection{Porównywanie}
+
+\newpage
+
 \subsection{Wyniki}
+
+\newpage
 
 \section{Wnioski}
 
@@ -402,7 +638,27 @@ java -jar codecomp.jar
 
 \begin{thebibliography}{1}
 
-\bibitem{temp} ldots
+\bibitem{arwin2006} Plagiarism Detection across Programming Languages - Christian Arwin, M.M. Tahaghoghi - Australia 2006
+\bibitem{roycordy2007} Chanchal Kumar Roy and James R. Cordy - A Survey on Software Clone Detection Research - Canada 2007
+\bibitem{lex} Lex - A Lexical Analyzer Generator - M. E. Lesk and E. Schmidt - http://dinosaur.compilertools.net/
+\bibitem{jflex} The Fast Lexical Analyser Generator - Gervin Klein - http://jflex.de
+\bibitem{lexyacc} Lex & Yacc, John R. Levine, Tony Mason, Doug Brown - O'Reilly & Associates 1992
+\bibitem{editdistance} Binary codes capable of correcting deletions, insertions, and reversals - V. Levenshtein - Soviet Physics Doklady 1965
+\bibitem{graphiso} Practical Graph Isomorphism - B.D. McKay - Congressus Numerantium,
+vol. 30, pp. 45-87, 1981
+\bibitem{bnf} Compiler Basics. Extended Backus Naur Form. - Farrell, James A. - 1995
+\bibitem{asm_syn} Linux assemblers: A comparison of GAS and NASM - Ram Narayan - IBM Developerworks paper - 2007
+\bibitem{ged} A survey of graph edit distance - Xinbo Gao, Bing Xiao, Dacheng Tao, Xuelong Li - London 2009
+\bibitem{vf2} A (Sub)Graph Isomorphism Algorithm for Matching Large Graphs - Luigi P. Cordella, Pasquale Foggia, Carlo Sansone, Mario Vento - IEEE Transactions on pattern analysis and machine intelligence, vol. 26, no. 10, October 2004
+\bibitem{np} Computers and Intractability: A Guide to the Theory of NP-Completeness - Michael Garey, David S. Johnson - USA 1979
+\bibitem{iso_tree} P.J. Kelly, "A congruence theorem for trees" Pacific J. Math., 7 (1957) pp. 961–968; Aho, Hopcroft & Ullman 1974.
+\bibitem{iso_planar} Hopcroft, J. E., John; Wong, J. (1974), "Linear time algorithm for isomorphism of planar graphs", Proceedings of the Sixth Annual ACM Symposium on Theory of Computing, 
+\bibitem{iso_2} Datta, S., Limaye, N., Nimbhorkar, P., Thierauf, T., Wagner, F. (2009). "Planar Graph Isomorphism is in Log-Space". 2009 24th Annual IEEE Conference on Computational Complexity. p. 203. 
+\bibitem{iso_interval} Booth, Kellogg S.; Lueker, George S. (1979), "A linear time algorithm for deciding interval graph isomorphism", Journal of the ACM 26 (2)
+\bibitem{iso_perm} Colbourn, C. J. (1981), "On testing isomorphism of permutation graphs", Networks 11: 13–21
+\bibitem{iso_ktree} Bodlaender, Hans (1990), "Polynomial algorithms for graph isomorphism and chromatic index on partial k-trees", Journal of Algorithms 11 (4): 631–643
+\bibitem{iso_degree} Luks, Eugene M. (1982), "Isomorphism of graphs of bounded valence can be tested in polynomial time", Journal of Computer and System Sciences 25: 42–65
+\bibitem{iso_genus} Miller, Gary (1980), "Isomorphism testing for graphs of bounded genus", Proceedings of the 12th Annual ACM
 
 \end{thebibliography}
 

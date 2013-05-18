@@ -18,32 +18,20 @@
 
 \title
 {
-\Large
-Akademia Górniczo-Hutnicza im. Stanisława Staszica \\ w Krakowie \\
-
-Zaawansowane techniki integracji systemów \\
-\textbf{ Platforma wymiany dóbr pomiędzy podmiotami realizującymi proces produkcji } \\
-\vspace{15 mm}
-
-\vspace{5 mm}
-}
-
-\title
-{
 	\Large
 	Akademia Górniczo-Hutnicza im. Stanisława Staszica \\ w Krakowie \\
-	\vspace{15 mm}
+	\vspace{10 mm}
+	\includegraphics[scale=0.8]{gfx/agh.jpg} \\
 	\textbf{ System wykrywania podobieństw kodów źródłowych w projektach studenckich } \\
-	Praca magisterska
-	\vspace{15 mm}
-	\includegraphics[scale=0.8]{gfx/agh.jpg}
-	\vspace{5 mm}
+	Praca dyplomowa \\
+	\vspace{10 mm}
 }
 \author
 {
-	Jarosław Szczęśniak \\ \\ \\
+	\vspace{10 mm}
+	Jarosław Szczęśniak \\
 	Promotor: dr inż. Darin Nikolow
-	\vspace{40 mm}
+	\vspace{10 mm}
 }
 
 \begin{document}
@@ -76,10 +64,24 @@ Osiągnięcie celu głównego wymaga zrealizowania szeregu celów cząstkowych:
 \item dostarczenie środowiska do porównywania kodów źródłowych
 \item dostarczenie przykładowych programów w języku wewnętrznym
 \end{itemize}
-	
-Pierwszym etapem całego mechanizmu powinien być etap preprocessingu, czyli odpowiedniego przefiltrowania plików źródłowych, celem usunięcia zbędnych białych znaków oraz komentarzy.
 
 Istnieje kilka skutecznych metod porównywania tekstu, poczynając od najprostszej i zarazem najmniej efektywnej metody brute-force, poprzez szybsze funkcje wykorzystujące zróżnicowane metody (np. funkcje hashujące), do algorytmów wykorzystujących deterministyczne automaty skończone.
+
+Jednak w przypadku porównywania kodów źródłowych programów komputerowych problem staje się dużo bardziej złożony i zwykłe porównywanie tekstu nie jest najbardziej efektywną metodą, na której należy polegać \cite{plagiarism}. Najbardziej popularna klasyfikacja metod służących do wykrywania plagiatów uwzględnia sześć różnych podejść, skupiających się na\cite{roycordy2007}:
+\begin{itemize}
+\item tekscie - metoda bardzo szybka, ale może być łatwo oszukana poprzez zmianę nazw identyfikatorów i funkcji,
+\item tokenach - większośc systemów opiera sie na tej metodzie, sposób działania taki sam jak podczas porównywania tekstu, jednak uniezależniony od identyfikatorów, komentarzy i białych znaków,
+\item drzewach składniowych - pozwala na porównywanie kodów na wyższym poziomie, umożliwiając porównanie całych sekwencji kodu, np. wyrażeń warunkowych, czy funkcji,
+\item Program Dependecy Graphs (PDGs) - inaczej zwane również multigrafami - grafy skierowane, które dokładnie odwzorowują logikę i przepływ programu, bardzo złożone i czasochłonne,
+\item metrykach - wykorzystanie funkcji oceny na podstawie częstości występowania pewnego fragmentu kodu (np. pętli, wywołań funkcji, ilość wykorzystanych zmiennych), niezbyt skuteczna metoda, ponieważ dwa kody wykonujące całkowicie różne rzeczy mogą mieć tą samą ocenę,
+\item hybrydzie - połączenie dowolnych dwóch powyższych metod.
+\end{itemize}
+
+Pierwszym etapem całego mechanizmu powinien być etap preprocessingu, czyli odpowiedniego przefiltrowania plików źródłowych, celem usunięcia zbędnych białych znaków oraz komentarzy.
+
+Następnym krokiem jest proces analizy leksykalnej, którego zadaniem jest wyłonienie odpowiednich symboli leksykalnych, które zostaną przekazane do analizatora składniowego.
+
+Kolejnym krokiem jest parsowanie, które odbywa się za pomocą analizatora składniowego. Sprawdza on, czy przekazane symbole wejściowe są zgodne z gramatyką języka oraz buduje z nich tzw. drzewo składniowe, które będzie wykorzystywane podczas porównywania dwóch kodów źródłowych.
 
 Etap analizy można podzielić na 3 elementarne części:
 \begin{itemize}
@@ -88,26 +90,95 @@ Etap analizy można podzielić na 3 elementarne części:
 \item analizę semantyczną – analizę kodu na podstawie drzewa składniowego, zapewnienie odpowiednich warunków (zgodność typów, wywoływanie odpowiednich funkcji, sprawdzanie zasięgów)
 \end{itemize}
 
-Założenia co do funkcjonalności języka wewnętrznego:
-\begin{itemize}
-\item obsługa mechanizmu tworzenia zmiennych
-\item obsługa pętli
-\item obsługa instrukcji warunkowych
-\item sprawdzanie wywoływanych funkcji
-\item mechanizmu obsługi wywoływanych funkcji (ilość przekazywanych parametrów, zwykłe oraz rekurencyjne wywoływanie funkcji)
-\end{itemize}
-	
-Wynikiem tego etapu będzie łatwa do porównania lista symboli w postaci <function, value>, <variable, value>.
+W wyniku całej analizy zbudowane zostanie drzewo składniowe, którego węzły w sposób hierarchiczny będą przedstawiały strukturę porównywanych kodów źródłowych oraz będą przechowywać informacje na temat typów tokenów i ich wartości.
 
 \newpage
 
-\section{Preprocessing}
+\section{Teoria kompilacji}
 
-\section{Analiza leksykalna}
+Kompilator to program, który tłumaczy kod źródłowy na kod wynikowy. Składa się on z dwóch głównych etapów - analizy i syntezy.
 
-\section{Analiza składniowa}
+Etap analizy składa się z trzech etapów pośrednich - analizy leksykalnej, składniowej i semantycznej. Polega on na rozłożeniu kodu źródłowego na czynniki składowe oraz na budowie jego reprezentacji pośredniej.
 
-\section{Analiza semantyczna}
+Ten właśnie etap wydaje się być odpowiednim procesem, dzięki któremu można będzie wykonać porównanie dwóch kodów źródłowych na odpowiednio wysokim, abstrakcyjnym poziomie, aby uniezależnić się od wykorzystywanego nazewnictwa lub organizacji i kolejności zdefiniowanych instrukcji w kodach źródłowych.
+
+Język formalny to podzbiór zbioru wszystkich wyrazów nad skończonym alfabetem. Język formalny jest podstawowym pojęciem w informatyce, logice matematycznej i językoznawstwie. Aby zdefiniować język formalny musimy najpierw zdefiniować jego alfabet, składający się z symboli. Ciągi symboli nazywamy napisami, a dowolny zbiór tych ciągów to język formalny.
+
+\subsection{Symbole}
+
+Symbole leksykalne to abstrakcyjne ciągi znaków, które definiowane są podstawie określonych przez analizator reguł i przekazywane do dalszych etapów analizy. Reguły, według których są one definiowane, budowane są najczęściej z wyrażeń regularnych. Z symbolami leksykalnymi skojarzona jest też wartość leksykalna.
+\\ \\
+Przykład przedstawiający pewne wyrażenie oraz wynik działania parsera w postaci listy tokenów i ich wartości: \\
+sum = 3 + 2 ; \\
+symbol 			| 	wartość \\
+identyfikator		| 	sum \\
+operator przypisania	|	= \\
+liczba			|	3 \\
+operator dodawania	|	+ \\
+liczba			|	2 \\
+koniec operacji		|	;
+
+Symbole, których używany najczęściej to litery lub cyfry. Alfabet jest to niepusty zbiór, składający się ze skończonej liczby symboli. Przykładem alfabetu, może być alfabet języka polskiego lub alfabet Morse’a.
+
+Napis jest to skończony ciąg symboli, które należą do podanego alfabetu. Długość napisu oznaczamy jako |n| i jest to ilość symboli w napisie ,,n’’, przykładowo długość |tekst| wynosi 5.
+
+Prefiksem napisu nazywamy pewną liczbę symboli rozpoczynających napis. Sufiksem nazywamy pewną liczbę symboli kończących napis. 
+
+Język jest dowolnym zbiorem napisów ustalonym nad pewnym okreśłonym alfabetem. Językiem może być zbiór pusty, zbiór zawierający pusty napis lub pewien podzbiór ze zbioru wszystkich łańcuchów nad określonym alfabetem.
+
+\subsection{Wyrażenia regularne}
+
+Wyrażenia regularne to specyficzne wzorce, które umożliwiają zwięzłe i elastyczne sposoby wyszukiwania dopasowań ciągów tekstu, poszczególnych znaków lub wzorców znaków.
+
+W tej pracy wyrażenia regularne wykorzystane zostaną tylko w jednym miejscu - w analizatorze leksykalnym. Dzięki nim zdefiniowane zostaną odpowiednie wzorce, które wychwycą w podanym kodzie źródłowym białe znaki, zwykłe znaki oraz liczby, z których zbudowane są zmienne, funkcje i identyfikatory.
+
+\begin{figure}
+\includegraphics[scale=0.4]{gfx/regexp.png}
+\label Lista tokenów oraz wykorzystanych wyrażeń regularnych, które je definiują.
+\end{figure}
+
+\subsection{Gramatyka}
+
+To, co definiuje leksemy, to zestaw reguł określonych na podstawie specyfikacji języka programowania, czyli gramatyki.
+
+Obecnie najczęściej stosuje się wyrażenia regularne do zdefiniowania reguł. Określają one zestaw możliwych sekwencji, które są użyte do zbudowania konkretnych leksemów.
+
+W niektórych językach programowania kod dzieli się na bloki za pomocą par symboli (np. ,,\{‘’ i ,,\}’’), które razem z wszelkimi białymi znakami również opisane są za pomocą leksemów, lecz nie są brane pod uwagę podczas dalszych etapów analizy.
+
+\subsection{Analiza leksykalna}
+
+Analiza leksykalna służy do dzielenia strumienia znaków wejściowych na grupy (symbole), do których dopasowywane są pewne sekwencje (leksemy) na podstawie reguł (wzorców), w celu przekazania ich do dalszego etapu analizy. Leksem to abstrakcyjna jednostka leksykalna, która może obejmować słowa kluczowe, identyfikatory, etykiety, operatory, separatory, komentarze lub inne symbole specjalne.
+
+\subsubsection{Skaner}
+
+Skaner, czyli podstawowa część analizatora leksykalnego, zajmuje się głównym etapem analizy. Posiada on informacje na temat sekwencji znaków, które mogą być wykryte i zapisane jako symbole.
+
+W wielu przypadkach pierwszy znak, który nie jest znakiem białym może posłużyć do dedukcji, z jakiego rodzaju symbolem mamy do czynienia (longest-match rule). W przypadku bardziej skomplikowanych języków potrzebna jest możliwość cofania się do wcześniej wczytanych znaków.
+
+Skaner wczytuje kolejne znaki ze strumienia wejściowego i klasyfikuje je według reguł w symbole leksykalne, które następnie przekazywane są do analizy składniowej. Jako jednostka rozpoczynająca analizę i wczytująca tekst źródłowy może służyć również jako filtr, który pomija pewne elementy, takie jak np. komentarze, białe znaki lub znaki nowego wiersza.
+
+
+Możliwe jest i czasem konieczne napisanie własnego analizatora, aczkolwiek jest to zwykle zbyt skomplikowane, czasochłonne i nieopłacalne. Z tego względu analizatory, zwane lekserami, zwykle generowane są za pomocą specjalnych narzędzi, które przyjmują na wejściu wyrażenia regularne, które opisuję wymagane symbole leksykalne.
+
+\subsection{Analiza składniowa}
+
+Analiza składniowa to proces analizy tekstu, złożonego z symboli, którego celem jest wyklarowanie jego struktury gramatycznej na podstawie zdefiniowanej gramatyki.
+
+\subsubsection{Parser}
+
+Jest to komponent, który wykonując analizę składniową, sprawdza jej poprawność i tworzy pewną strukturę danych (często tzw. drzewo składniowe), składającą się z symboli wejściowych. Korzysta z analizatora leksykalnego, który zaopatruje go w zestaw symboli leksykalnych zbudowanych ze strumienia wejściowego. Innymi słowy parser analizuje kod źródłowy i tworzy jego wewnętrzną reprezentację.
+
+\subsubsection{Typy parserów}
+
+Zadaniem parsera jest określenie czy i w jaki sposób symbole leksykalne mogą być przekształcone na symbole gramatyczne. Istnieją dwa sposoby, dzięki którym osiągniemy rządany efekt:
+\begin{itemize}
+	\item parsowanie zstępujące (top-down) -- polega na znalezieniu symboli wysuniętych najbardziej na lewo przeszukując drzewo składniowe z góry na dół.
+	\item parsowanie wstępujące (bottom-up) -- polega na sprawdzeniu począwszy od słowa wejściowego i próbie redukcji do symbolu startowego, analizę zaczynamy od liści drzewa posuwając się wkierunku korzenia.
+\end{itemize}
+
+\subsection{Opis procesu}
+
+%\section{Analiza semantyczna}
 
 \newpage
 
@@ -244,9 +315,92 @@ void KR(char *x, int m, char *y, int n) {
 }
 \end{lstlisting}
 
+\subsection{Algorytm Boyer-Moore}
+
+Algorytm Boyer-Moore został stworzony w 1977 roku i do tej pory uważany jest za najbardziej optymalny algorytm poszukiwania wzorca w tekscie. Dowodem na to jest fakt, że algorytm ten jest zaimplementowany w większości najbardziej popularnych aplikacji z opcją ,,Znajdź’’ lub ,,Zamień’’.
+
+Algorytm szuka danego wzorca w teksćie porównując kolejne znaki tekstu do wzorca, lecz w odróżnieniu od metody brute-force wykorzystuje informacje zebrane za pomocą fukcji preprocesujących, aby pominąć jak najwięcej znaków w tekście, które na pewno nie pasują do wzorca.
+
+Procedura zaczyna się w miejscu k = n, w taki sposób, że początek wzorca P jest wyrównany do początku tekstu T. Następnie poszczególne znaki z P i T są porównywane począwszy od indeksu n w P i indeksu k w T, porusząjąc się od prawej do lewej strony wzorca P. Porównywanie trwa dopóki znaki w P i T nie są różne lub do momentu dotarcia do początku P (co oznacza, że znaleziono wystąpienie w tekście), a następnie indeks porównywania przesuwany jest w prawo o maksymalną wartość wskazywaną przez zdefiniowane reguły. Czynności są powtarzane do momentu sprawdzenia całego tekstu T.
+
+Reguły przesuwania indeksu definiowane są za pomocą tabel tworzonych za pomocą funkcji preprocesujących.
+
+Przykład implementacji:
+\begin{lstlisting}
+public List<Integer> match() {
+	List<Integer> matches = new LinkedList<Integer>();
+	computeLast();
+	computeMatch();
+
+	int i = text.length() - 1;
+	int j = pattern.length() - 1;
+	while (i >= 0 && i < text.length()) {
+		try {
+			if (pattern.charAt(j) == text.charAt(i)) {
+				if (j == 0) {
+					matches.add(i);
+					j = pattern.length() - 1;
+					// return i;
+				}
+				j--; i--;
+			} else {
+				i -= Math.max(match[j], last[text.charAt(i)] - text.length() + 1 + i);
+				j = pattern.length() - 1;
+			}
+		} catch (Exception ex) { (...)  }
+	}
+	return matches;
+}
+\end{lstlisting}
+
 \section{Wprowadzenie do Asemblera}
 
-\section{Projekt systemu}
+\section{Projekt systemu CodeComp}
+
+W tym rozdziale przedstawiono opis aplikacji CodeComp, jej budowę wewnętrzną oraz sposoby instalacji i użycia.
+
+\subsection{Architektura systemu}
+
+Program składa się z czterech głownych pakietów: Comparator, Algorithm, Analyzer oraz GUI.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.6]{gfx/packagediagram.png}
+\end{figure}
+
+Comparator jest podstawowym, statycznym obiektem, który na wejście pobiera kody źrodłowe programów wejściowych, uruchamia wybrany sposób porównywania i zwraca listę elementów podobnych oraz ich położenia w tekście.
+
+Algorithm to pakiet, w którego skład wchodzi zestaw algorytmów porównywania tekstu. Użytkownik jest w stanie wybrać sobie wybrany algorytm w zależności od potrzeb, aby móc porównać jego skuteczność oraz czas działania.
+
+Analyzer to komponent, który zajmuje się etapem analizy z teorii kompilacji. Składa się ze skanera - czyli analizatora leksykalnego - oraz z parsera - czyli analizatora składniowego. Wynikiem działania analizatora jest drzewo składniowe, które następnie będzie porównywane przez komparator.
+
+\begin{figure}[!]
+\centering
+\includegraphics[scale=0.6]{gfx/classdiagram.png}
+\end{figure}
+
+\pagebreak
+
+Program posiada graficzny interfejs użytkownika stworzony za pomocą bilbioteki Swing. Składa się on z dwóch elementów tekstowych wyświetlających wczytane kody źródłowe oraz podświetlający elementy, które są identyczne/podobne. Wczytywanie oraz wszelkie inne operacje dostępne są z poziomu głównego menu znajdującego się na górze okna.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.33]{gfx/main_window.png}
+\end{figure}
+
+\newpage
+
+\subsection{Uruchamianie aplikacji}
+
+Aplikacja dołączona do niniejszej pracy dyplomowej w całości napisana została w języku JAVA. Wykorzystuje ona podstawowe pakiety ze środowiska JRE 1.7 oraz kilka dodatkowych, niestandardowych bibliotek (rsyntaxtextarea).
+\\ \\
+Aplikacja dołączona została w postaci kodu źrodłowego oraz skompilowanego archiwum JAR, który można uruchomić na dowolnym środowisku z zainstalowanym pakietem uruchomieniowym JRE w wersji 1.7 za pomocą polecenia:
+\\ \\
+java -jar codecomp.jar
+
+\subsection{Korzystanie z aplikacji}
+
+\subsection{Wyniki}
 
 \section{Wnioski}
 
@@ -256,7 +410,8 @@ void KR(char *x, int m, char *y, int n) {
 
 \begin{thebibliography}{1}
 
-\bibitem{temp} ldots
+\bibitem{arwin2006} Plagiarism Detection across Programming Languages - Christian Arwin, M.M. Tahaghoghi - Australia 2006
+\bibitem{roycordy2007} Chanchal Kumar Roy and James R. Cordy - A Survey on Software Clone Detection Research - Canada 2007
 
 \end{thebibliography}
 
