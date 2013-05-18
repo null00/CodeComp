@@ -24,10 +24,6 @@ public class CompareAction implements ActionListener {
                 new SourceComparator(CodeCompGUI.getLeftText(), CodeCompGUI.getRightText());
                 break;
             }
-            case "distance": {
-                new DistanceComparator(CodeCompGUI.getLeftText(), CodeCompGUI.getRightText());
-                break;
-            }
         }
     }
 }

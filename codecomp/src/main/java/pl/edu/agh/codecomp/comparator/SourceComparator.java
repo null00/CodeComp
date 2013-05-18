@@ -14,12 +14,12 @@ import no.roek.nlpged.preprocessing.DependencyParser;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
-import pl.edu.agh.codecomp.graph.isomorphism.VF2IsomorphismTester;
+import pl.edu.agh.codecomp.analyzer.lexer.IScanner;
+import pl.edu.agh.codecomp.analyzer.lexer.SimpleScanner;
+import pl.edu.agh.codecomp.analyzer.parser.Parser;
+import pl.edu.agh.codecomp.analyzer.tree.Node;
+import pl.edu.agh.codecomp.comparator.graph.isomorphism.VF2IsomorphismTester;
 import pl.edu.agh.codecomp.gui.dialogs.ScoreDialog;
-import pl.edu.agh.codecomp.lexer.IScanner;
-import pl.edu.agh.codecomp.lexer.SimpleScanner;
-import pl.edu.agh.codecomp.parser.Parser;
-import pl.edu.agh.codecomp.tree.Node;
 
 public class SourceComparator extends IComparator {
     
