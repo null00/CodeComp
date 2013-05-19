@@ -6,7 +6,7 @@ import java.util.List;
 public class BoyerMoore implements IAlgorithm {
 
 	public static final String NAME = "BoyerMoore";
-	private static final int ALPHABET_SIZE = 128;
+	private static final int ALPHABET_SIZE = 129;
 
 	private String pattern;
 
@@ -37,6 +37,7 @@ public class BoyerMoore implements IAlgorithm {
 					if (j == 0) {
 						matches.add(i);
 						j = pattern.length() - 1;
+						--i;
 						continue;
 					}
 					--i;

@@ -1,7 +1,7 @@
 package pl.edu.agh.codecomp.comparator;
 
 import java.awt.Color;
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,11 +11,9 @@ import java.util.StringTokenizer;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import pl.edu.agh.codecomp.algorithm.IAlgorithm;
-import pl.edu.agh.codecomp.gui.dialogs.ScoreDialog;
 
 public class TextComparator extends IComparator {
 	
@@ -40,47 +38,34 @@ public class TextComparator extends IComparator {
 		try {
 			IAlgorithm algo = CompareToken.getTextAlgorithm();
 			
-//			System.out.println(algo.getName() + ": " + left.getText().isEmpty() + " / " + right.getText().isEmpty());
-			
 			if (algo != null && !left.getText().isEmpty() && !right.getText().isEmpty()) {
-				String text = left.getText();
+				String text = right.getText();
 				
-//				Map<Integer, String> map = wordIndexPicker(right.getText());
-				
-				StringTokenizer st = new StringTokenizer(right.getText(), "\n");
+				StringTokenizer st = new StringTokenizer(left.getText(), " \t\r\f\n]");
 				
 				int lineNo = 0;
 				while(st.hasMoreTokens()) {
-//				for(Map.Entry<Integer, String> entry : map.entrySet()) {
-//					Integer index = entry.getKey();
-//					String word = entry.getValue();
-					
+				    ArrayList<Integer> l = new ArrayList<Integer>();
 					String word = st.nextToken();
-//					System.out.println("\nWord: " + word);
 					if (!word.isEmpty() && !word.equals("") && !word.equals(" ") && !word.equals("\n")) {
 						List<Integer> list = algo.match(text, word.trim());
-//						System.out.println("Matches: " + list.size());
 						
 						Highlighter leftHL = left.getHighlighter();
 						Highlighter rightHL = right.getHighlighter();
 						Iterator<Integer> it = list.iterator();
 						
 						while (it.hasNext()) {
-							int i = it.next();
-							
-//							Color color = Color.getHSBColor((float) Math.random() * 255 + 1, (float) Math.random() * 255 + 1, (float) Math.random() * 255 + 1);
-							Color color = Color.orange;
-							
-							leftHL.addHighlight(i, i + word.length(), new DefaultHighlighter.DefaultHighlightPainter(color));
-							
-							rightHL.addHighlight(lineNo, lineNo + word.length() + 1, new DefaultHighlighter.DefaultHighlightPainter(color));
-//							rightHL.addHighlight(index, index + word.length(), new DefaultHighlighter.DefaultHighlightPainter(color));
-//							System.out.println("Text: " + i + " | Pat:" + lineNo);
+                            int i = it.next();
+                            if (!l.contains(i)) {
+                                Color color = Color.orange;
+                                leftHL.addHighlight(lineNo, lineNo + word.length(), new DefaultHighlighter.DefaultHighlightPainter(color));
+                                rightHL.addHighlight(i, i + word.length(), new DefaultHighlighter.DefaultHighlightPainter(color));
+                                l.add(i);
+                            }
 						}
 						lineNo += word.length() + 1;
 					}
 				}
-//				System.out.println("Stopped Comparing");
 			}
 		} catch (Exception e) {
 			// TODO LOGGER

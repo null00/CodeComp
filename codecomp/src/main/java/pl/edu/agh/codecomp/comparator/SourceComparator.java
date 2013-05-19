@@ -2,6 +2,7 @@ package pl.edu.agh.codecomp.comparator;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -57,9 +58,9 @@ public class SourceComparator extends IComparator {
         Map<String, Double> deprelEditWeights = EditWeightService.getInsDelCosts(cs.getProperty("DEPREL_INSDEL_WEIGHTS"));
         GraphEditDistance ged = new GraphEditDistance(parserLeft.getGraph2(), parserRight.getGraph2(), posEditWeights, deprelEditWeights);
         
-        new ScoreDialog("Graph2: " + ged.getDistance() + " / " + ged.getNormalizedDistance() + "%", 
-                        "Graph: " + test.areIsomorphic(parserLeft.getGraph(), parserRight.getGraph()),
-                        "Tree: " + parserLeft.getTree().equals2(parserRight.getTree()));
+        DecimalFormat df = new DecimalFormat("#.##");
+        new ScoreDialog("Graphs are" + (test.areIsomorphic(parserLeft.getGraph(), parserRight.getGraph()) ? " " : " not ") + "isomorphic",
+                        "Distance: " + df.format(ged.getDistance()) + " / " + df.format(ged.getNormalizedDistance()) + "%");
 	}
 	
 	private Parser analizeSource(RSyntaxTextArea source) {

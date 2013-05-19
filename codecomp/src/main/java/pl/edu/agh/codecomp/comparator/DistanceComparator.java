@@ -18,7 +18,7 @@ public class DistanceComparator extends IComparator {
 
     @Override
     public void run() {
-        new ScoreDialog(compare());
+        new ScoreDialog("Distance: " + compare());
     }
     
     private String compare() {
