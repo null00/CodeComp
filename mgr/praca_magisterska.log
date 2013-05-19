@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.1.20)  18 MAY 2013 23:18
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.1.20)  19 MAY 2013 01:34
 entering extended mode
  %&-line parsing enabled.
 **praca_magisterska.tex
@@ -744,51 +744,73 @@ Overfull \hbox (6.42201pt too wide) in paragraph at lines 563--564
  []
 
 
-LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `!tbp') on input line 573.
+Overfull \hbox (6.12288pt too wide) in paragraph at lines 569--572
+[]\T1/cmr/m/n/12 Wynikiem dzi-aªa-nia kom-para-tora jest pro-cen-towa warto±¢ p
+odobie«stwa pomi¦dzy
+ []
 
-<gfx/classdiagram.png, id=103, 621.32124pt x 1010.77625pt>
+
+Overfull \hbox (9.2555pt too wide) in paragraph at lines 569--572
+\T1/cmr/m/n/12 dwoma ko-dami ¹ródªowymi oraz graficzna prezen-tacja miejsc iden
+-ty-cznych w porówny-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 569--572
+
+ []
+
+[25 <./gfx/packagediagram.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 575--578
+
+ []
+
+
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `!tbp') on input line 579.
+
+<gfx/classdiagram.png, id=108, 621.32124pt x 1010.77625pt>
 File: gfx/classdiagram.png Graphic file (type png)
 
-<use gfx/classdiagram.png> [25 <./gfx/packagediagram.png>] [26 <./gfx/classdiag
-ram.png (PNG copy)>] <gfx/main_window.png, id=112, 1298.8525pt x 794.97pt>
+<use gfx/classdiagram.png> [26] [27 <./gfx/classdiagram.png (PNG copy)>]
+<gfx/main_window.png, id=115, 1298.8525pt x 794.97pt>
 File: gfx/main_window.png Graphic file (type png)
 
 <use gfx/main_window.png>
-Overfull \hbox (1.8313pt too wide) in paragraph at lines 584--585
+Overfull \hbox (1.8313pt too wide) in paragraph at lines 590--591
  [][] 
  []
 
-[27 <./gfx/main_window.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 591--596
+[28 <./gfx/main_window.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 597--602
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 591--596
+Underfull \hbox (badness 10000) in paragraph at lines 597--602
 
  []
 
-[28]
-Overfull \hbox (20.90263pt too wide) in paragraph at lines 605--606
+[29]
+Overfull \hbox (20.90263pt too wide) in paragraph at lines 611--612
 \T1/cmr/m/n/12 Pierwszym etapem caªego mech-a-nizmu powinna by¢ faza pre-pro-ce
 ssingu, czyli odpowied-
  []
 
 
-Overfull \hbox (8.1786pt too wide) in paragraph at lines 623--624
+Overfull \hbox (8.1786pt too wide) in paragraph at lines 629--630
 \T1/cmr/m/n/12 sposób hi-er-ar-chiczny b¦d¡ przed-staw-iaªy struk-tur¦ porówny-
 wanych kodów ¹ródªowych
  []
 
-[29] [30] [31]
-Underfull \hbox (badness 1558) in paragraph at lines 643--644
+[30] [31] [32]
+Underfull \hbox (badness 1558) in paragraph at lines 649--650
 []\T1/cmr/m/n/12 Lex - A Lex-i-cal An-a-lyzer Gen-er-a-tor - M. E. Lesk and E. 
 Schmidt -
  []
 
 ! Misplaced alignment tab character &.
-l.645 \bibitem{lexyacc} Lex &
+l.651 \bibitem{lexyacc} Lex &
                               Yacc, John R. Levine, Tony Mason, Doug Brown -...
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -798,7 +820,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.645 ...vine, Tony Mason, Doug Brown - O'Reilly &
+l.651 ...vine, Tony Mason, Doug Brown - O'Reilly &
                                                    Associates 1992
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -808,7 +830,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.654 ..., 7 (1957) pp. 961â€“968; Aho, Hopcroft &
+l.660 ..., 7 (1957) pp. 961â€“968; Aho, Hopcroft &
                                                    Ullman 1974.
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -817,7 +839,7 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
-[32] [33] (./praca_magisterska.aux)
+[33] [34] (./praca_magisterska.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -842,9 +864,9 @@ onts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texmf-texlive/fonts/type1/
 public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfo
 nts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr8.
 pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on praca_magisterska.pdf (33 pages, 606010 bytes).
+Output written on praca_magisterska.pdf (34 pages, 607411 bytes).
 PDF statistics:
- 580 PDF objects out of 1000 (max. 8388607)
+ 583 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  46 words of extra memory for PDF output out of 10000 (max. 10000000)
 

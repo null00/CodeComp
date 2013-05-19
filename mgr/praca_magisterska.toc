@@ -24,12 +24,12 @@
 \contentsline {subsubsection}{\numberline {5.2.1}Algorytm VF2}{24}
 \contentsline {section}{\numberline {6}Projekt systemu CodeComp}{25}
 \contentsline {subsection}{\numberline {6.1}Architektura systemu}{25}
-\contentsline {subsection}{\numberline {6.2}Uruchamianie aplikacji}{28}
-\contentsline {subsection}{\numberline {6.3}Korzystanie z aplikacji}{28}
-\contentsline {subsection}{\numberline {6.4}Opis procesu}{29}
-\contentsline {subsubsection}{\numberline {6.4.1}Preprocesing}{29}
-\contentsline {subsubsection}{\numberline {6.4.2}Analiza}{29}
-\contentsline {subsubsection}{\numberline {6.4.3}Por\IeC {\'o}wnywanie}{29}
-\contentsline {subsection}{\numberline {6.5}Wyniki}{30}
-\contentsline {section}{\numberline {7}Wnioski}{31}
-\contentsline {section}{\numberline {8}Bibliografia}{32}
+\contentsline {subsection}{\numberline {6.2}Uruchamianie aplikacji}{29}
+\contentsline {subsection}{\numberline {6.3}Korzystanie z aplikacji}{29}
+\contentsline {subsection}{\numberline {6.4}Opis procesu}{30}
+\contentsline {subsubsection}{\numberline {6.4.1}Preprocesing}{30}
+\contentsline {subsubsection}{\numberline {6.4.2}Analiza}{30}
+\contentsline {subsubsection}{\numberline {6.4.3}Por\IeC {\'o}wnywanie}{30}
+\contentsline {subsection}{\numberline {6.5}Wyniki}{31}
+\contentsline {section}{\numberline {7}Wnioski}{32}
+\contentsline {section}{\numberline {8}Bibliografia}{33}
