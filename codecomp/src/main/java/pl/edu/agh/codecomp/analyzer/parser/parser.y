@@ -22,8 +22,8 @@ import pl.edu.agh.codecomp.tree.Node;
 %token TEXT, NUM, OP_MOV, OP_SMOV, OP_AR, OP_SAR, OP_LOG, OP_SLOG, OP_MISC, OP_JMP, OP_STO, OP_COMP, REG, LAB, ID, EQ, COMMA, APOSTROPHE
 %left '-' '+'
 %left '*' '/'
-%left NEG /* negation--unary minus */
-%right '^' /* exponentiation */
+%left NEG
+%right '^'
 
 %%
 
@@ -35,8 +35,7 @@ input: /* empty string */
 
 line: '\n'
  | func 					{ 
- 								//root.addChild((no.roek.nlpged.graph.Node)$1.obj);
- 								//root.addChild((Node)$1.obj);
+
  							}
  ;
  
@@ -240,7 +239,6 @@ func:
 
 	private int count = 0, edge = 0;
 
-	// TODO:
 	private int yylex() {
 		int tok = -1;
 		try {
@@ -259,7 +257,6 @@ func:
 			count++;
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());
 		}
 		return tok;

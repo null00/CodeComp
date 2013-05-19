@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{tabularx}
 \usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{latexsym}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
@@ -110,9 +111,9 @@ Oprócz sposobów wymienionych powyżej istnieje jeszcze miara odmienności napi
 
 Z tego względu miara odmienności napisów wydaje się idealnym sposobem na zaimplementowanie metody wykrywającej plagiaty na podstawie porównywania tekstu i tokenów.
 
-Na tym jednak rola odległości Levenshtein'a się nie kończy. Ponieważ porównanie samego tekstu nie jest najbardziej skutecznym sposobem na wykrywanie plagiatów w kodach źródłowych, większy sens i sposób na uzyskanie największej dokładności w porównywaniu mają metody skupiające się wokół grafów i drzew (które są szczególnymi przypadkami grafu).
+Na tym jednak rola odległości Levenshtein'a się nie kończy. Ponieważ porównanie samego tekstu nie jest najbardziej skutecznym sposobem na wykrywanie plagiatów w kodach źródłowych. Większy sens i sposób na uzyskanie największej dokładności w porównywaniu mają metody skupiające się wokół grafów i drzew (które są szczególnymi przypadkami grafu).
 
-Izomorfizm grafów (a także drzew) jest wykorzystywana do sprawdzania podobieństwa grafów. Grafy A i B nazywami izomorficznymi wtedy, gdy istnieje bijekcja zbioru wierzchołków grafu A na zbiór wierzchołków grafu B. Innymi słowy oznacza to, że grafy A i B są takie same, jednak poddane pewnej permutacji wierzchołków. Rozstrzygnięcie izomorficzności dwóch grafów jest problemem klasy NP.
+Izomorfizm grafów (a także drzew) jest wykorzystywany do sprawdzania podobieństwa grafów. Grafy A i B nazywami izomorficznymi wtedy, gdy istnieje bijekcja zbioru wierzchołków grafu A na zbiór wierzchołków grafu B. Innymi słowy oznacza to, że grafy A i B są takie same, jednak poddane pewnej permutacji wierzchołków. Rozstrzygnięcie izomorficzności dwóch grafów jest problemem klasy NP.
 
 \begin{figure}[h!]
 \centering
@@ -158,19 +159,13 @@ Wyrażenia regularne to specyficzne wzorce, które umożliwiają zwięzłe i ela
 
 W tej pracy wyrażenia regularne wykorzystane zostaną tylko w jednym miejscu - w analizatorze leksykalnym. Dzięki nim zdefiniowane zostaną odpowiednie wzorce, które wychwycą w podanym kodzie źródłowym białe znaki, zwykłe znaki oraz liczby, z których zbudowane są zmienne, funkcje i identyfikatory.
 
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.7]{gfx/regexp.png}
-\caption{Lista tokenów oraz wykorzystanych wyrażeń regularnych, które je definiują.}
-\end{figure}
-
 \subsection{Gramatyka}
 
 To, co definiuje leksemy, to zestaw reguł określonych na podstawie specyfikacji języka programowania, czyli gramatyki.
 
 Obecnie najczęściej stosuje się wyrażenia regularne do zdefiniowania reguł. Określają one zestaw możliwych sekwencji, które są użyte do zbudowania konkretnych leksemów.
 
-W niektórych językach programowania kod dzieli się na bloki za pomocą par symboli (np. ,,\{‘’ i ,,\}’’), które razem z wszelkimi białymi znakami również opisane są za pomocą leksemów, lecz nie są brane pod uwagę podczas dalszych etapów analizy.
+W niektórych językach programowania kod dzieli się na bloki za pomocą par symboli (np. ,,\{‘’ i ,,\}’’), które razem z innymi białymi znakami również opisane są za pomocą leksemów, lecz nie są brane pod uwagę podczas dalszych etapów analizy.
 
 \subsection{Analiza leksykalna}
 
@@ -523,11 +518,13 @@ Temat podobieństwa grafów jest istotnym elementem podczas badań w przestrzeni
 
 \newpage
 
-\subsection{Izomorfizm grafów}
+\subsection{Izomorfizm grafu}
 
-Problem izomorficzności grafów polega na określeniu, czy dwa grafy są izomorficzne, czyli identyczne. Poza praktycznym zastosowaniem w wielu różnych dziedzinach, zagadnienie to jest ciekawe i, z punktu widzenia teorii złożoności obliczeniowej, uznawane za jedno z niewielu problemów decyzyjnych należących do klasy NP, których rozwiązania nie można zweryfikować w czasie wielomianowym oraz jednym z dwóch problemów, których złożoność pozostaje nierozstrzygnięta\cite{np}.
+Problem izomorfizmu grafów polega na określeniu, czy dwa grafy są izomorficzne, czyli identyczne.
 
-Jednocześnie problem izomorficzności dla szczególnych rodzajów grafów może być rozwiązany w czasie wielomianowm i w optymalny sposób. Te szczególne klasy grafów to:
+Poza praktycznym zastosowaniem w wielu różnych dziedzinach, zagadnienie to jest ciekawe i, z punktu widzenia teorii złożoności obliczeniowej, uznawane za jedno z niewielu problemów decyzyjnych należących do klasy NP, których rozwiązania nie można zweryfikować w czasie wielomianowym oraz jednym z dwóch problemów, których złożoność pozostaje nierozstrzygnięta\cite{np}.
+
+Jednocześnie problem izomorfizmu dla szczególnych rodzajów grafów może być rozwiązany w czasie wielomianowm i w optymalny sposób. Te szczególne klasy grafów to:
 \begin{itemize}
 \item drzewo\cite{iso_tree}
 \item graf planarny\cite{iso_planar}
@@ -538,11 +535,95 @@ Jednocześnie problem izomorficzności dla szczególnych rodzajów grafów może
 \item graf o ograniczonym genus (rodzaj topologiczny)\cite{iso_genus}
 \end{itemize}
 
-% problem izomorficznosci podgrafu
+Izomorfizm grafów bada dokładną zgodność pomiędzy nimi, natomiast podczas wykrywania plagiatów zachodzi również potrzeba sprawdzenia, czy w danym kodzie źródłowym istnieje tylko pewna jego część (np. jedna funkcja), która występuje w drugim źródle.
 
-% pseudokod algorytmu
+Problem izomorfizmu grafu może być uogólniony do problemu izomorfizmu podgrafu, który można zastosować do rozwiązania wyżej opisanego problemu.
+
+\pagebreak
+
+\subsection{Izomorfizm podgrafu} 
+
+Problem izomorfizmu podgrafu polega na określeniu, czy dla podanych grafów $G$ i $F$, istnieje taki podgraf grafu $G$, który jest izomorficzny z grafem $F$. Należy on do klasy problemów NP-zupełnych.
+
+Grafem G nazywamy niepusty zbiór $V$ elementów $p$, zwanych węzłami, oraz zbiór $E$ składający się z różnych nieuporządkowanych par węzłów należących do $V$. Pary węzłów należące do $E$ nazywamy krawędziami.
+
+Podgrafem grafu $G$ nazywamy graf, którego wszystkie węzły i krawędzie należą do grafu $G$. Graf $G_\alpha$ jest izomorficzny z podgrafem grafu $G_\beta$ wtedy i tylko wtedy, gdy istnieje zgodność w stosunku 1:1 pomiędzy zbiorami węzłów tego podgrafu i grafu $G_\alpha$, zachowująca sąsiedztwa węzłów\cite{ullmann}.
+
+\subsubsection{Algorytm brute-force}
+
+Algorytm brute-force to algorytm przeszukiwania w głąb i polega na znalezieniu wszystkich izomorficznych grafów $G_\alpha = (V_\alpha, E_\alpha)$ i podgrafów grafu $G_\beta = (V_\beta, E_\beta)$.
+\\ \\
+\textbf{Opis algorytmu}
+\\ \\
+Założenia\cite{ullmann}: \\
+$p_\alpha \in V_\alpha$ \hspace{20} 
+$q_\alpha \in E_\alpha$ \hspace{20} 
+$p_\beta \in V_\beta$   \hspace{20}
+$q_\beta \in E_\beta$ \\
+$A = [a_{ij}]$ - macierz sąsiedztwa grafu $G_\alpha$ \\
+$B = [b_{ij}]$ - macierz sąsiedztwa grafu $G_\beta$
+$C = [c_ij] = M'(M'B')^T, gdzie T - transpozycja$
+$M' = p_\alpha X p_\beta$ - macierz, której elementy przyjmują wartość 0 lub 1; każdy wiersz zawiera dokładnie jeden element o wartości 1 i żadna kolumna nie zawiera wiecej niż jeden element o wartości 1; może być wykorzystana podczas permutacji wierszy i kolumn macierzy $B$ w celu wyprodukowania macierzy $C$ \\
+$F = \{ F_1, \ldots, F_i, \ldots, F_{p_\beta} \}$ - wektor przechowujący wykorzystane kolumny w trakcie działania algorytmu \\
+$H = \{ H_1, \ldots, H_d, \ldots, H_{p_\alpha} \}$ - wektor przechowujący odległość od korzenia wybranej kolumny \\
+$H_d = k$, jeżeli $k-ta$ kolumna znajduje się w odległości $d$ od korzenia
+\\
+Jeżeli twierdzenie:
+
+$(\forall{i} \forall{j}) (a_{ij} = 1) \Rightarrow (c_ij = 1)$ \\
+jest prawdziwe, to $M'$ określa izomorfizm pomiędzy $G_\alpha$ i podgrafem grafu $G_\beta$.
+\\ \\
+Pierwszym krokiem jest stworzenie $p_\alpha X p_\beta$ elementowej macierzy $M^0 = [{m^0}_{ij}]$, w której:
+\\
+${m^0}_{ij}$ \left\{
+  \begin{array}{l l}\label{con}
+    = 1, & \quad \text{gdy stopień $j-tego$ węzła grafu $G_\alpha$ $\geq$ stopniowi $i-tego$ węzła grafu $G_\alpha$}\\
+    = 0, & \quad \text{w przeciwnym wypadku.}
+  
+  \end{array} \right.\]
+\\ \\
+Następnie, wykonujemy główną część algorytmu\cite{ullmann}:
+\begin{enumerate}
+\item{
+$M = M^0, \ d = 1; \ H_1 = 0;$ \\
+Dla każdego $i = 1, .., p_\alpha,$ ustaw $F_i = 0;$
+}
+\item{
+Jeśli nie istnieje takie $j$, dla którego $m_{dj} = 1$ i $F_j = 0$ przejdź do kroku nr 7;\\
+$M_d = M;$\\
+Jeśli $d = 1$ to $k = H_1$, w przeciwnym wypadku $k = 0$
+}
+\item{
+$k = k + 1;$\\
+Jeśli $m_{dk} = 0$ lub $F_k = 1$ to przejdź do kroku nr 3;\\
+dla każdego $j \neq k$ ustaw $m_{dj} = 0;$
+}
+\item{
+Jeśli $d < p_\alpha$ to przejdź do kroku nr 6, w przeciwnym wypadku sprawdź warunek(0) i wypisz, jeśli znaleziono izomorfizm;
+}
+\item{
+Jeśli nie istnieje $j > k$, dla którego $m_{dj} = 1$ i $F_j = 0$ to przejdź do kroku nr 7;\\
+$M = M_d;$\\
+przejdź do kroku nr 3;
+}
+\item{
+$H_d = k$, $F_k = 1;$ $d = d + 1;$\\
+przejdź do kroku nr 2;
+}
+\item{
+Jeśli $d = 1$ to zakończ algorytm,\\
+$F_k = 0;$ $d = d - 1$, $M = M_d$, $k = H_d$;\\
+przejdź do kroku nr 5;
+}
+\end{enumerate}
+
+\newpage
+
+\subsubsection{Algorytm Ullmann'a}
 
 % izomorfizm i edit distance
+
+\newpage
 
 \subsubsection{Algorytm VF2}
 
@@ -578,12 +659,12 @@ Analyzer to komponent, który zajmuje się etapem analizy z teorii kompilacji. S
 
 \begin{figure}[!]
 \centering
-\includegraphics[scale=0.6]{gfx/classdiagram.png}
+\includegraphics[scale=0.3]{gfx/ClassDiagram2.png}
 \end{figure}
 
 \pagebreak
 
-Program posiada graficzny interfejs użytkownika stworzony za pomocą bilbioteki Swing. Składa się on z dwóch elementów tekstowych wyświetlających wczytane kody źródłowe oraz podświetlający elementy, które są identyczne/podobne. Wczytywanie oraz wszelkie inne operacje dostępne są z poziomu głównego menu znajdującego się na górze okna.
+Program posiada graficzny interfejs użytkownika stworzony za pomocą bilbioteki Swing. Składa się on z dwóch elementów tekstowych wyświetlających wczytane kody źródłowe oraz podświetlający elementy, które są identyczne/podobne. Wczytywanie oraz wszelkie inne operacje dostępne są z poziomu głównego menu znajdującego się w górnej części okna.
 
 \begin{figure}[!h]
 \centering
@@ -594,13 +675,54 @@ Program posiada graficzny interfejs użytkownika stworzony za pomocą bilbioteki
 
 \subsection{Uruchamianie aplikacji}
 
-Aplikacja dołączona do niniejszej pracy dyplomowej w całości napisana została w języku JAVA. Wykorzystuje ona podstawowe pakiety ze środowiska JRE 1.7 oraz kilka dodatkowych, niestandardowych bibliotek (rsyntaxtextarea).
+Aplikacja dołączona do niniejszej pracy dyplomowej w całości napisana została w języku Java. Wykorzystuje ona podstawowe pakiety ze środowiska JRE 1.7 oraz kilka dodatkowych, niestandardowych bibliotek:
+\begin{itemize}
+\item RSyntaxArea - wykorzystywana do prezentowania kodów źródłowych
+\item JFlex - odpowiada za wygenerowanie analizatora leksykalnego (skaner)
+\item BYacc - odpowiada za wygenerowanie analizatora składniowego (parser)
+\end{itemize}
 \\ \\
 Aplikacja dołączona została w postaci kodu źrodłowego oraz skompilowanego archiwum JAR, który można uruchomić na dowolnym środowisku z zainstalowanym pakietem uruchomieniowym JRE w wersji 1.7 za pomocą polecenia:
 \\ \\
 java -jar codecomp.jar
 
+\newpage
+
 \subsection{Korzystanie z aplikacji}
+
+Po uruchomieniu aplikacji ukazuje nam się główne okno programu. Aby dodać kody źródłowe do porównania należy z głównego menu wybrać:
+
+$\textbf{Files} \rightarrow \textbf{Add Files}$
+\begin{figure}[here]
+\centering
+\includegraphics[scale=0.25]{gfx/add_files.png}
+\caption{Okno, które ukazuje się po uruchomieniu aplikacji CodeComp.}
+\end{figure}
+
+W otwartym oknie wybieramy kody źródłowe, które chcemy porównać i klikamy $\textbf{Ok}$.
+\begin{figure}[!]
+\centering
+\includegraphics[scale=0.25]{gfx/select_files.png}
+\caption{Wybrów plików w programie CodeComp.}
+\end{figure}
+
+\pagebreak
+
+Następnie z menu głównego wybieramy:
+
+$\textbf{Compare} \rightarrow \textbf{Compare source}$
+\begin{figure}[here]
+\centering
+\includegraphics[scale=0.3]{gfx/compare_source.png}
+\caption{Uruchomienie analizy w programie CodeComp.}
+\end{figure}
+\\
+Wynik powinien pojawić się po chwili w osobnym oknie.
+\begin{figure}[!]
+\centering
+\includegraphics[scale=0.3]{gfx/compare_score.png}
+\caption{Wynik działania aplikacji CodeComp.}
+\end{figure}
 
 \newpage
 
@@ -624,9 +746,109 @@ Etap analizy dzieli się na 2 elementarne części:
 
 Pierwszym krokiem jest proces analizy leksykalnej. Jej zadaniem jest wyłonienie odpowiednich symboli leksykalnych, które zostaną przekazane do analizatora składniowego.
 
-Kolejnym krokiem jest parsowanie, które odbywa się za pomocą analizatora składniowego. Sprawdza on, czy przekazane symbole wejściowe są zgodne z gramatyką języka oraz buduje z nich graf nieskierowany, który będzie wykorzystywany podczas porównywania kodów źródłowych.
+JFlex\cite{jflex}, który został wykorzystany do stworzenia analizatora leksykalnego, generuje pliki źródłowe w języku Java na podstawie pliku specyfikacji, który składa się z trzech części:
+\begin{itemize}
+\item Kod użytkownika
+\item Opcje i deklaracje
+\item Reguły leksykalne
+\end{itemize}
 
-W wyniku całej analizy zbudowany zostanie graf nieskierowany, którego węzły w sposób hierarchiczny będą przedstawiały strukturę porównywanych kodów źródłowych oraz będą przechowywać informacje na temat typów tokenów i ich wartości.
+\pagebreak
+
+W sekcji \textbf{Kod użytkownika} implementuje się kod, który w całości zostanie skopiowany i umieszczony w klasie wygenerowanego skanera. Zazwyczaj umieszcza się tu tylko i wyłącznie deklaracje pakietu i wymagane klasy do zaimportowania.
+\\
+
+Sekcja \textbf{Opcje i deklaracje} jest dużo bardziej złożona. Definiuje się w niej opcje generatora JFlex oraz deklaracje makr (zmiennych). Makro składa się z identyfikatora, operatora przypisania ('=') oraz wyrażenia regularnego.
+
+\begin{figure}[here]
+\centering
+\includegraphics[scale=0.7]{gfx/regexp.png}
+\caption{Lista makr zdefiniowanych w programie CodeComp.}
+\end{figure}
+
+Ostatnią częścią tej sekcji jest deklaracja stanów leksykalnych, które będą mogły być wykorzystane w następnej sekcji.
+\\
+
+\textbf{Reguły leksykalne} to sekcja, która składa sie z wyrażeń regularnych i akcji wykonywanych przez skaner po dopasowaniu wyrażenia regularnego. Podczas wczytywania danych wejściowych skaner śledzi wszystkie wyrażenia regularne i wykonuje akcję wyrażenia, które posiada najdłuższe dopasowanie. Jeśli dwa wyrażenia regularne posiadają najdłuższe dopasowanie do aktualnie przetwarzanej danej wejściowej to wykonywana jest akcja przypisana do tego, który jest zdefiniowany jako pierwszy w specyfikacji.
+
+W przypadku aplikacji \textbf{CodeComp} wykonywane akcje przekazują do parsera zdefiniowane symbole, które będą wykorzystywane jako tokeny podczas analizy składniowej.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.7]{gfx/actions.png}
+\caption{Lista reguł leksykalnych w programie CodeComp.}
+\end{figure}
+
+Dodatkowo w tej sekcji mogą być wykorzystane stany leksykalne. Działają one jak etykiety i oznaczają, które wyrażenia regularne mogą być dopasowywane w trakcie, gdy analizator znajduje się w określonym stanie leksykalnym.
+\\ \\
+
+Kolejnym krokiem analizy jest parsowanie, które odbywa się za pomocą analizatora składniowego. Sprawdza on, czy przekazane symbole wejściowe są zgodne z gramatyką języka oraz buduje z nich graf nieskierowany, który będzie wykorzystywany podczas porównywania kodów źródłowych.
+
+Analizator składniowy został wygenerowany za pomocą narzędzia BYacc\cite{byacc} na podstawie pliku specyfikacji, który składa się z trzech sekcji:
+\begin{itemize}
+\item Deklaracje
+\item Reguły
+\item Kod użytkownika
+\end{itemize}
+
+W sekcji \textbf{Deklaracje}, podobnie jak w przypadku analizatora składniowego, określamy pakiet projektu, w którym znajdzie się parser i importy wymaganych klas. Jednak w przypadku analizatora składniowego sekcja ta ma jeszcze inne, ważniejsze role. Oprócz wcześniej wspomnianych deklaracji określamy tutaj punkt startowy parsera oraz listę tokenów, czyli symboli obsługiwanych przez skaner.
+
+\begin{figure}[here]
+\centering
+\includegraphics[scale=0.4]{gfx/parser_dec.png}
+\caption{Sekcja deklaracji analizatora składniowego w programie CodeComp.}
+\end{figure}
+\\
+
+Sekcja \textbf{Reguły} zawiera reguły gramatyczne, które składają się z identyfikatora, dowolnej liczby tokenów i literałów oraz przypisanej do identyfikatora akcji.
+
+Parser na wejściu otrzymuje symbol leksykalny przekazany ze skanera i weryfikuje, czy jest on zgodny z gramatyką języka zdefiniowaną w tej sekcji. Po dopasowaniu odpowiedniej reguły parser wykonuje przypisaną do niej akcję.
+\\ \\
+\begin{figure}[here]
+\centering
+\includegraphics[scale=0.25]{gfx/parser_rules.png}
+\caption{Sekcja reguł analizatora składniowego w programie CodeComp.}
+\end{figure}
+\\
+
+Ostatnia sekcja - \textbf{Kod użytkownika} - jest przeznaczona na funkcje opisujące sposób parsowania oraz czynności, jakie użytkownik musi w trakcie działania parsera wykonać.
+
+W aplikacji CodeComp zaimplementowana została funkcja, która wywołuje główną funkcję skanera zwracającą token. Następnie token ten jest przekazywany do funkcji parsujących, które sprawdzają, czy token jest zgodny z gramatyką oraz funkcji pomocniczych, które są wywoływane jako akcje reguł zdefiniowanych w poprzedniej sekcji. Funkcje pomocnicze tworzą odpowiednie węzły na podstawie wykrytych tokenów i dodają je do grafu wynikowego.
+
+Główna funkcja parsera:
+\begin{lstlisting}
+private int yylex() {
+ int tok = -1;
+ try {
+  tok = scanner.yylex();		
+  Node node = new Node(yyname[tok], scanner.yytext());
+  allNodes.put(node, count);
+  yylval = new ParserVal(node);
+  count++;
+ } catch (IOException e) {
+   System.err.println(e.getMessage());
+ }
+ return tok;
+}
+\end{lstlisting}
+\\ \\
+
+Funkcja pomocnicza parsera:
+\begin{lstlisting}
+private ParserVal mergedCompute(Node p, Node... child) {
+ for(Node c : child) {
+  p.addChild(c);
+  graph.add(new SimpleEdge(allNodes.get(p),allNodes.get(c)));
+ }
+ return new ParserVal(p);
+}
+\end{lstlisting}
+\\ \\
+W aplikacji CodeComp akcje przypisane do reguł tworzą węzły i krawędzie wynikowego grafu nieskierowanego.
+\\
+
+
+Wynikiem wszystkich etapów analizy jest graf nieskierowany, którego węzły w sposób hierarchiczny będą przedstawiały strukturę porównywanych kodów źródłowych oraz będą przechowywać informacje na temat typów tokenów i ich wartości.
 
 \subsubsection{Porównywanie}
 
@@ -648,7 +870,8 @@ W wyniku całej analizy zbudowany zostanie graf nieskierowany, którego węzły 
 \bibitem{roycordy2007} Chanchal Kumar Roy and James R. Cordy - A Survey on Software Clone Detection Research - Canada 2007
 \bibitem{lex} Lex - A Lexical Analyzer Generator - M. E. Lesk and E. Schmidt - http://dinosaur.compilertools.net/
 \bibitem{jflex} The Fast Lexical Analyser Generator - Gervin Klein - http://jflex.de
-\bibitem{lexyacc} Lex & Yacc, John R. Levine, Tony Mason, Doug Brown - O'Reilly & Associates 1992
+\bibitem{lexyacc} Lex & Yacc - John R. Levine, Tony Mason, Doug Brown - O'Reilly & Associates 1992
+\bibitem{byacc} BYACC/J - Tomas Hurka - http://byaccj.sourceforge.net/
 \bibitem{editdistance} Binary codes capable of correcting deletions, insertions, and reversals - V. Levenshtein - Soviet Physics Doklady 1965
 \bibitem{graphiso} Practical Graph Isomorphism - B.D. McKay - Congressus Numerantium,
 vol. 30, pp. 45-87, 1981
@@ -665,6 +888,7 @@ vol. 30, pp. 45-87, 1981
 \bibitem{iso_ktree} Bodlaender, Hans (1990), "Polynomial algorithms for graph isomorphism and chromatic index on partial k-trees", Journal of Algorithms 11 (4): 631–643
 \bibitem{iso_degree} Luks, Eugene M. (1982), "Isomorphism of graphs of bounded valence can be tested in polynomial time", Journal of Computer and System Sciences 25: 42–65
 \bibitem{iso_genus} Miller, Gary (1980), "Isomorphism testing for graphs of bounded genus", Proceedings of the 12th Annual ACM
+\bibitem{ullmann} An Algorithm for Subgraph Isomorphism - J.R. Ullmann - National Physical Laboratory, Tedd, ngton, M, ddlcsex, England 1975
 
 \end{thebibliography}
 

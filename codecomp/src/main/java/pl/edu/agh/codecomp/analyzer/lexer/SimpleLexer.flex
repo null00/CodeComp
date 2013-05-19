@@ -32,7 +32,6 @@ WhiteSpace				= {LineTerminator} | [ \t\f]
 
 Label					= ("."+ [:letter:]+[:digit:]*)|([:letter:]+[:digit:]* ":"+)
 Register				= e?(al|ax|cx|dx|bx|sp|bp|ip|si|di|ss)
-/* Identifier				= [:letter:]*[\_]*[:digit:]* */
 Identifier				= [a-zA-Z0-9\_]*
 
 Number					= {DecLiteral} | {HexLiteral}
@@ -67,12 +66,8 @@ RBraces					= \]|\)|\}
 	"="					{ return Parser.EQ; }
 	","					{ return Parser.COMMA; }
 	"'"					{ return Parser.APOSTROPHE; }
-/*	"?"					{ return Parser.QMARK; }*/
 	
 	/* operations */
-	{LBraces}			{  }
-	{RBraces}			{  }
-	/*{Operation}		{ return Parser.OP; }*/
 	{Arithmetic}		{ return Parser.OP_AR; }
 	{SingleArithmetic}	{ return Parser.OP_SAR; }
 	{Transfer}			{ return Parser.OP_MOV; }
@@ -96,7 +91,9 @@ RBraces					= \]|\)|\}
 	
 	/* whitespace */	
 	{WhiteSpace}		{ /* ignore */ }
-	
+}
+
+
 	/* operators */
 	"+" |
 	"-" |

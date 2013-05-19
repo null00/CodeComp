@@ -9,27 +9,30 @@
 \contentsline {subsubsection}{\numberline {3.4.1}Skaner}{9}
 \contentsline {subsection}{\numberline {3.5}Analiza sk\IeC {\l }adniowa}{10}
 \contentsline {subsubsection}{\numberline {3.5.1}Parser}{10}
-\contentsline {subsubsection}{\numberline {3.5.2}Typy parser\IeC {\'o}w}{11}
-\contentsline {section}{\numberline {4}Wprowadzenie do Asemblera}{12}
-\contentsline {subsection}{\numberline {4.1}Instrukcje}{12}
-\contentsline {subsection}{\numberline {4.2}Typy danych}{13}
-\contentsline {subsection}{\numberline {4.3}Adresowanie}{14}
-\contentsline {subsection}{\numberline {4.4}Lista instrukcji}{15}
-\contentsline {section}{\numberline {5}Metody por\IeC {\'o}wnywania}{18}
-\contentsline {subsection}{\numberline {5.1}Por\IeC {\'o}wnywanie tekstu}{18}
-\contentsline {subsubsection}{\numberline {5.1.1}Algorytm brute-force}{18}
-\contentsline {subsubsection}{\numberline {5.1.2}Algorytm Boyer-Moore}{20}
-\contentsline {subsubsection}{\numberline {5.1.3}Odleg\IeC {\l }o\IeC {\'s}\IeC {\'c} Levenshtein'a}{22}
-\contentsline {subsection}{\numberline {5.2}Izomorfizm graf\IeC {\'o}w}{24}
-\contentsline {subsubsection}{\numberline {5.2.1}Algorytm VF2}{24}
-\contentsline {section}{\numberline {6}Projekt systemu CodeComp}{25}
-\contentsline {subsection}{\numberline {6.1}Architektura systemu}{25}
-\contentsline {subsection}{\numberline {6.2}Uruchamianie aplikacji}{29}
-\contentsline {subsection}{\numberline {6.3}Korzystanie z aplikacji}{29}
-\contentsline {subsection}{\numberline {6.4}Opis procesu}{30}
-\contentsline {subsubsection}{\numberline {6.4.1}Preprocesing}{30}
-\contentsline {subsubsection}{\numberline {6.4.2}Analiza}{30}
-\contentsline {subsubsection}{\numberline {6.4.3}Por\IeC {\'o}wnywanie}{30}
-\contentsline {subsection}{\numberline {6.5}Wyniki}{31}
-\contentsline {section}{\numberline {7}Wnioski}{32}
-\contentsline {section}{\numberline {8}Bibliografia}{33}
+\contentsline {subsubsection}{\numberline {3.5.2}Typy parser\IeC {\'o}w}{10}
+\contentsline {section}{\numberline {4}Wprowadzenie do Asemblera}{11}
+\contentsline {subsection}{\numberline {4.1}Instrukcje}{11}
+\contentsline {subsection}{\numberline {4.2}Typy danych}{12}
+\contentsline {subsection}{\numberline {4.3}Adresowanie}{13}
+\contentsline {subsection}{\numberline {4.4}Lista instrukcji}{14}
+\contentsline {section}{\numberline {5}Metody por\IeC {\'o}wnywania}{17}
+\contentsline {subsection}{\numberline {5.1}Por\IeC {\'o}wnywanie tekstu}{17}
+\contentsline {subsubsection}{\numberline {5.1.1}Algorytm brute-force}{17}
+\contentsline {subsubsection}{\numberline {5.1.2}Algorytm Boyer-Moore}{19}
+\contentsline {subsubsection}{\numberline {5.1.3}Odleg\IeC {\l }o\IeC {\'s}\IeC {\'c} Levenshtein'a}{21}
+\contentsline {subsection}{\numberline {5.2}Izomorfizm grafu}{23}
+\contentsline {subsection}{\numberline {5.3}Izomorfizm podgrafu}{24}
+\contentsline {subsubsection}{\numberline {5.3.1}Algorytm brute-force}{24}
+\contentsline {subsubsection}{\numberline {5.3.2}Algorytm Ullmann'a}{26}
+\contentsline {subsubsection}{\numberline {5.3.3}Algorytm VF2}{27}
+\contentsline {section}{\numberline {6}Projekt systemu CodeComp}{28}
+\contentsline {subsection}{\numberline {6.1}Architektura systemu}{28}
+\contentsline {subsection}{\numberline {6.2}Uruchamianie aplikacji}{32}
+\contentsline {subsection}{\numberline {6.3}Korzystanie z aplikacji}{33}
+\contentsline {subsection}{\numberline {6.4}Opis procesu}{35}
+\contentsline {subsubsection}{\numberline {6.4.1}Preprocesing}{35}
+\contentsline {subsubsection}{\numberline {6.4.2}Analiza}{35}
+\contentsline {subsubsection}{\numberline {6.4.3}Por\IeC {\'o}wnywanie}{40}
+\contentsline {subsection}{\numberline {6.5}Wyniki}{41}
+\contentsline {section}{\numberline {7}Wnioski}{42}
+\contentsline {section}{\numberline {8}Bibliografia}{43}
