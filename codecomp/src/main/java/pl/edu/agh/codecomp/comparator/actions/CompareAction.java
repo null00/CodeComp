@@ -12,6 +12,7 @@ public class CompareAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        CodeCompGUI.getMainWin().setEnabled(false);
         String action = e.getActionCommand();
         switch (action) {
             case "text": {

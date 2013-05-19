@@ -36,7 +36,7 @@ public class TextComparator extends IComparator {
 	// FIXME: SPRAWDZIC I POPRAWIC/ZMIENIC MECHANIZM POROWNYWANIA
 	private void compare() {
 		try {
-			IAlgorithm algo = CompareToken.getTextAlgorithm();
+			IAlgorithm algo = getTextComparator();
 			
 			if (algo != null && !left.getText().isEmpty() && !right.getText().isEmpty()) {
 				String text = right.getText();

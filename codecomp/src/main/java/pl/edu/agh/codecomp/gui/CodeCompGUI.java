@@ -40,7 +40,6 @@ public class CodeCompGUI extends JFrame {
 
 	private static final String TITLE = "CodeComp - Source Code Comparator";
 	private static final Dimension MAIN_WIN_DIMENSION = new Dimension(1024, 768);
-//	private static final Logger log = Logger.getLogger("CodeCompGUI");
 
 	private static CodeCompGUI mainWin;
 
@@ -54,26 +53,6 @@ public class CodeCompGUI extends JFrame {
 			initGUI();
 			initMenu();
 			initMainPanel();
-
-			String path = System.getProperty("user.dir") + "/src/main/java/pl/edu/agh/codecomp/resources/";
-
-			try {
-//				setLeftFile(CCFileReader.read(new File(path + "source1.asm").getAbsolutePath()));
-			    
-				setLeftFile(CCFileReader.read(path + "source3.asm"));
-				setRightFile(CCFileReader.read(path + "source3.asm"));
-				
-//				rightText.read(CCFileReader.read(new File(path + "source2.asm").getAbsolutePath()), null);
-				
-				setLeftFile(Filter.parse(leftText.getText()));
-//				setRightFile(Filter.parse(leftText.getText()));
-				
-//				setLeftFile("gcatcgcagagagtatacagtacg");
-//				setRightFile("gcagagag");
-			} catch (Exception e) {
-				// TODO LOGGER
-				// e.printStackTrace();
-			}
 		}
 	}
 
@@ -88,6 +67,10 @@ public class CodeCompGUI extends JFrame {
 		getMainWin().setSize(MAIN_WIN_DIMENSION);
 		getMainWin().setLocationRelativeTo(null);
 		getMainWin().setVisible(true);
+		
+//		JPanel glass = new JPanel();
+//		glass.setBackground(Color.gray);
+//		getMainWin().setGlassPane(glass);
 	}
 
 	private static void initMenu() {
@@ -131,10 +114,10 @@ public class CodeCompGUI extends JFrame {
 		JMenu comparator = new JMenu("Comparator");
 		mainMenu.add(comparator);
 		
-		JMenuItem compText = new JMenuItem("Compare text");
-		compText.setActionCommand("text");
-		compText.addActionListener(new CompareAction());
-		comparator.add(compText);
+//		JMenuItem compText = new JMenuItem("Compare text");
+//		compText.setActionCommand("text");
+//		compText.addActionListener(new CompareAction());
+//		comparator.add(compText);
 		
 		JMenuItem compSource = new JMenuItem("Compare source");
 		compSource.setActionCommand("source");

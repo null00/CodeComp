@@ -20,6 +20,7 @@ import pl.edu.agh.codecomp.analyzer.lexer.SimpleScanner;
 import pl.edu.agh.codecomp.analyzer.parser.Parser;
 import pl.edu.agh.codecomp.analyzer.tree.Node;
 import pl.edu.agh.codecomp.comparator.graph.isomorphism.VF2IsomorphismTester;
+import pl.edu.agh.codecomp.gui.CodeCompGUI;
 import pl.edu.agh.codecomp.gui.dialogs.ScoreDialog;
 
 public class SourceComparator extends IComparator {
@@ -38,6 +39,7 @@ public class SourceComparator extends IComparator {
 	@Override
 	public void run() {
 		compare();
+		CodeCompGUI.getMainWin().setEnabled(true);
 	}
 
 	/**
@@ -60,7 +62,7 @@ public class SourceComparator extends IComparator {
         
         DecimalFormat df = new DecimalFormat("#.##");
         new ScoreDialog("Graphs are" + (test.areIsomorphic(parserLeft.getGraph(), parserRight.getGraph()) ? " " : " not ") + "isomorphic",
-                        "Distance: " + df.format(ged.getDistance()) + " / " + df.format(ged.getNormalizedDistance()) + "%");
+                        "Distance: " + df.format(ged.getNormalizedDistance()) + "%" + " [ " + df.format(ged.getDistance()) + " ]" );
 	}
 	
 	private Parser analizeSource(RSyntaxTextArea source) {
@@ -75,7 +77,7 @@ public class SourceComparator extends IComparator {
 
 		try {
 
-			switch (CompareToken.getSourceComparator().toLowerCase()) {
+			switch (getSourceComparator().toLowerCase()) {
 			case "simple": {
 				scanner = new SimpleScanner(reader);
 				break;

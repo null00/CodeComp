@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import org.apache.commons.lang3.StringUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
+import pl.edu.agh.codecomp.gui.CodeCompGUI;
 import pl.edu.agh.codecomp.gui.dialogs.ScoreDialog;
 
 public class DistanceComparator extends IComparator {
@@ -19,6 +20,7 @@ public class DistanceComparator extends IComparator {
     @Override
     public void run() {
         new ScoreDialog("Distance: " + compare());
+        CodeCompGUI.getMainWin().setEnabled(true);
     }
     
     private String compare() {

@@ -18,7 +18,7 @@ public class ScoreDialog extends JDialog implements ActionListener {
 
     private static final long serialVersionUID     = 1L;
     private final String      TITLE                = "Similarity Score";
-    private final Dimension   DIALOG_DIMENSION     = new Dimension(240, 140);
+    private final Dimension   DIALOG_DIMENSION     = new Dimension(300, 120);
     private final Dimension   MAX_DIALOG_DIMENSION = new Dimension(240, 140);
 
     public ScoreDialog(String... textToDisplay) {
@@ -40,11 +40,13 @@ public class ScoreDialog extends JDialog implements ActionListener {
         textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
         textPanel.setBackground(Color.DARK_GRAY);
         textPanel.setAlignmentX(JPanel.CENTER_ALIGNMENT);
+        textPanel.setAlignmentY(JPanel.CENTER_ALIGNMENT);
         for(String text : lines) {
             JLabel scoreField = new JLabel(text, JLabel.CENTER);
             scoreField.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
             scoreField.setForeground(Color.CYAN);
             scoreField.setAlignmentX(Component.CENTER_ALIGNMENT);
+            scoreField.setAlignmentY(Component.CENTER_ALIGNMENT);
             textPanel.add(scoreField, BorderLayout.CENTER);
         }
         this.getContentPane().add(textPanel, BorderLayout.CENTER);
