@@ -12,7 +12,7 @@ import pl.edu.agh.codecomp.gui.CodeCompGUI;
 
 public class AddFileAction implements ActionListener {
 
-	private final String RESOURCES = System.getProperty("user.dir") + "/src/main/java/pl/edu/agh/codecomp/resources/";
+	private final String RESOURCES = System.getProperty("user.dir") + "/src/main/resources/";
 
 	public void actionPerformed(ActionEvent ae) {
 		String text = addFile();

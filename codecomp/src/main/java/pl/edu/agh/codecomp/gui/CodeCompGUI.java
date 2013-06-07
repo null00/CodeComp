@@ -47,12 +47,15 @@ public class CodeCompGUI extends JFrame {
 		super();
 	}
 
-	public static void createGUI() {
+	public static void createGUI() throws IOException {
 		if (mainWin == null) {
 			mainWin = new CodeCompGUI();
 			initGUI();
 			initMenu();
 			initMainPanel();
+			
+			leftText.setText(CCFileReader.read(System.getProperty("user.dir") + "/src/main/resources/source3.asm"));
+			rightText.setText(CCFileReader.read(System.getProperty("user.dir") + "/src/main/resources/source3.asm"));
 		}
 	}
 

@@ -1,38 +1,39 @@
 \select@language {polish}
-\contentsline {section}{\numberline {1}Wst\IeC {\k e}p}{4}
-\contentsline {section}{\numberline {2}Cel i zakres prac}{4}
-\contentsline {section}{\numberline {3}Teoria kompilacji}{7}
-\contentsline {subsection}{\numberline {3.1}Symbole}{7}
-\contentsline {subsection}{\numberline {3.2}Wyra\IeC {\.z}enia regularne}{8}
-\contentsline {subsection}{\numberline {3.3}Gramatyka}{8}
-\contentsline {subsection}{\numberline {3.4}Analiza leksykalna}{9}
-\contentsline {subsubsection}{\numberline {3.4.1}Skaner}{9}
-\contentsline {subsection}{\numberline {3.5}Analiza sk\IeC {\l }adniowa}{10}
-\contentsline {subsubsection}{\numberline {3.5.1}Parser}{10}
-\contentsline {subsubsection}{\numberline {3.5.2}Typy parser\IeC {\'o}w}{10}
-\contentsline {section}{\numberline {4}Wprowadzenie do Asemblera}{11}
-\contentsline {subsection}{\numberline {4.1}Instrukcje}{11}
-\contentsline {subsection}{\numberline {4.2}Typy danych}{12}
-\contentsline {subsection}{\numberline {4.3}Adresowanie}{13}
-\contentsline {subsection}{\numberline {4.4}Lista instrukcji}{14}
-\contentsline {section}{\numberline {5}Metody por\IeC {\'o}wnywania}{17}
-\contentsline {subsection}{\numberline {5.1}Por\IeC {\'o}wnywanie tekstu}{17}
-\contentsline {subsubsection}{\numberline {5.1.1}Algorytm brute-force}{17}
-\contentsline {subsubsection}{\numberline {5.1.2}Algorytm Boyer-Moore}{19}
-\contentsline {subsubsection}{\numberline {5.1.3}Odleg\IeC {\l }o\IeC {\'s}\IeC {\'c} Levenshtein'a}{21}
-\contentsline {subsection}{\numberline {5.2}Izomorfizm grafu}{23}
-\contentsline {subsection}{\numberline {5.3}Izomorfizm podgrafu}{24}
-\contentsline {subsubsection}{\numberline {5.3.1}Algorytm brute-force}{24}
-\contentsline {subsubsection}{\numberline {5.3.2}Algorytm Ullmann'a}{26}
-\contentsline {subsubsection}{\numberline {5.3.3}Algorytm VF2}{27}
-\contentsline {section}{\numberline {6}Projekt systemu CodeComp}{28}
-\contentsline {subsection}{\numberline {6.1}Architektura systemu}{28}
-\contentsline {subsection}{\numberline {6.2}Uruchamianie aplikacji}{32}
-\contentsline {subsection}{\numberline {6.3}Korzystanie z aplikacji}{33}
-\contentsline {subsection}{\numberline {6.4}Opis procesu}{35}
-\contentsline {subsubsection}{\numberline {6.4.1}Preprocesing}{35}
-\contentsline {subsubsection}{\numberline {6.4.2}Analiza}{35}
-\contentsline {subsubsection}{\numberline {6.4.3}Por\IeC {\'o}wnywanie}{40}
-\contentsline {subsection}{\numberline {6.5}Wyniki}{41}
-\contentsline {section}{\numberline {7}Wnioski}{42}
-\contentsline {section}{\numberline {8}Bibliografia}{43}
+\contentsline {section}{\numberline {1}Wst\IeC {\k e}p}{5}
+\contentsline {subsection}{\numberline {1.1}Cel i zakres pracy}{5}
+\contentsline {subsection}{\numberline {1.2}Wprowadzenie do problematyki}{7}
+\contentsline {section}{\numberline {2}Teoria kompilacji}{9}
+\contentsline {subsection}{\numberline {2.1}Symbole}{9}
+\contentsline {subsection}{\numberline {2.2}Wyra\IeC {\.z}enia regularne}{10}
+\contentsline {subsection}{\numberline {2.3}Gramatyka}{10}
+\contentsline {subsection}{\numberline {2.4}Analiza leksykalna}{11}
+\contentsline {subsubsection}{\numberline {2.4.1}Skaner}{11}
+\contentsline {subsection}{\numberline {2.5}Analiza sk\IeC {\l }adniowa}{12}
+\contentsline {subsubsection}{\numberline {2.5.1}Parser}{12}
+\contentsline {subsubsection}{\numberline {2.5.2}Typy parser\IeC {\'o}w}{12}
+\contentsline {section}{\numberline {3}Wprowadzenie do Asemblera}{13}
+\contentsline {subsection}{\numberline {3.1}Instrukcje}{13}
+\contentsline {subsection}{\numberline {3.2}Typy danych}{14}
+\contentsline {subsection}{\numberline {3.3}Adresowanie}{15}
+\contentsline {subsection}{\numberline {3.4}Lista instrukcji}{16}
+\contentsline {section}{\numberline {4}Metody por\IeC {\'o}wnywania}{19}
+\contentsline {subsection}{\numberline {4.1}Por\IeC {\'o}wnywanie tekstu}{19}
+\contentsline {subsubsection}{\numberline {4.1.1}Algorytm brute-force}{19}
+\contentsline {subsubsection}{\numberline {4.1.2}Algorytm Boyer-Moore}{21}
+\contentsline {subsubsection}{\numberline {4.1.3}Odleg\IeC {\l }o\IeC {\'s}\IeC {\'c} Levenshtein'a}{23}
+\contentsline {subsection}{\numberline {4.2}Izomorfizm graf\IeC {\'o}w}{25}
+\contentsline {subsubsection}{\numberline {4.2.1}Izomorfizm podgrafu}{26}
+\contentsline {subsubsection}{\numberline {4.2.2}Algorytm Ullmann'a}{26}
+\contentsline {subsubsection}{\numberline {4.2.3}Algorytm VF2}{28}
+\contentsline {subsubsection}{\numberline {4.2.4}Odleg\IeC {\l }o\IeC {\'s}\IeC {\'c} edycyjna graf\IeC {\'o}w}{30}
+\contentsline {section}{\numberline {5}Projekt systemu CodeComp}{32}
+\contentsline {subsection}{\numberline {5.1}Architektura systemu}{32}
+\contentsline {subsection}{\numberline {5.2}Uruchamianie aplikacji}{36}
+\contentsline {subsection}{\numberline {5.3}Korzystanie z aplikacji}{37}
+\contentsline {subsection}{\numberline {5.4}Opis procesu}{39}
+\contentsline {subsubsection}{\numberline {5.4.1}Preprocesing}{39}
+\contentsline {subsubsection}{\numberline {5.4.2}Analiza}{39}
+\contentsline {subsubsection}{\numberline {5.4.3}Por\IeC {\'o}wnywanie}{44}
+\contentsline {subsection}{\numberline {5.5}Wyniki}{46}
+\contentsline {section}{\numberline {6}Wnioski}{51}
+\contentsline {section}{\numberline {7}Bibliografia}{53}

@@ -92,8 +92,7 @@ ops: exp ops				{
 							}
  | desc num					{ 
 								$$ = mergedCompute($1.obj, $2.obj);
-							}
- 
+							} 
  | num opers num 			{ 
 								$$ = mergedCompute($1.obj, $2.obj, $3.obj);
 							}

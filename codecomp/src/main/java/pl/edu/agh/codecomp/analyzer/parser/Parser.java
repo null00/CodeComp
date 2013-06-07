@@ -660,7 +660,7 @@ final static String yyrule[] = {
 			tok = scanner.yylex();
 			System.out.println(yyname[tok] + ": " + scanner.yytext());
 			Node node = new Node(yyname[tok], scanner.yytext());
-			no.roek.nlpged.graph.Node node2 = new no.roek.nlpged.graph.Node(String.valueOf(count), scanner.yytext(), new String[] {yyname[tok], scanner.yytext()});
+			no.roek.nlpged.graph.Node node2 = new no.roek.nlpged.graph.Node(String.valueOf(count), scanner.yytext() + yyname[tok], new String[] {yyname[tok], scanner.yytext()});
 			graph2.addNode(node2);
 			allNodes.put(node, count);
 			

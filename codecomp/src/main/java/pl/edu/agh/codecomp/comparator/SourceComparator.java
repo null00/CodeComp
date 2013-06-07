@@ -3,31 +3,22 @@ package pl.edu.agh.codecomp.comparator;
 import java.io.Reader;
 import java.io.StringReader;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import no.roek.nlpged.algorithm.GraphEditDistance;
 import no.roek.nlpged.application.Config;
 import no.roek.nlpged.misc.EditWeightService;
-import no.roek.nlpged.preprocessing.DependencyParser;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import pl.edu.agh.codecomp.analyzer.lexer.IScanner;
 import pl.edu.agh.codecomp.analyzer.lexer.SimpleScanner;
 import pl.edu.agh.codecomp.analyzer.parser.Parser;
-import pl.edu.agh.codecomp.analyzer.tree.Node;
 import pl.edu.agh.codecomp.comparator.graph.isomorphism.VF2IsomorphismTester;
 import pl.edu.agh.codecomp.gui.CodeCompGUI;
 import pl.edu.agh.codecomp.gui.dialogs.ScoreDialog;
 
 public class SourceComparator extends IComparator {
-    
-    private final String indent = "\t";
-    private Set<String> functions = createSet("OP_MOV","OP_SMOV","OP_AR","OP_SAR","OP_LOG","OP_SLOG","OP_MISC","OP_JMP","OP_STO","OP_COMP");
-    private Set<String> ids = createSet("LAB", "ID");
 	
 	public SourceComparator(RSyntaxTextArea left, RSyntaxTextArea right) {
 		super();
@@ -55,14 +46,18 @@ public class SourceComparator extends IComparator {
         
         VF2IsomorphismTester test = new VF2IsomorphismTester();
         
-        Config cs = new Config("app.properties");
-        Map<String, Double> posEditWeights = EditWeightService.getEditWeights(cs.getProperty("POS_SUB_WEIGHTS"), cs.getProperty("POS_INSDEL_WEIGHTS"));
-        Map<String, Double> deprelEditWeights = EditWeightService.getInsDelCosts(cs.getProperty("DEPREL_INSDEL_WEIGHTS"));
-        GraphEditDistance ged = new GraphEditDistance(parserLeft.getGraph2(), parserRight.getGraph2(), posEditWeights, deprelEditWeights);
+//        Config cs = new Config("app.properties");
+//        Map<String, Double> posEditWeights = EditWeightService.getEditWeights(cs.getProperty("POS_SUB_WEIGHTS"), cs.getProperty("POS_INSDEL_WEIGHTS"));
+//        Map<String, Double> deprelEditWeights = EditWeightService.getInsDelCosts(cs.getProperty("DEPREL_INSDEL_WEIGHTS"));
+        GraphEditDistance ged = new GraphEditDistance(parserLeft.getGraph2(), parserRight.getGraph2()/*, posEditWeights, deprelEditWeights*/);
         
         DecimalFormat df = new DecimalFormat("#.##");
+        double distance = ged.getDistance();
+        String sDistance = df.format(distance);
+        double pdistance = 100.0 - (distance / ((parserLeft.getGraph2().getSize() > parserRight.getGraph2().getSize()) ? parserLeft.getGraph2().getSize() : parserRight.getGraph2().getSize()) * 100);
+        String pDistance = df.format(pdistance);
         new ScoreDialog("Graphs are" + (test.areIsomorphic(parserLeft.getGraph(), parserRight.getGraph()) ? " " : " not ") + "isomorphic",
-                        "Distance: " + df.format(ged.getNormalizedDistance()) + "%" + " [ " + df.format(ged.getDistance()) + " ]" );
+                        "Distance: " + pDistance + "%" + " [ " + sDistance + " ]" );
 	}
 	
 	private Parser analizeSource(RSyntaxTextArea source) {
@@ -97,61 +92,5 @@ public class SourceComparator extends IComparator {
 		}
 
 		return scanner;
-	}
-	
-	private double analizeMaps(HashMap left, HashMap right) {
-	    double score = 0, max = 0, size;
-	    HashSet<Node> setLeft = new HashSet<Node>(left.keySet());
-	    HashSet<Node> setRight = new HashSet<Node>(right.keySet());
-	    if(setLeft.size() >= setRight.size()) {
-	        max = countMax(setLeft);
-	        size = setLeft.size();
-	    } else {
-	        max = countMax(setRight);
-	        size = setRight.size();
-	    }
-	    for(Node leftNode: setLeft) {
-	        for(Node rightNode : setRight) {
-	            if(leftNode.getKey().equals(rightNode.getKey())) {
-	                score += 1;
-	                if(leftNode.getValue().equals(rightNode.getValue())) {
-	                    score += 1;
-	                    if(ids.contains(leftNode.getKey())) {
-	                        score += 1;
-	                    }
-	                }
-	                break;
-	            }
-	        }
-	    }
-	    System.out.println(score + " " + size + "*2 +" + max + " *100");
-	    return (score/(max*3+(size-max)*2))*100;
-	}
-	
-	private int countMax(Set<Node> s) {
-	    int max = 0;
-	    for(Node<String, String> node : s) {
-	        if(ids.contains(node.getKey())) {
-	            max++;
-	        }
- 	    }
-	    return max;
-	}
-	
-	private Set<String> createSet(String... elem) {
-	    HashSet<String> s = new HashSet<String>();
-	    for(String ss : elem) {
-	        s.add(ss);
-	    }
-	    return s;
-	}
-	
-	private String printTree(Node<String, String> node, String space) {
-	    String s = "";
-	    s = space + node.toString();
-	    for (Node<String, String> child : node.getChildren()) {
-	        s += "\n" + printTree(child, space + indent);
-	    }
-	    return s;
 	}
 }

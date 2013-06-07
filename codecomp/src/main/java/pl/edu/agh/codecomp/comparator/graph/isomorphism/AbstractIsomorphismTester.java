@@ -105,7 +105,6 @@ public abstract class AbstractIsomorphismTester implements IsomorphismTester {
      * isomorphic.
      */
     private boolean match(State s) {
-        ++CompareToken.score;
         if (s.isGoal())
             return true;
 
@@ -138,7 +137,6 @@ public abstract class AbstractIsomorphismTester implements IsomorphismTester {
      * isomorphic.
      */
     private boolean match(State s, Map<Integer,Integer> isoMap) {
-        ++CompareToken.score;
         if (s.isGoal())
             return true; 
 
