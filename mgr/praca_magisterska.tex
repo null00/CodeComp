@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt]{article}
+\documentclass[a4paper,12pt,twoside]{article}
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -27,7 +27,7 @@
 	\vspace{10 mm}
 	\includegraphics[scale=0.8]{gfx/agh.jpg} \\
 	\textbf{ System wykrywania podobieństw kodów źródłowych w projektach studenckich } \\
-	Praca dyplomowa \\
+	Praca magisterska \\
 	\vspace{10 mm}
 }
 \author
@@ -66,13 +66,23 @@
 \renewcommand{\labelitemiii}{\tiny$\blacksquare$}
 \renewcommand{\labelitemiv}{$\diamond$}
 
-\maketitle
+\maketitle\thispagestyle{empty}
 
 \newpage\thispagestyle{empty}
 \mbox{}
-\newpage
 
-\tableofcontents
+\newpage\thispagestyle{empty}
+
+\vspace*{\fill}
+Oświadczam, świadomy odpowiedzialności karnej za poświadczenie nieprawdy, że niniejszą pracę dyplomową wykonałem osobiście i samodzielnie i że nie korzystałem ze źródeł innych niż wymienione w pracy.
+\vspace*{\fill}
+
+\newpage\thispagestyle{empty}
+\mbox{}
+
+\newpage\thispagestyle{empty}
+
+\tableofcontents\thispagestyle{empty}
  
 \newpage
 
@@ -202,7 +212,7 @@ W tej pracy wyrażenia regularne wykorzystane zostaną tylko w jednym miejscu - 
 
 \subsection{Gramatyka}
 
-Podstawowym elementem gramatyki każdego języka jest leksem, czyli wyraz będący abstrakcyjną jednostką każdego języka. To, co definiuje leksemy, to zestaw reguł określonych na podstawie specyfikacji języka programowania, czyli jego gramatyki.
+Podstawowym elementem gramatyki każdego języka jest leksem, czyli wyraz będący abstrakcyjną jednostką każdego języka. Leksemy zdefiniowane są za pomocą zestawu reguł określonego na podstawie specyfikacji języka programowania, czyli jego gramatyki.
 
 Obecnie do zdefiniowania reguł gramatycznych najczęściej stosuje się wyrażenia regularne. Określają one zestaw możliwych sekwencji, które są użyte do zbudowania konkretnych leksemów.
 
@@ -218,7 +228,7 @@ Skaner, czyli podstawowa część analizatora leksykalnego, zajmuje się główn
 
 W wielu przypadkach pierwszy znak, który nie jest znakiem białym może posłużyć do dedukcji, z jakiego rodzaju symbolem mamy do czynienia (longest-match rule). W przypadku bardziej skomplikowanych języków potrzebna jest możliwość cofania się do wcześniej wczytanych znaków.
 
-Skaner wczytuje kolejne znaki ze strumienia wejściowego i klasyfikuje je według reguł w symbole leksykalne, które następnie przekazywane są do analizy składniowej. Jako jednostka rozpoczynająca analizę i wczytująca tekst źródłowy może również pełnić rolę filtra, który pomija pewne elementy, takie jak np. komentarze, białe znaki lub znaki nowego wiersza.
+Skaner wczytuje kolejne znaki ze strumienia wejściowego i klasyfikuje je według reguł w symbole leksykalne, które następnie przekazywane są do analizy składniowej. Skaner, jako jednostka rozpoczynająca analizę i wczytująca tekst źródłowy, może również pełnić rolę filtra, który pomija pewne elementy, takie jak np. komentarze, białe znaki lub znaki nowego wiersza.
 
 Możliwe jest i czasem konieczne napisanie własnego analizatora, aczkolwiek jest to zwykle zbyt skomplikowane, czasochłonne i nieopłacalne. Z tego względu analizatory, zwane lekserami, zwykle generowane są za pomocą specjalnych narzędzi, które przyjmują na wejściu wyrażenia regularne, które opisuję wymagane symbole leksykalne.
 
@@ -312,7 +322,7 @@ Typy danych dzielimy na dwie kategorie: numeryczne i alfanumeryczne. W skład da
 \subsection{Adresowanie}
 
 Adresowanie określa sposób, w jaki odnosimy się do adresu w pamięci, który określa położenie argumentów rozkazu.
-
+\\
 \textbf{Adresowanie natychmiastowe}
 
 Adresowanie natychmiastowe (ang. immediate addressing) to najprostsza metoda adresowania, w którym zamiast podawania adresu operandu jego wartość podana jest jawnie w instrukcji. Ten sposób adresowania jest możliwy tylko dla stałych.
@@ -320,7 +330,7 @@ Adresowanie natychmiastowe (ang. immediate addressing) to najprostsza metoda adr
 \begin{lstlisting}[numbers=none, xleftmargin=0]
 mov eax, 5
 \end{lstlisting}
-
+\\
 \textbf{Adresowanie bezpośrednie}
 
 Adresowanie bezpośrednie (ang. direct addressing) polega na podaniu w instrukcji adresu pamięci, w którym znajduje się operand. W ten wygodny sposób można wykorzystać używając zmiennych globalnych, których adres nie zmienia się w trakcie działania programu.
@@ -328,7 +338,7 @@ Adresowanie bezpośrednie (ang. direct addressing) polega na podaniu w instrukcj
 \begin{lstlisting}[numbers=none, xleftmargin=0]
 mov eax, [0xFFFFFF]
 \end{lstlisting}
-
+\\
 \textbf{Adresowanie rejestrowe}
 
 Adresowanie rejestrowe (ang. register addressing) wykorzystuje rejestr, w którym operand jest przechowywany.
@@ -336,7 +346,7 @@ Adresowanie rejestrowe (ang. register addressing) wykorzystuje rejestr, w który
 \begin{lstlisting}[numbers=none, xleftmargin=0]
 mov eax, ebx
 \end{lstlisting}
-
+\\
 \textbf{Adresowanie pośrednie rejestrowe}
 
 W adresowaniu pośrednim rejestrowym (ang. indirect addressing mode) adres operandu zapisany jest w jednym z rejestrów. Oznacza to, że rejestr staje się wskaźnikiem do wartości operandu.
@@ -344,7 +354,8 @@ W adresowaniu pośrednim rejestrowym (ang. indirect addressing mode) adres opera
 \begin{lstlisting}[numbers=none, xleftmargin=0]
 mov eax, [ebx]
 \end{lstlisting}
-
+\pagebreak
+\\
 \textbf{Adresowanie indeksowe}
 
 Adresowanie indeksowe (ang. indexed addressing) polega na dodaniu do wartości rejestru, w którym znajduje się adres operandu, tzw. offsetu, czyli przesunięcia względem początku bloku danych.
@@ -352,7 +363,7 @@ Adresowanie indeksowe (ang. indexed addressing) polega na dodaniu do wartości r
 \begin{lstlisting}[numbers=none, xleftmargin=0]
 mov eax, [0xFFFFFF + ebx * 1]
 \end{lstlisting}
-
+\\
 \textbf{Adresowanie indeksowe z wartością bazową}
 
 Adresowanie indeksowe z wartością bazową (ang. based indexed addressing) występuje tylko w niektórych rodzajach procesorów. Polega na obliczeniu adresu operandu poprzez zsumowanie wartości dwóch rejestrów i dodaniu opcjonalnego przesunięcia. Pierwszy rejestr zawiera adres podstawowy, drugi indeks. Indeks mnożony jest przez rozmiar słowa, a do całości dodawane jest przesunięcie.
@@ -482,11 +493,9 @@ Algorytm Boyer-Moore został stworzony w 1977 roku i do tej pory uważany jest z
 
 Algorytm szuka danego wzorca w teksćie porównując kolejne znaki tekstu do wzorca, lecz w odróżnieniu od metody brute-force wykorzystuje informacje zebrane za pomocą fukcji preprocesujących, aby pominąć jak najwięcej znaków w tekście, które na pewno nie pasują do wzorca.
 
-Procedura zaczyna się w miejscu $i = n$ (gdzie $n$ to długość tekstu $T$), w taki sposób, że koniec wzorca $P$ jest wyrównany do końca tekstu T. Następnie poszczególne znaki z $P$ i $T$ są porównywane począwszy od indeksu n w P i indeksu k w T, porusząjąc się od prawej do lewej strony wzorca P. Porównywanie trwa dopóki znaki w $P$ i $T$ nie są różne lub do momentu dotarcia do początku $P$ (co oznacza, że znaleziono wystąpienie w tekście), a następnie indeks porównywania przesuwany jest w prawo o maksymalną wartość wskazywaną przez zdefiniowane reguły. Czynności są powtarzane do momentu sprawdzenia całego tekstu $T$.
+Przykład implementacji algorytmu został przedstawiony na Listingu \ref{lst:bmoore}. Główna część algorytmu rozpoczyna się od ustawienia indeksu $i = n - 1$ (gdzie $n$ to długość tekstu $T$, patrz wiersze 6-9), w taki sposób, że koniec wzorca $P$ jest wyrównany do końca tekstu $T$. Następnie poszczególne znaki z $P$ i $T$ są porównywane począwszy od indeksu $j$ w $P$ i indeksu $i$ w $T$, porusząjąc się od prawej do lewej strony wzorca $P$ (patrz wiersze 12-16). Porównywanie trwa dopóki znaki w $P$ i $T$ nie są różne lub do momentu dotarcia do początku $P$ (co oznacza, że znaleziono wystąpienie w tekście, patrz wiersz 12), a następnie indeks porównywania przesuwany jest w prawo o maksymalną wartość wskazywaną przez zdefiniowane reguły (patrz wiersz 19). Czynności są powtarzane do momentu sprawdzenia całego tekstu $T$ (patrz wiersz 10).
 
 Reguły przesuwania indeksu definiowane są za pomocą tabel tworzonych za pomocą funkcji preprocesujących.
-\\
-Przykład implementacji algorytmu został przedstawiony na Listingu \ref{lst:bmoore}.
 \\
 \begin{lstlisting}[caption={Przykładowa implementacja algorytmu Boyer-Moore wyszukująca wzorzec $P$ w tekście $T$.}, label={lst:bmoore}]
 public List<Integer> match() {
@@ -501,14 +510,13 @@ public List<Integer> match() {
   while (i >= 0 && i < n) {
    try {
     if (P.charAt(j) == T.charAt(i)) {
-	if (j == 0) {
-	 matches.add(i);
-	 j = m - 1;
-    }
+	 if (j == 0) {
+	  matches.add(i);
+	  j = m - 1;
+     }
 	j--; i--;
    } else {
-    i -= Math.max(match[j], last[T.charAt(i)] 
-       - n + 1 + i);
+    i -= Math.max(match[j], last[T.charAt(i)] - n + 1 + i);
     j = m - 1;
    }
   } catch (Exception ex) { (...)  }
@@ -542,9 +550,8 @@ Odległość edycyjna pomiędzy słowami $inżynier$ i $magister$ wynosi 6:
 \item magi\textbf{n}ier $\rightarrow$ magi\testbf{s}ier
 \item magis\textbf{i}er $\rightarrow$ magis\textbf{t}er
 \end{enumerate}
-
 \pagebreak
-
+\\
 \textbf{Cechy}
 
 Odległość edycyjna posiada kilka cech, które mają zastosowanie w każdym przypadku i warto je wykorzystać w trakcie implementowania algorytmu:
@@ -749,7 +756,17 @@ Program składa się z kilku głownych pakietów: Comparator, Algorithm, Analyze
 \label{fig:gui}
 \end{figure}
 
-Comparator jest podstawowym, statycznym obiektem, który na wejściu pobiera kody źrodłowe programów porównywanych i przekazuje je do analizatora. Analizator zwraca nieskierowane grafy porównywanych kodów źródłowych, które w dalszym etapie przekazane są jako parametry algorytmu wybranej metody weryfikowania podobieństwa. 
+Szczegółowy diagram klas został przedstawiony na Rysunku \ref{fig:classdiagram}. Poniżej przedstawiono opis najważniejszych pakietów oraz wyszczególniono główne klasy odpowiadające za ich funkcjonalność.
+
+Comparator jest podstawowym, statycznym obiektem, który na wejściu pobiera kody źrodłowe programów porównywanych i przekazuje je do analizatora. Analizator zwraca nieskierowane grafy porównywanych kodów źródłowych, które w dalszym etapie przekazane są jako parametry algorytmu wybranej metody weryfikowania podobieństwa.
+\pagebreak
+\\
+Istotne są tutaj trzy klasy: 
+\begin{itemize}
+\item $TextComparator$ - wywołuje wybrany algorytm porównywania tekstu i graficznie zaznacza podobne wiersze w obu źródłach,
+\item $DistanceComparator$ - oblicza odległość edycyjną pomiędzy plikami źródłowymi,
+\item $SourceComparator$ - dokładnie analizuje tekst źródłowyc za pomocą skanera i parsera oraz sprawdza izomorficzność oraz oblicza odległość edycyjną pomiędzy zwróconymi przez parser grafami.
+\end{itemize}
 
 Wynikiem działania komparatora jest procentowa wartość podobieństwa pomiędzy dwoma kodami źródłowymi oraz graficzna prezentacja miejsc identycznych w porównywanych źródłach.
 \\
@@ -758,12 +775,15 @@ Algorithm to pakiet, w którego skład wchodzi zestaw algorytmów porównywania 
 
 Algorytmy porównywania tekstu wykorzystane zostały do graficznego zaznaczania fragmentów identycznych w porównywanych kodach źródłowych. Na wejście przyjmują teksty kodów źródłowego w całości, następnie dzielą je na pojedyncze wyrazy i sprawdzają, czy dany wyraz z jednego kodu źródłowego znajduje się w dowolnym miejscu w drugim źródle. Wynikiem działania algorytmów porównywania tekstu jest lista identycznych wyrazów oraz ich położenie w obu źródłach.
 
-Algorytm obliczania podobieństwa grafów przyjmuje na wejście dwa grafy nieskierowane i oblicza dystans pomiędzy nimi. Pakiet zawiera również algorytm VF2 do sprawdzenia, czy grafy są izomorficzne. Wynikiem jego działania jest wartość liczbowa oraz procentowa obliczonego porównania.
+\hyphenation{nieskie-rowane}
+Algorytm obliczania podobieństwa grafów przyjmuje na wejście dwa grafy nieskierowane i oblicza dystans pomiędzy nimi. Pakiet zawiera również algorytm VF2 (klasa $VF2IsomorphismTester$, patrz Rysunek 5) do sprawdzenia, czy grafy są izomorficzne. Wynikiem jego działania jest wartość liczbowa oraz procentowa obliczonego porównania.
+\\ 
 
-Analyzer to komponent, który zajmuje się etapem analizy z teorii kompilacji. Składa się ze skanera - czyli analizatora leksykalnego - oraz z parsera - czyli analizatora składniowego. Wynikiem działania analizatora jest graf nieskierowany, w którym węzły to tokeny a krawędzie obrazują hierarchię w kodzie źródłowy. Graf wynikowy przekazywany jest do komparatora.
+Analyzer to komponent, który zajmuje się etapem analizy z teorii kompilacji. Składa się ze skanera (klasa $SimpleScanner$) - czyli analizatora leksykalnego - oraz z parsera (klasa $Parser$) - czyli analizatora składniowego. Wynikiem działania analizatora jest graf nieskierowany, w którym węzły to tokeny a krawędzie obrazują hierarchię w kodzie źródłowy. Graf wynikowy przekazywany jest do komparatora.
 
 \begin{figure}[!]
 \centering
+\label{fig:classdiagram}
 \includegraphics[scale=0.3]{gfx/ClassDiagram2.png}
 \caption{Diagram klas aplikacji CodeComp.}
 \end{figure}

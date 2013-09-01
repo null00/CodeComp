@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.1.20)  7 JUN 2013 01:04
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.1.20)  1 SEP 2013 13:07
 entering extended mode
  %&-line parsing enabled.
 **praca_magisterska.tex
@@ -529,7 +529,7 @@ LaTeX Font Info:    ... okay on input line 41.
 paper: a4paper
 landscape: --
 twocolumn: --
-twoside: --
+twoside: true
 asymmetric: --
 h-parts: 99.58464pt, 426.79135pt, 71.13188pt
 v-parts: 85.35826pt, 674.33032pt, 85.35826pt
@@ -549,19 +549,19 @@ driver: pdftex
 \textwidth  426.79135pt
 \textheight 674.33032pt
 \oddsidemargin  27.31465pt
-\evensidemargin 27.31465pt
+\evensidemargin -1.1381pt
 \topmargin  -23.91173pt
 \headheight 12.0pt
 \headsep    25.0pt
 \footskip   30.0pt
-\marginparwidth 35.0pt
+\marginparwidth 85.0pt
 \marginparsep   10.0pt
 \columnsep  10.0pt
 \skip\footins  10.8pt plus 4.0pt minus 2.0pt
 \hoffset 0.0pt
 \voffset 0.0pt
 \mag 1000
-
+\@twosidetrue \@mparswitchtrue 
 (1in=72.27pt, 1cm=28.45pt)
 -----------------------
 (/usr/share/texmf-texlive/tex/latex/listings/lstlang1.sty
@@ -586,36 +586,35 @@ LaTeX Font Info:    Try loading font information for U+lasy on input line 69.
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 ) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./gfx/agh.jpg>] [2] (./pra
-ca_magisterska.toc
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 14.61858pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[3])
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./gfx/agh.jpg>] [2] [3] [4
+] (./praca_magisterska.toc [5])
 \tf@toc=\write3
 \openout3 = `praca_magisterska.toc'.
 
- [4]
-Overfull \hbox (3.31459pt too wide) in paragraph at lines 81--82
+ [6]
+Overfull \hbox (3.31459pt too wide) in paragraph at lines 91--92
 \T1/cmr/m/n/12 Plagiat jest to kradzie», przy-wªaszcze-nie cud-zego pomysªu lub
  ut-woru i op-ub-likowanie
  []
 
 
-Overfull \hbox (4.20174pt too wide) in paragraph at lines 83--84
+Overfull \hbox (4.20174pt too wide) in paragraph at lines 93--94
 []\T1/cmr/m/n/12 Oprócz wymienionych wy»ej, na-jcz¦±-ciej ko-pi-owanych prac, r
 ównie» pla-gia-towanie
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 89--93
+Underfull \hbox (badness 10000) in paragraph at lines 99--103
 
  []
 
-[5]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[7]
 
 ! LaTeX Error: There's no line here to end.
 
@@ -623,7 +622,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.113 \\ \\
+l.123 \\ \\
            
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -636,7 +635,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.114 W
+l.124 W
        ymagania funcjonalne w stosunku do mechanizmu wykrywania podobieÅ„stw:
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -649,7 +648,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.122 \\ \\
+l.132 \\ \\
            
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -662,78 +661,78 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.123 P
+l.133 P
        raca skÅ‚ada siÄ™ ze wstÄ™pu, piÄ™ciu rozdziaÅ‚Ã³w oraz spisu literat...
 
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-[6]
-Overfull \hbox (10.00809pt too wide) in paragraph at lines 141--143
+[8]
+Overfull \hbox (10.00809pt too wide) in paragraph at lines 151--153
 []\T1/cmr/m/n/12 Jednak w przy-padku porówny-wa-nia kodów ¹ródªowych pro-gramów
  kom-put-erowych
  []
 
 
-Overfull \hbox (11.28543pt too wide) in paragraph at lines 145--146
+Overfull \hbox (11.28543pt too wide) in paragraph at lines 155--156
 []\T1/cmr/m/n/12 drzewach skªad-niowych - pozwala na porówny-wanie kodów na wy»
 szym poziomie,
  []
 
 
-Overfull \hbox (14.77414pt too wide) in paragraph at lines 153--154
+Overfull \hbox (14.77414pt too wide) in paragraph at lines 163--164
 []\T1/cmr/m/n/12 Oprócz sposobów wymienionych powy»ej ist-nieje jeszcze mi-ara 
 odmi-en-no±ci napisów
  []
 
-[7]
-Overfull \hbox (24.75516pt too wide) in paragraph at lines 159--160
+[9]
+Overfull \hbox (24.75516pt too wide) in paragraph at lines 169--170
 []\T1/cmr/m/n/12 Izomorfizm grafów (a tak»e drzew) jest wyko-rzysty-wany do spr
 awdza-nia podobie«stwa
  []
 
-<gfx/isomorphism.png, id=33, 481.8pt x 481.8pt>
+<gfx/isomorphism.png, id=39, 481.8pt x 481.8pt>
 File: gfx/isomorphism.png Graphic file (type png)
  <use gfx/isomorphism.png>
-[8 <./gfx/isomorphism.png>]
-Overfull \hbox (0.36482pt too wide) in paragraph at lines 177--178
+[10 <./gfx/isomorphism.png>]
+Overfull \hbox (0.36482pt too wide) in paragraph at lines 187--188
 \T1/cmr/m/n/12 aty-cznej i j¦zykoz-naw-st-wie. Aby zdefin-iowa¢ j¦zyk for-malny
  musimy na-jpierw zdefin-
  []
 
-<gfx/tokens.png, id=40, 327.2225pt x 96.36pt>
+<gfx/tokens.png, id=46, 327.2225pt x 96.36pt>
 File: gfx/tokens.png Graphic file (type png)
  <use gfx/tokens.png>
-Overfull \hbox (7.44777pt too wide) in paragraph at lines 181--188
+Overfull \hbox (7.44777pt too wide) in paragraph at lines 191--198
 \T1/cmr/m/n/12 okre±lonych przez anal-iza-tor reguª i przekazy-wane do dal-szyc
 h etapów anal-izy. Reguªy,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 181--188
+Underfull \hbox (badness 10000) in paragraph at lines 191--198
 
  []
 
-[9 <./gfx/tokens.png>] [10]
-Overfull \hbox (6.0576pt too wide) in paragraph at lines 217--218
+[11 <./gfx/tokens.png>] [12]
+Overfull \hbox (6.0576pt too wide) in paragraph at lines 227--228
 \T1/cmr/m/n/12 Skaner, czyli pod-sta-wowa cz¦±¢ anal-iza-tora leksykalnego, za-
 j-muje si¦ gªównym etapem
  []
 
 
-Overfull \hbox (2.82582pt too wide) in paragraph at lines 219--220
+Overfull \hbox (2.82582pt too wide) in paragraph at lines 229--230
 []\T1/cmr/m/n/12 W wielu przy-pad-kach pier-wszy znak, który nie jest znakiem b
 i-aªym mo»e posªu»y¢
  []
 
-[11] [12]
-Overfull \hbox (2.43558pt too wide) in paragraph at lines 265--266
+[13] [14]
+Overfull \hbox (2.43558pt too wide) in paragraph at lines 275--276
 []\T1/cmr/m/n/12 Argumentami op-er-acji mog¡ by¢ (w za-le»no±ci od ar-chitek-tu
 ry): re-jestry, warto±ci
  []
 
-[13] <gfx/asm_syn_diff.png, id=59, 698.61pt x 362.35374pt>
+[15] <gfx/asm_syn_diff.png, id=65, 698.61pt x 362.35374pt>
 File: gfx/asm_syn_diff.png Graphic file (type png)
 
 <use gfx/asm_syn_diff.png>
@@ -744,7 +743,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.291 \begin
+l.301 \begin
             {center}
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -757,19 +756,19 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.309 
+l.319 
       
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-[14 <./gfx/asm_syn_diff.png (PNG copy)>]
-Overfull \hbox (1.60902pt too wide) in paragraph at lines 318--319
+[16 <./gfx/asm_syn_diff.png (PNG copy)>]
+Overfull \hbox (1.60902pt too wide) in paragraph at lines 328--329
 []\T1/cmr/m/n/12 Adresowanie naty-ch-mi-as-towe (ang. im-me-di-ate ad-dress-ing
 ) to na-jprost-sza metoda
  []
 
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 320.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 330.
 
 (/usr/share/texmf-texlive/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
@@ -777,7 +776,7 @@ File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    \advance 
-l.320 ...{lstlisting}[numbers=none, xleftmargin=0]
+l.330 ...{lstlisting}[numbers=none, xleftmargin=0]
                                                   
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -789,7 +788,7 @@ two letters. (See Chapter 27 of The TeXbook.)
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    \relax 
-l.320 ...{lstlisting}[numbers=none, xleftmargin=0]
+l.330 ...{lstlisting}[numbers=none, xleftmargin=0]
                                                   
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -797,11 +796,24 @@ I'll assume that you meant to say pt, for printer's points.
 To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.334 \textbf
+             {Adresowanie bezpoÅ›rednie}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
 
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    \advance 
-l.328 ...{lstlisting}[numbers=none, xleftmargin=0]
+l.338 ...{lstlisting}[numbers=none, xleftmargin=0]
                                                   
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -813,7 +825,7 @@ two letters. (See Chapter 27 of The TeXbook.)
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    \relax 
-l.328 ...{lstlisting}[numbers=none, xleftmargin=0]
+l.338 ...{lstlisting}[numbers=none, xleftmargin=0]
                                                   
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -821,11 +833,24 @@ I'll assume that you meant to say pt, for printer's points.
 To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.342 \textbf
+             {Adresowanie rejestrowe}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
 
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    \advance 
-l.336 ...{lstlisting}[numbers=none, xleftmargin=0]
+l.346 ...{lstlisting}[numbers=none, xleftmargin=0]
                                                   
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -837,7 +862,7 @@ two letters. (See Chapter 27 of The TeXbook.)
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    \relax 
-l.336 ...{lstlisting}[numbers=none, xleftmargin=0]
+l.346 ...{lstlisting}[numbers=none, xleftmargin=0]
                                                   
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -845,11 +870,24 @@ I'll assume that you meant to say pt, for printer's points.
 To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.350 \textbf
+             {Adresowanie poÅ›rednie rejestrowe}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
 
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    \advance 
-l.344 ...{lstlisting}[numbers=none, xleftmargin=0]
+l.354 ...{lstlisting}[numbers=none, xleftmargin=0]
                                                   
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -861,7 +899,7 @@ two letters. (See Chapter 27 of The TeXbook.)
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    \relax 
-l.344 ...{lstlisting}[numbers=none, xleftmargin=0]
+l.354 ...{lstlisting}[numbers=none, xleftmargin=0]
                                                   
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -870,35 +908,24 @@ To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
 
-[15]
-! Illegal unit of measure (pt inserted).
-<to be read again> 
-                   \advance 
-l.352 ...{lstlisting}[numbers=none, xleftmargin=0]
-                                                  
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
+[17]
 
-! Illegal unit of measure (pt inserted).
-<to be read again> 
-                   \relax 
-l.352 ...{lstlisting}[numbers=none, xleftmargin=0]
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
                                                   
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
+l.359 \textbf
+             {Adresowanie indeksowe}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
 
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    \advance 
-l.360 ...{lstlisting}[numbers=none, xleftmargin=0]
+l.363 ...{lstlisting}[numbers=none, xleftmargin=0]
                                                   
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -910,7 +937,7 @@ two letters. (See Chapter 27 of The TeXbook.)
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    \relax 
-l.360 ...{lstlisting}[numbers=none, xleftmargin=0]
+l.363 ...{lstlisting}[numbers=none, xleftmargin=0]
                                                   
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -919,37 +946,74 @@ To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
 
-[16] [17] [18] [19]
-Overfull \hbox (15.97946pt too wide) in paragraph at lines 464--466
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.367 \textbf
+             {Adresowanie indeksowe z wartoÅ›ciÄ… bazowÄ…}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   \advance 
+l.371 ...{lstlisting}[numbers=none, xleftmargin=0]
+                                                  
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   \relax 
+l.371 ...{lstlisting}[numbers=none, xleftmargin=0]
+                                                  
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+[18] [19] [20] [21]
+Overfull \hbox (15.97946pt too wide) in paragraph at lines 475--477
 []\T1/cmr/m/n/12 Przykªadowy kod ¹ródªowy al-go-rytmu brute-force, wyszuku-j¡ce
 go okre±lony wzorzec
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 464--466
+Underfull \hbox (badness 10000) in paragraph at lines 475--477
 
  []
 
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 467.
-[20]
-Overfull \hbox (6.28554pt too wide) in paragraph at lines 485--486
-\T1/cmr/m/n/12 sposób, »e koniec wzorca $\OML/cmm/m/it/12 P$ \T1/cmr/m/n/12 jes
-t wyrów-nany do ko«ca tek-stu T. Nast¦p-nie poszczególne
- []
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 478.
 
+Package Fancyhdr Warning: \headheight is too small (14.49998pt): 
+ Make it at least 14.61858pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
 
-Underfull \hbox (badness 10000) in paragraph at lines 487--491
-
- []
-
-[21] [22]
-Underfull \hbox (badness 10000) in paragraph at lines 524--528
+[22]
+Underfull \hbox (badness 10000) in paragraph at lines 498--500
 
  []
 
+[23] [24]
+Underfull \hbox (badness 10000) in paragraph at lines 532--536
 
-Overfull \hbox (18.75424pt too wide) in paragraph at lines 529--530
+ []
+
+
+Overfull \hbox (18.75424pt too wide) in paragraph at lines 537--538
 []\T1/cmr/m/n/12 Odlegªo±c Lev-en-shtein'a pomi¦dzy napisami $\OML/cmm/m/it/12 
 a$ \T1/cmr/m/n/12 i $\OML/cmm/m/it/12 b$ \T1/cmr/m/n/12 okre±lona jest wzorem $
 \OML/cmm/m/it/12 lev[]\OT1/cmr/m/n/12 (\OMS/cmsy/m/n/12 j\OML/cmm/m/it/12 a\OMS
@@ -957,7 +1021,7 @@ a$ \T1/cmr/m/n/12 i $\OML/cmm/m/it/12 b$ \T1/cmr/m/n/12 okre±lona jest wzorem $
 m/n/12 j\OT1/cmr/m/n/12 )$\T1/cmr/m/n/12 ,
  []
 
-<gfx/levenshtein_def.png, id=92, 601.24625pt x 110.4125pt>
+<gfx/levenshtein_def.png, id=98, 601.24625pt x 110.4125pt>
 File: gfx/levenshtein_def.png Graphic file (type png)
 
 <use gfx/levenshtein_def.png>
@@ -968,7 +1032,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.533 \\ \\
+l.541 \\ \\
            
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -981,18 +1045,18 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.534 \textbf
+l.542 \textbf
              {PrzykÅ‚ad}
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-LaTeX Warning: Command \. invalid in math mode on input line 536.
+LaTeX Warning: Command \. invalid in math mode on input line 544.
 
 Missing character: There is no » in font cmr12!
 ! Undefined control sequence.
-l.542 ...gi\textbf{n}ier $\rightarrow$ magi\testbf
+l.550 ...gi\textbf{n}ier $\rightarrow$ magi\testbf
                                                   {s}ier
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1000,29 +1064,10 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-[23 <./gfx/levenshtein_def.png>]
-Overfull \hbox (16.86049pt too wide) in paragraph at lines 558--559
-[]\T1/cmr/m/n/12 Odlegªo±¢ Lev-en-shtein'a jest wyko-rzys-tana w tech-nikach do
-pa-sowa-nia przy-bli»onego,
- []
 
+Underfull \vbox (badness 1184) has occurred while \output is active []
 
-Overfull \hbox (4.59354pt too wide) in paragraph at lines 562--563
-[]\T1/cmr/m/n/12 Temat podobie«stwa grafów jest is-tot-nym el-e-mentem pod-czas
- bada« w przestrzeni
- []
-
-[24] [25]
-Underfull \hbox (badness 10000) in paragraph at lines 599--605
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 599--605
-
- []
-
-[26]
+ [25 <./gfx/levenshtein_def.png>]
 
 ! LaTeX Error: There's no line here to end.
 
@@ -1030,7 +1075,43 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.618 \\ \\
+l.555 \textbf
+             {Cechy}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+Overfull \hbox (16.86049pt too wide) in paragraph at lines 565--566
+[]\T1/cmr/m/n/12 Odlegªo±¢ Lev-en-shtein'a jest wyko-rzys-tana w tech-nikach do
+pa-sowa-nia przy-bli»onego,
+ []
+
+
+Overfull \hbox (4.59354pt too wide) in paragraph at lines 569--570
+[]\T1/cmr/m/n/12 Temat podobie«stwa grafów jest is-tot-nym el-e-mentem pod-czas
+ bada« w przestrzeni
+ []
+
+[26] [27]
+Underfull \hbox (badness 10000) in paragraph at lines 606--612
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 606--612
+
+ []
+
+[28]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.625 \\ \\
            
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1043,7 +1124,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.619 P
+l.626 P
        ierwszym krokiem jest stworzenie $p_\alpha X p_\beta$ elementowej mac...
 
 Your command was ignored.
@@ -1053,7 +1134,7 @@ or  <return>  to continue without it.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.621 ${m^0}_{ij}$ \left
+l.628 ${m^0}_{ij}$ \left
                         \{
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -1061,7 +1142,7 @@ you left one out. Proceed, with fingers crossed.
 ! You can't use `\eqno' in math mode.
 \endmathdisplay@a ...\df@tag \@empty \else \veqno 
                                                   \alt@tag \df@tag \fi \ifx ...
-l.626   \end{array} \right.\]
+l.633   \end{array} \right.\]
                              
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -1075,7 +1156,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.626   \end{array} \right.\]
+l.633   \end{array} \right.\]
                              
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1084,7 +1165,7 @@ or  <return>  to continue without it.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.626   \end{array} \right.\]
+l.633   \end{array} \right.\]
                              
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1095,38 +1176,38 @@ my insertion and my current dilemma will both disappear.
 ! Extra \endgroup.
 <recently read> \endgroup 
                           
-l.626   \end{array} \right.\]
+l.633   \end{array} \right.\]
                              
 Things are pretty mixed up, but I think the worst is over.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 619--630
+Underfull \hbox (badness 10000) in paragraph at lines 626--637
 
  []
 
 
-Overfull \hbox (58.50383pt too wide) in paragraph at lines 619--630
+Overfull \hbox (58.50383pt too wide) in paragraph at lines 626--637
 [][]$ $[] []$$$ 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 619--630
+Underfull \hbox (badness 10000) in paragraph at lines 626--637
 
  []
 
-[27]
-Underfull \hbox (badness 10000) in paragraph at lines 665--670
+[29]
+Underfull \hbox (badness 10000) in paragraph at lines 672--677
 
  []
 
 
-Overfull \hbox (7.77448pt too wide) in paragraph at lines 673--674
+Overfull \hbox (7.77448pt too wide) in paragraph at lines 680--681
 []\T1/cmr/m/n/12 Ka»dy stan $\OML/cmm/m/it/12 s$ \T1/cmr/m/n/12 pro-cesu porówn
 y-wa-nia mo»e by¢ przyp-isane do cz¦±-ciowego rozwi¡za-
  []
 
-[28] [29]
-Overfull \hbox (11.05016pt too wide) in paragraph at lines 709--710
+[30] [31]
+Overfull \hbox (11.05016pt too wide) in paragraph at lines 716--717
 \T1/cmr/m/n/12 Opisane w poprzed-nich po-drozdzi-aªach al-go-rytmy sku-pi-aj¡ s
 i¦ na dokªad-nym porówny-
  []
@@ -1138,71 +1219,91 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.721 N
+l.728 N
        astÄ™pnie wykonywane sÄ… gÅ‚Ã³wne kroki algorytmu:
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-[30] [31] <gfx/packagediagram.png, id=131, 666.49pt x 353.32pt>
+[32] [33] <gfx/packagediagram.png, id=137, 666.49pt x 353.32pt>
 File: gfx/packagediagram.png Graphic file (type png)
 
 <use gfx/packagediagram.png>
-Overfull \hbox (6.42201pt too wide) in paragraph at lines 747--748
+Overfull \hbox (6.42201pt too wide) in paragraph at lines 754--755
  [][] 
  []
 
 
-Overfull \hbox (6.12288pt too wide) in paragraph at lines 754--756
+Overfull \hbox (12.45325pt too wide) in paragraph at lines 759--760
+\T1/cmr/m/n/12 staw-iono opis na-jwa»niejszych paki-etów oraz wyszczegól-niono 
+gªówne klasy odpowiada-
+ []
+
+
+Underfull \vbox (badness 1383) has occurred while \output is active []
+
+ [34 <./gfx/packagediagram.png>]
+Overfull \hbox (11.58446pt too wide) in paragraph at lines 766--767
+[]$\OML/cmm/m/it/12 TextComparator$ \T1/cmr/m/n/12 - wywoªuje wybrany al-go-ryt
+m porówny-wa-nia tek-stu i graficznie
+ []
+
+
+Overfull \hbox (13.72763pt too wide) in paragraph at lines 767--768
+[]$\OML/cmm/m/it/12 DistanceComparator$ \T1/cmr/m/n/12 - oblicza odlegªo±¢ edy-
+cyjn¡ pomi¦dzy plikami ¹ródªowymi, 
+ []
+
+
+Overfull \hbox (6.12288pt too wide) in paragraph at lines 771--773
 []\T1/cmr/m/n/12 Wynikiem dzi-aªa-nia kom-para-tora jest pro-cen-towa warto±¢ p
 odobie«stwa pomi¦dzy
  []
 
 
-Overfull \hbox (9.2555pt too wide) in paragraph at lines 754--756
+Overfull \hbox (9.2555pt too wide) in paragraph at lines 771--773
 \T1/cmr/m/n/12 dwoma ko-dami ¹ródªowymi oraz graficzna prezen-tacja miejsc iden
 -ty-cznych w porówny-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 754--756
+Underfull \hbox (badness 10000) in paragraph at lines 771--773
 
  []
 
-[32 <./gfx/packagediagram.png>]
-Overfull \hbox (33.50029pt too wide) in paragraph at lines 761--762
+
+Overfull \hbox (1.52197pt too wide) in paragraph at lines 779--781
 []\T1/cmr/m/n/12 Algorytm oblicza-nia podobie«stwa grafów przyj-muje na we-j±-c
-ie dwa grafy nieskierowane
+ie dwa grafy nieskie-
  []
 
 
-Overfull \hbox (12.82562pt too wide) in paragraph at lines 761--762
-\T1/cmr/m/n/12 i oblicza dys-tans pomi¦dzy nimi. Pakiet za-w-iera równie» al-go
--rytm VF2 do sprawdzenia,
+Underfull \hbox (badness 10000) in paragraph at lines 779--781
+
  []
 
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `!tbp') on input line 765.
+               Default added (so using `!tbp') on input line 784.
 
-<gfx/ClassDiagram2.png, id=136, 1012.78375pt x 2102.85625pt>
+<gfx/ClassDiagram2.png, id=142, 1012.78375pt x 2102.85625pt>
 File: gfx/ClassDiagram2.png Graphic file (type png)
 
-<use gfx/ClassDiagram2.png> [33] [34 <./gfx/ClassDiagram2.png (PNG copy)>]
-<gfx/main_window.png, id=143, 1298.8525pt x 794.97pt>
+<use gfx/ClassDiagram2.png> [35] [36 <./gfx/ClassDiagram2.png (PNG copy)>]
+<gfx/main_window.png, id=149, 1298.8525pt x 794.97pt>
 File: gfx/main_window.png Graphic file (type png)
 
 <use gfx/main_window.png>
-Overfull \hbox (1.8313pt too wide) in paragraph at lines 777--778
+Overfull \hbox (1.8313pt too wide) in paragraph at lines 797--798
  [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 773--781
+Underfull \hbox (badness 10000) in paragraph at lines 793--801
 
  []
 
-[35 <./gfx/main_window.png>]
+[37 <./gfx/main_window.png>]
 
 ! LaTeX Error: There's no line here to end.
 
@@ -1210,7 +1311,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.792 \\ \\
+l.812 \\ \\
            
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1223,7 +1324,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.793 A
+l.813 A
        plikacja doÅ‚Ä…czona zostaÅ‚a w postaci kodu ÅºrodÅ‚owego oraz skompi...
 
 Your command was ignored.
@@ -1231,14 +1332,14 @@ Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 793--795
+Underfull \hbox (badness 10000) in paragraph at lines 813--815
 
  []
 
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    \advance 
-l.795 ...{lstlisting}[numbers=none, xleftmargin=0]
+l.815 ...{lstlisting}[numbers=none, xleftmargin=0]
                                                   
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -1250,7 +1351,7 @@ two letters. (See Chapter 27 of The TeXbook.)
 ! Illegal unit of measure (pt inserted).
 <to be read again> 
                    \relax 
-l.795 ...{lstlisting}[numbers=none, xleftmargin=0]
+l.815 ...{lstlisting}[numbers=none, xleftmargin=0]
                                                   
 Dimensions can be in units of em, ex, in, pt, pc,
 cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
@@ -1259,32 +1360,34 @@ To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
 
-[36] <gfx/add_files.png, id=151, 1041.8925pt x 784.9325pt>
+[38] <gfx/add_files.png, id=158, 1041.8925pt x 784.9325pt>
 File: gfx/add_files.png Graphic file (type png)
 
 <use gfx/add_files.png>
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `!tbp') on input line 812.
+               Default added (so using `!tbp') on input line 832.
 
-<gfx/select_files.png, id=152, 1027.84pt x 779.91376pt>
+<gfx/select_files.png, id=159, 1027.84pt x 779.91376pt>
 File: gfx/select_files.png Graphic file (type png)
 
 <use gfx/select_files.png>
-<gfx/compare_source.png, id=153, 1041.8925pt x 784.9325pt>
+<gfx/compare_source.png, id=160, 1041.8925pt x 784.9325pt>
 File: gfx/compare_source.png Graphic file (type png)
 
 <use gfx/compare_source.png>
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `!tbp') on input line 829.
+               Default added (so using `!tbp') on input line 849.
 
-<gfx/compare_score.png, id=154, 1027.84pt x 781.92125pt>
+<gfx/compare_score.png, id=161, 1027.84pt x 781.92125pt>
 File: gfx/compare_score.png Graphic file (type png)
 
-<use gfx/compare_score.png> [37 <./gfx/add_files.png> <./gfx/select_files.png (
-PNG copy)>] [38 <./gfx/compare_source.png> <./gfx/compare_score.png (PNG copy)>
-]
+<use gfx/compare_score.png>
+Underfull \vbox (badness 2556) has occurred while \output is active []
+
+ [39 <./gfx/add_files.png> <./gfx/select_files.png (PNG copy)>] [40 <./gfx/comp
+are_source.png> <./gfx/compare_score.png (PNG copy)>]
 
 ! LaTeX Error: There's no line here to end.
 
@@ -1292,36 +1395,40 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.856 
+l.876 
       
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 
-Overfull \hbox (16.17313pt too wide) in paragraph at lines 859--861
+Overfull \hbox (16.17313pt too wide) in paragraph at lines 879--881
 []\T1/cmr/m/n/12 JFlex[[]], który zostaª wyko-rzys-tany do stworzenia anal-iza-
 tora leksykalnego, generuje
  []
 
-[39] [40]
-Underfull \hbox (badness 10000) in paragraph at lines 929--931
+[41] [42]
+Underfull \hbox (badness 10000) in paragraph at lines 949--951
 
  []
 
-[41] [42]
-Overfull \hbox (8.2753pt too wide) in paragraph at lines 977--978
+
+Underfull \vbox (badness 1337) has occurred while \output is active []
+
+ [43]
+[44]
+Overfull \hbox (8.2753pt too wide) in paragraph at lines 997--998
 []\T1/cmr/m/n/12 W ap-likacji Code-Comp za-im-ple-men-towana zostaªa funkcja, k
 tóra wywoªuje gªówn¡
  []
 
 
-Overfull \hbox (5.22484pt too wide) in paragraph at lines 977--978
+Overfull \hbox (5.22484pt too wide) in paragraph at lines 997--998
 \T1/cmr/m/n/12 funkcj¦ skan-era zwraca-j¡c¡ to-ken (pa-trz List-ing 7[]). Nast¦
 p-nie to-ken ten jest przekazy-
  []
 
-[43]
+[45]
 
 ! LaTeX Error: There's no line here to end.
 
@@ -1329,70 +1436,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.994 \\ \\
-           
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.995 
-      
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1006 
-       
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1007--1009
-
- []
-
-
-Overfull \hbox (8.1786pt too wide) in paragraph at lines 1010--1011
-\T1/cmr/m/n/12 sposób hi-er-ar-chiczny b¦d¡ przed-staw-iaªy struk-tur¦ porówny-
-wanych kodów ¹ródªowych
- []
-
-
-Overfull \hbox (1.77887pt too wide) in paragraph at lines 1016--1017
-\T1/cmr/m/n/12 W¦zªy w grafie posi-adaj¡ iden-ty-fika-tor oraz tekst, który b¦d
-zie porówny-wany, skªada-
- []
-
-
-Overfull \hbox (2.1092pt too wide) in paragraph at lines 1018--1019
-[]\T1/cmr/m/n/12 Wynik porówny-wa-nia za-prezen-towany jest u»ytkown-ikowi w po
-staci dwóch kodów
- []
-
-[44] [45]
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1032 \\ \\
+l.1014 \\ \\
             
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1405,45 +1449,119 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1033 \textbf
+l.1015 
+       
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1026 
+       
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1027--1029
+
+ []
+
+
+Overfull \hbox (8.1786pt too wide) in paragraph at lines 1030--1031
+\T1/cmr/m/n/12 sposób hi-er-ar-chiczny b¦d¡ przed-staw-iaªy struk-tur¦ porówny-
+wanych kodów ¹ródªowych
+ []
+
+
+Overfull \hbox (1.77887pt too wide) in paragraph at lines 1036--1037
+\T1/cmr/m/n/12 W¦zªy w grafie posi-adaj¡ iden-ty-fika-tor oraz tekst, który b¦d
+zie porówny-wany, skªada-
+ []
+
+
+Overfull \hbox (2.1092pt too wide) in paragraph at lines 1038--1039
+[]\T1/cmr/m/n/12 Wynik porówny-wa-nia za-prezen-towany jest u»ytkown-ikowi w po
+staci dwóch kodów
+ []
+
+[46] [47]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1052 \\ \\
+            
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1053 \textbf
               {TEST 1}
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-[46] <gfx/test1.png, id=190, 1028.84375pt x 769.87625pt>
+[48] <gfx/test1.png, id=196, 1028.84375pt x 769.87625pt>
 File: gfx/test1.png Graphic file (type png)
  <use gfx/test1.png>
-[47 <./gfx/test1.png (PNG copy)>]
-<gfx/test2.png, id=194, 1029.8475pt x 769.87625pt>
+[49 <./gfx/test1.png (PNG copy)>]
+<gfx/test2.png, id=201, 1029.8475pt x 769.87625pt>
 File: gfx/test2.png Graphic file (type png)
  <use gfx/test2.png>
-Overfull \hbox (4.13113pt too wide) in paragraph at lines 1076--1084
+Overfull \hbox (4.13113pt too wide) in paragraph at lines 1096--1104
 []\T1/cmr/m/n/12 W drugim te±-cie wyko-rzys-tano dokªad-nie ten sam plik ¹ródªo
 wy, jed-nak zmieniono
  []
 
-[48 <./gfx/test2.png (PNG copy)>]
-<gfx/test3.png, id=198, 1027.84pt x 769.87625pt>
+
+Underfull \vbox (badness 2302) has occurred while \output is active []
+
+ [50 <./gfx/test2.png (PNG copy)>] <gfx/test3.png, id=205, 1027.84pt x 769.8762
+5pt>
 File: gfx/test3.png Graphic file (type png)
- <use gfx/test3.png> [49 <./gfx/test3.png (PNG copy)>] <gfx/test4.png, id=203, 
-1021.8175pt x 770.88pt>
+
+<use gfx/test3.png>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [51 <./gfx/test3.png (PNG copy)>] <gfx/test4.png, id=209, 1021.8175pt x 770.88
+pt>
 File: gfx/test4.png Graphic file (type png)
 
-<use gfx/test4.png> [50 <./gfx/test4.png (PNG copy)>]
-Overfull \hbox (3.50157pt too wide) in paragraph at lines 1137--1138
+<use gfx/test4.png> [52 <./gfx/test4.png (PNG copy)>]
+Overfull \hbox (3.50157pt too wide) in paragraph at lines 1157--1158
 \T1/cmr/m/n/12 skonalenia. Opisanie kom-plet-nej skªadni danego j¦zyka nie jest
  rzecz¡ ªatw¡, szczegól-
  []
 
-[51] [52]
-Underfull \hbox (badness 1558) in paragraph at lines 1149--1150
+
+Underfull \vbox (badness 1033) has occurred while \output is active []
+
+ [53]
+[54]
+Underfull \hbox (badness 1558) in paragraph at lines 1169--1170
 []\T1/cmr/m/n/12 Lex - A Lex-i-cal An-a-lyzer Gen-er-a-tor - M. E. Lesk and E. 
 Schmidt -
  []
 
 ! Misplaced alignment tab character &.
-l.1152 \bibitem{lexyacc} Lex &
+l.1172 \bibitem{lexyacc} Lex &
                                Yacc - John R. Levine, Tony Mason, Doug Brown...
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -1453,7 +1571,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.1152 ...ine, Tony Mason, Doug Brown - O'Reilly &
+l.1172 ...ine, Tony Mason, Doug Brown - O'Reilly &
                                                    Associates 1992
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -1462,9 +1580,9 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
-[53]
+[55]
 ! Misplaced alignment tab character &.
-l.1164 ... 7 (1957) pp. 961â€“968; Aho, Hopcroft &
+l.1184 ... 7 (1957) pp. 961â€“968; Aho, Hopcroft &
                                                    Ullman 1974.
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -1473,7 +1591,7 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
-[54] [55] (./praca_magisterska.lof
+[56] [57] (./praca_magisterska.lof
 Overfull \hbox (13.29976pt too wide) in paragraph at lines 3--3
  [][] []\T1/cmr/m/n/12 Przykªad przed-staw-ia-j¡cy pewne wyra»e-nie oraz wynik 
 dzi-aªa-nia parsera 
@@ -1483,7 +1601,7 @@ dzi-aªa-nia parsera
 \tf@lof=\write4
 \openout4 = `praca_magisterska.lof'.
 
- [56] (./praca_magisterska.lol
+ [58] (./praca_magisterska.lol
 Overfull \hbox (23.80064pt too wide) in paragraph at lines 2--2
  [][] []\T1/cmr/m/n/12 Przykªadowa im-ple-men-tacja al-go-rytmu Boyer-Moore wys
 zuku-j¡ca wzorzec 
@@ -1493,25 +1611,25 @@ zuku-j¡ca wzorzec
 \tf@lol=\write5
 \openout5 = `praca_magisterska.lol'.
 
- [57] (./praca_magisterska.aux)
+ [59] (./praca_magisterska.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 6105 strings out of 495061
- 74547 string characters out of 1182621
- 244786 words of memory out of 3000000
- 9154 multiletter control sequences out of 15000+50000
+ 6107 strings out of 495061
+ 74579 string characters out of 1182621
+ 244831 words of memory out of 3000000
+ 9155 multiletter control sequences out of 15000+50000
  23783 words of font info for 70 fonts, out of 3000000 for 9000
- 30 hyphenation exceptions out of 8191
- 34i,13n,47p,690b,1814s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 31 hyphenation exceptions out of 8191
+ 32i,13n,47p,924b,1820s stack positions out of 5000i,500n,10000p,200000b,50000s
  </home/null/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecit1000.600pk> </home/nu
 ll/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/null/.texmf-va
 r/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk> </home/null/.texmf-var/fonts/pk/l
 jfour/jknappen/ec/ecti1200.600pk> </home/null/.texmf-var/fonts/pk/ljfour/jknapp
-en/ec/ecbx1440.600pk> </home/null/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx12
-00.600pk> </home/null/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecsl1200.600pk> </
+en/ec/ecsl1200.600pk> </home/null/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx14
+40.600pk> </home/null/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </
 home/null/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/null/.t
 exmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1440.600pk> </home/null/.texmf-var/fon
 ts/pk/ljfour/jknappen/ec/ecbx1728.600pk> </home/null/.texmf-var/fonts/pk/ljfour
@@ -1526,9 +1644,9 @@ lic/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts
 </usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share
 /texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-texli
 ve/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on praca_magisterska.pdf (57 pages, 1343251 bytes).
+Output written on praca_magisterska.pdf (59 pages, 1352893 bytes).
 PDF statistics:
- 773 PDF objects out of 1000 (max. 8388607)
+ 801 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  81 words of extra memory for PDF output out of 10000 (max. 10000000)
 

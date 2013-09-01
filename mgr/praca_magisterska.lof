@@ -1,15 +1,15 @@
 \select@language {polish}
-\contentsline {figure}{\numberline {1}{\ignorespaces Grafy po\IeC {\l }o\IeC {\.z}one obok siebie s\IeC {\k a} izomorficzne}}{8}
-\contentsline {figure}{\numberline {2}{\ignorespaces Przyk\IeC {\l }ad przedstawiaj\IeC {\k a}cy pewne wyra\IeC {\.z}enie oraz wynik dzia\IeC {\l }ania parsera w postaci listy token\IeC {\'o}w i ich warto\IeC {\'s}ci}}{9}
-\contentsline {figure}{\numberline {3}{\ignorespaces G\IeC {\l }\IeC {\'o}wne r\IeC {\'o}\IeC {\.z}nice pomi\IeC {\k e}dzy sk\IeC {\l }adniami Intel i AT\&T\cite {asm_syn}}}{14}
-\contentsline {figure}{\numberline {4}{\ignorespaces Diagram przedstawiaj\IeC {\k a}cy struktur\IeC {\k e} aplikacji}}{32}
-\contentsline {figure}{\numberline {5}{\ignorespaces Diagram klas aplikacji CodeComp.}}{34}
-\contentsline {figure}{\numberline {6}{\ignorespaces G\IeC {\l }\IeC {\'o}wne okno programu CodeComp.}}{35}
-\contentsline {figure}{\numberline {7}{\ignorespaces Okno startowe aplikacji CodeComp.}}{37}
-\contentsline {figure}{\numberline {8}{\ignorespaces Wyb\IeC {\'o}r plik\IeC {\'o}w w programie CodeComp.}}{37}
-\contentsline {figure}{\numberline {9}{\ignorespaces Uruchomienie analizy w programie CodeComp.}}{38}
-\contentsline {figure}{\numberline {10}{\ignorespaces Wynik dzia\IeC {\l }ania aplikacji CodeComp.}}{38}
-\contentsline {figure}{\numberline {11}{\ignorespaces Wynik testu nr 1 - dwa identyczne kody \IeC {\'z}r\IeC {\'o}d\IeC {\l }owe.}}{47}
-\contentsline {figure}{\numberline {12}{\ignorespaces Wynik testu nr 2 - ten sam kod \IeC {\'z}r\IeC {\'o}d\IeC {\l }owy ze zmienionymi nazwami zmiennych.}}{48}
-\contentsline {figure}{\numberline {13}{\ignorespaces Wynik testu nr 3 - ten sam kod \IeC {\'z}r\IeC {\'o}d\IeC {\l }owy ze zmienionymi nazwami zmiennych i kolejno\IeC {\'s}ci\IeC {\k a} wykonywanych instrukcji.}}{49}
-\contentsline {figure}{\numberline {14}{\ignorespaces Wynik testu nr 4 - por\IeC {\'o}wnanie kodu \IeC {\'z}r\IeC {\'o}d\IeC {\l }owego z jego 50$\%$-ow\IeC {\k a} kopi\IeC {\k a}.}}{50}
+\contentsline {figure}{\numberline {1}{\ignorespaces Grafy po\IeC {\l }o\IeC {\.z}one obok siebie s\IeC {\k a} izomorficzne}}{10}
+\contentsline {figure}{\numberline {2}{\ignorespaces Przyk\IeC {\l }ad przedstawiaj\IeC {\k a}cy pewne wyra\IeC {\.z}enie oraz wynik dzia\IeC {\l }ania parsera w postaci listy token\IeC {\'o}w i ich warto\IeC {\'s}ci}}{11}
+\contentsline {figure}{\numberline {3}{\ignorespaces G\IeC {\l }\IeC {\'o}wne r\IeC {\'o}\IeC {\.z}nice pomi\IeC {\k e}dzy sk\IeC {\l }adniami Intel i AT\&T\cite {asm_syn}}}{16}
+\contentsline {figure}{\numberline {4}{\ignorespaces Diagram przedstawiaj\IeC {\k a}cy struktur\IeC {\k e} aplikacji}}{34}
+\contentsline {figure}{\numberline {5}{\ignorespaces Diagram klas aplikacji CodeComp.}}{36}
+\contentsline {figure}{\numberline {6}{\ignorespaces G\IeC {\l }\IeC {\'o}wne okno programu CodeComp.}}{37}
+\contentsline {figure}{\numberline {7}{\ignorespaces Okno startowe aplikacji CodeComp.}}{39}
+\contentsline {figure}{\numberline {8}{\ignorespaces Wyb\IeC {\'o}r plik\IeC {\'o}w w programie CodeComp.}}{39}
+\contentsline {figure}{\numberline {9}{\ignorespaces Uruchomienie analizy w programie CodeComp.}}{40}
+\contentsline {figure}{\numberline {10}{\ignorespaces Wynik dzia\IeC {\l }ania aplikacji CodeComp.}}{40}
+\contentsline {figure}{\numberline {11}{\ignorespaces Wynik testu nr 1 - dwa identyczne kody \IeC {\'z}r\IeC {\'o}d\IeC {\l }owe.}}{49}
+\contentsline {figure}{\numberline {12}{\ignorespaces Wynik testu nr 2 - ten sam kod \IeC {\'z}r\IeC {\'o}d\IeC {\l }owy ze zmienionymi nazwami zmiennych.}}{50}
+\contentsline {figure}{\numberline {13}{\ignorespaces Wynik testu nr 3 - ten sam kod \IeC {\'z}r\IeC {\'o}d\IeC {\l }owy ze zmienionymi nazwami zmiennych i kolejno\IeC {\'s}ci\IeC {\k a} wykonywanych instrukcji.}}{51}
+\contentsline {figure}{\numberline {14}{\ignorespaces Wynik testu nr 4 - por\IeC {\'o}wnanie kodu \IeC {\'z}r\IeC {\'o}d\IeC {\l }owego z jego 50$\%$-ow\IeC {\k a} kopi\IeC {\k a}.}}{52}
